@@ -45,7 +45,7 @@ const Sidebar = () => {
             </ul>
             <style jsx>{`
               .active-link {
-                color: blue; // Set your desired active link color here
+                color: #00bcd4; // Set your desired active link color here
                 font-weight: bold; // Optional: You can add more styles if needed
               }
             `}</style>

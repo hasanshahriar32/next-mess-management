@@ -1,26 +1,31 @@
 "use client";
-
-import React, { useState, FormEvent } from "react";
+import React, { useState, FormEvent, useEffect } from "react";
 import Link from "next/link";
 import { FaGoogle } from "react-icons/fa";
 import { FiGithub } from "react-icons/fi";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
-  const reset = () => {
-    setEmail("");
-    setPassword("");
-  };
-
+  const router = useRouter();
+  const { status, data: session } = useSession();
+  console.log(session);
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
       setError("All Fields Fillup Needed");
     }
   };
+  // Navigate to the about page
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.replace("/");
+    }
+  }, [status, router]);
 
   return (
     <div className="h-screen flex justify-center items-center ">
@@ -31,7 +36,9 @@ const Login = () => {
             <p>Signin With Social Media</p>
             <div className="flex justify-center gap-5 mt-5">
               <FaGoogle className="text-xl  "></FaGoogle>
-              <FiGithub className="text-xl  "></FiGithub>
+              <button onClick={() => signIn("github")}>
+                <FiGithub className="text-xl  "></FiGithub>
+              </button>
             </div>
           </div>
           <form onSubmit={handleSubmit}>
@@ -72,11 +79,13 @@ const Login = () => {
             </h2>
             <p className="mb-2">Stay Connected With Us</p>
             <p className="mb-2">Please Login With Your Personal Info</p>
-            <Link href={"/"}>
-              <div className=" text-black mt-5  font-semibold bg-white px-6 py-3 rounded-lg">
-                Go To Home
-              </div>
-            </Link>
+            <div className="mt-5">
+              <Link href={"/"}>
+                <span className="text-black  font-semibold bg-white px-6 py-3 rounded-lg">
+                  Go To Home
+                </span>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
