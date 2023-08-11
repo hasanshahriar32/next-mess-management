@@ -1,5 +1,6 @@
 import React, { ReactNode } from "react";
 import Sidebar from "./Sidebar";
+import AuthProvider from "../Providers";
 
 interface LayoutProps {
   children: ReactNode;
@@ -8,8 +9,10 @@ interface LayoutProps {
 const Layout = ({ children }: LayoutProps) => {
   return (
     <div className="w-9/12 mx-auto flex gap-10 font-semibold py-16">
-      <Sidebar></Sidebar>
-      {children}
+      <AuthProvider>
+        <Sidebar></Sidebar>
+        {children}
+      </AuthProvider>
     </div>
   );
 };

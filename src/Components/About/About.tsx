@@ -1,9 +1,10 @@
+import HostelMealTracker from "@/app/dashboard/meal-plan/page";
 import React from "react";
 
 const About = () => {
   return (
     <div>
-      <h2>I am From About</h2>
+      <HostelMealTracker></HostelMealTracker>
     </div>
   );
 };

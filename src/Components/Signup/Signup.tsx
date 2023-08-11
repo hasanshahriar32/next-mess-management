@@ -29,14 +29,18 @@ const Signup = () => {
       <div className=" w-5/6 mx-auto grid grid-cols-2 gap-32 justify-between items-center ">
         <div className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white h-screen flex items-center justify-center">
           <div>
-            <h2 className="text-4xl mb-3 font-semibold">Welcome Back</h2>
+            <h2 className="text-4xl mb-3 font-semibold">
+              Welcome To Signup Page
+            </h2>
             <p className="mb-2">Stay Connected With Us</p>
             <p className="mb-2">Please Signup With Your Personal Info</p>
-            <Link href={"/"}>
-              <div className=" text-black mt-5  font-semibold bg-white px-6 py-3 rounded-lg">
-                Go To Home
-              </div>
-            </Link>
+            <div>
+              <Link href={"/"}>
+                <div className=" text-black mt-5  font-semibold bg-white px-6 py-3 rounded-lg">
+                  Go To Home
+                </div>
+              </Link>
+            </div>
           </div>
         </div>
         <div>

@@ -1,62 +1,74 @@
 "use client";
-
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import React from "react";
+import { usePathname, useRouter } from "next/navigation";
+import React, { useEffect } from "react";
+import { useSession, signOut } from "next-auth/react";
+import Image from "next/image";
 
-const Header = () => {
-  const pathname = usePathname();
-  const navLinks = [
-    {
-      id: 1,
-      path: "/",
-      title: "Home",
-    },
-    {
-      id: 2,
-      path: "/about",
-      title: "about",
-    },
-    {
-      id: 3,
-      path: "/login",
-      title: "Login",
-    },
+// Define types for session and status
+interface UserSession {
+  user: {
+    image: string | null;
+  };
+}
 
-    {
-      id: 4,
-      path: "/dashboard",
-      title: "Dashboard",
-    },
-  ];
+type SessionStatus = "authenticated" | "loading" | "unauthenticated";
+
+// Define header component props
+interface HeaderProps {}
+
+const Header: React.FC<HeaderProps> = () => {
+  // Track session fetch status
+  const { status, data: session } = useSession();
+  console.log(session);
+  const router = useRouter();
+
+  // useEffect(() => {
+  //   if (session === undefined) {
+  //     router.refresh();
+  //   }
+  // }, [session, router]);
+
+  const handleSignOut = async () => {
+    await signOut({
+      callbackUrl: "/login",
+    });
+  };
+
   return (
     <div className="sticky top-0 flex justify-between text-xl font-semibold py-10">
       <div>
         <h2>Mess Logo</h2>
       </div>
       <div className="flex gap-5 items-center">
-        {navLinks.map((navlink) => {
-          return (
-            <>
-              <ul>
-                <li>
-                  <Link href={navlink.path}>
-                    <span
-                      className={pathname === navlink.path ? "active-link" : ""}
-                    >
-                      {navlink.title}
-                    </span>
-                  </Link>
-                </li>
-              </ul>
-            </>
-          );
-        })}
+        {status === "authenticated" ? (
+          <>
+            <Link href={"/"}>Home</Link>
+            <Link href={"/about"}>About</Link>
+            <Link href={"/dashboard"}>Dashboard</Link>
+            {session?.user?.image && (
+              <Image
+                src={session.user.image}
+                alt=""
+                width={50}
+                height={50}
+                className="rounded-full"
+              />
+            )}
+            <button onClick={handleSignOut}>Signout</button>
+          </>
+        ) : (
+          <>
+            <Link href={"/"}>Home</Link>
+            <Link href={"/about"}>About</Link>
+            <Link href={"/login"}>Login</Link>
+          </>
+        )}
       </div>
       <style jsx>{`
         .active-link {
-          color: blue; // Set your desired active link color here
-          font-weight: bold; // Optional: You can add more styles if needed
+          color: #00bcd4;
+          font-weight: bold;
         }
       `}</style>
     </div>
