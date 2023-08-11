@@ -21,13 +21,11 @@ const Header: React.FC<HeaderProps> = () => {
   // Track session fetch status
   const { status, data: session } = useSession();
   console.log(session);
-  const router = useRouter();
+  // const router = useRouter();
 
-  // useEffect(() => {
-  //   if (session === undefined) {
-  //     router.refresh();
-  //   }
-  // }, [session, router]);
+  // if (session === undefined) {
+  //   router.refresh();
+  // }
 
   const handleSignOut = async () => {
     await signOut({
