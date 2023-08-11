@@ -37,7 +37,7 @@ const HostelMealTracker: React.FC = () => {
   ) => {
     const updatedData = [...mealData];
     updatedData[personIndex].meals[dayIndex] = newValue;
-    if (session?.user?.email === "p.hossain9254@gmail.com") {
+    if (session?.user?.email === "p.hossa9254@gmail.com") {
       setMealData(updatedData);
     }
   };

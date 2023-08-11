@@ -9,10 +9,8 @@ interface LayoutProps {
 function Layout({ children }: LayoutProps) {
   return (
     <div className="w-9/12 mx-auto">
-      <AuthProvider>
-        <Header />
-        {children}
-      </AuthProvider>
+      <Header />
+      {children}
     </div>
   );
 }
