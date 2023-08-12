@@ -36,6 +36,12 @@ const Sidebar = () => {
     },
     {
       id: 5,
+      path: "/dashboard/add-bazar",
+      title: "Add Bazar",
+      icon: <FaUser />,
+    },
+    {
+      id: 6,
       path: "/",
       title: "Home",
       icon: <FaUser />,
