@@ -1,21 +1,16 @@
 "use client";
+
 import Container from "@/Components/ui/Container/container";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { P, Subtitle, Title } from "@/Components/ui/Heading/Heading";
 
 export default function Home() {
-  const { status, data: session } = useSession();
-  const router = useRouter();
-  useEffect(() => {
-    if (status !== "authenticated") {
-      <h2>Loading.......</h2>;
-    }
-  }, [session, router, status]);
-
   return (
-    <Container className="min-h-[60vh]">
-      <h1>Home</h1>
-    </Container>
+    <>
+      <Container>
+        <Title className="min-h-[60vh]">this is title</Title>
+        <Subtitle>this sub title</Subtitle>
+        <P>this is Paramargah</P>
+      </Container>
+    </>
   );
 }
