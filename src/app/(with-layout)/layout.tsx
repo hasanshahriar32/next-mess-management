@@ -7,10 +7,10 @@ interface LayoutProps {
 
 function Layout({ children }: LayoutProps) {
   return (
-    <div className="">
+    <>
       <Header />
       {children}
-    </div>
+    </>
   );
 }
 

@@ -15,7 +15,10 @@ export default function Home() {
 
   return (
     <Container className="">
-      <div className=""></div>
+      <div className="min-h-screen"></div>
+      <div className="min-h-screen"></div>
+      <div className="min-h-screen"></div>
+      <div className="min-h-screen"></div>
     </Container>
   );
 }
