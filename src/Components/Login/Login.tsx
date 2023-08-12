@@ -6,8 +6,14 @@ import { FiGithub } from "react-icons/fi";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useAppSelector } from "@/app/hooks";
+import { useGetPostQuery } from "@/app/features/post/postApi";
 
 const Login = () => {
+  const data = useAppSelector((state) => state.user);
+  console.log(data);
+  const { data: post } = useGetPostQuery({});
+  console.log(post);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");

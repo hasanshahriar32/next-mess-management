@@ -38,6 +38,7 @@ const Header: React.FC<HeaderProps> = () => {
               <>
                 <Link href={"/"}>Home</Link>
                 <Link href={"/about"}>About</Link>
+                <Link href={"/contact"}>Contact</Link>
                 {!session?.user?.image && <Link href={"/login"}>Login</Link>}
               </>
             </div>
