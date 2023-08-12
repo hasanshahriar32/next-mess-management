@@ -1,3 +1,4 @@
+import Footer from "@/Components/Footer/Footer";
 import Header from "@/Components/Header/Header";
 import React, { ReactNode } from "react";
 import AuthProvider from "../Providers";
@@ -11,6 +12,7 @@ function Layout({ children }: { children: React.ReactNode }) {
     <div className="w-9/12 mx-auto">
       <Header />
       {children}
+      <Footer />
     </div>
   );
 }
