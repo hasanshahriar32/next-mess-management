@@ -1,6 +1,5 @@
 import Header from "@/Components/Header/Header";
-import React, { ReactNode } from "react";
-import AuthProvider from "../Providers";
+import { ReactNode } from "react";
 
 interface LayoutProps {
   children: ReactNode;
@@ -8,12 +7,10 @@ interface LayoutProps {
 
 function Layout({ children }: LayoutProps) {
   return (
-    <div className="w-9/12 mx-auto">
-      <AuthProvider>
-        <Header />
-        {children}
-      </AuthProvider>
-    </div>
+    <>
+      <Header />
+      {children}
+    </>
   );
 }
 

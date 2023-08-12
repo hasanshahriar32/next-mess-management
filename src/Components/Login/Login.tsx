@@ -21,11 +21,10 @@ const Login = () => {
     }
   };
   // Navigate to the about page
-  useEffect(() => {
-    if (status === "authenticated") {
-      router.replace("/");
-    }
-  }, [status, router]);
+
+  if (status === "authenticated") {
+    router.push("/");
+  }
 
   return (
     <div className="h-screen flex justify-center items-center ">
