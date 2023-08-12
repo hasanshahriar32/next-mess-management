@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <>
       <Container>
-        <Title className="">this is title</Title>
+        <Title className="min-h-[60vh]">this is title</Title>
         <Subtitle>this sub title</Subtitle>
         <P>this is Paramargah</P>
       </Container>
