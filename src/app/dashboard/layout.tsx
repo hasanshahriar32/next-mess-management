@@ -1,6 +1,6 @@
-import React, { ReactNode } from "react";
-import Sidebar from "./Sidebar";
-import AuthProvider from "../Providers";
+import Sidebar from "@/Components/Dashboard/Sidebar";
+import Container from "@/Components/ui/Container/container";
+import { ReactNode } from "react";
 
 interface LayoutProps {
   children: ReactNode;
@@ -8,9 +8,12 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   return (
-    <div className="w-11/12 mx-auto flex gap-10 font-semibold py-16">
-      <Sidebar></Sidebar>
-      {children}
+    <div className="drawer lg:drawer-open">
+      <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
+      <div className="drawer-content">
+        <Container>{children}</Container>
+      </div>
+      <Sidebar />
     </div>
   );
 };

@@ -15,10 +15,7 @@ export default function Home() {
 
   return (
     <Container className="">
-      <div className="min-h-screen"></div>
-      <div className="min-h-screen"></div>
-      <div className="min-h-screen"></div>
-      <div className="min-h-screen"></div>
+      <h1>Home</h1>
     </Container>
   );
 }
