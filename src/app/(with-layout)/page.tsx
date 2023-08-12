@@ -14,7 +14,7 @@ export default function Home() {
   }, [session, router, status]);
 
   return (
-    <Container className="">
+    <Container className="min-h-[60vh]">
       <h1>Home</h1>
     </Container>
   );
