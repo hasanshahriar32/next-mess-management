@@ -38,7 +38,7 @@ export async function DELETE(request: UserRequest) {
     if (!user) {
       return NextResponse.json({ message: "User Not Found" });
     }
-    return NextResponse.json({ user });
+    return NextResponse.json({ message: "user Deleted" }, { status: 201 });
   } catch (error) {
     return NextResponse.json(
       {

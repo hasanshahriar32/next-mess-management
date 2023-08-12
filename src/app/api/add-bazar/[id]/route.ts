@@ -26,13 +26,23 @@ export async function GET(request: any, { params }: paramsInterface) {
 }
 export async function PUT(request: UserRequest, { params }: paramsInterface) {
   const { id } = params;
+  if (!id) {
+    return NextResponse.json(
+      { message: "id Perameter Not Found" },
+      { status: 201 }
+    );
+  }
   const {
     newName: name,
     newEmail: email,
     newAmount: amount,
     newBazar: bazar,
   } = await request.json();
-  await connectMongoDB();
-  await Bazar.findByIdAndUpdate(id, { name, email, amount, bazar });
-  return NextResponse.json({ message: "Bazar Updated" }, { status: 201 });
+  try {
+    await connectMongoDB();
+    await Bazar.findByIdAndUpdate(id, { name, email, amount, bazar });
+    return NextResponse.json({ message: "Bazar Updated" }, { status: 201 });
+  } catch (error) {
+    return NextResponse.json({ message: "not found", error }, { status: 201 });
+  }
 }
