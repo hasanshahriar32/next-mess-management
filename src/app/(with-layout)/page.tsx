@@ -2,8 +2,11 @@
 
 import Container from "@/Components/ui/Container/container";
 import { P, Subtitle, Title } from "@/Components/ui/Heading/Heading";
+import { useGetPostQuery } from "../features/post/postApi";
 
 export default function Home() {
+  const { data } = useGetPostQuery({});
+  console.log(data);
   return (
     <>
       <Container>
