@@ -1,22 +1,13 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import Bazar from "../../../../../Models/bazarSchema/bazarSchema";
 import { connectMongoDB } from "../../../../../db/mongoDB";
 
 interface paramsInterface {
   params: {
-    id: String;
+    id: string;
   };
 }
-interface UserRequest {
-  json: () => Promise<userInterface>;
-}
 
-interface userInterface {
-  newName: string;
-  newEmail: string;
-  newAmount: number;
-  newBazar: string;
-}
 export async function GET(request: any, { params }: paramsInterface) {
   const { id } = params;
   console.log(id);
@@ -24,11 +15,12 @@ export async function GET(request: any, { params }: paramsInterface) {
   const bazar = await Bazar.findOne({ _id: id });
   return NextResponse.json({ bazar });
 }
-export async function PUT(request: UserRequest, { params }: paramsInterface) {
+
+export async function PUT(request: NextRequest, { params }: paramsInterface) {
   const { id } = params;
   if (!id) {
     return NextResponse.json(
-      { message: "id Perameter Not Found" },
+      { message: "id Parameter Not Found" },
       { status: 201 }
     );
   }
