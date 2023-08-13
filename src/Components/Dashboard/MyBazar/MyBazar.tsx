@@ -1,12 +1,19 @@
 "use client";
 import { P, Title } from "@/Components/ui/Heading/Heading";
-import { useGetBazarQuery } from "@/app/features/bazar/bazarApi";
+import {
+  useGetBazarQuery,
+  useRemoveBazarMutation,
+} from "@/app/features/bazar/bazarApi";
 import { useSession } from "next-auth/react";
 import React from "react";
+import { BiEdit } from "react-icons/bi";
+import { AiOutlineDelete } from "react-icons/ai";
 
 const MyBazar = () => {
   const { data: bazarData } = useGetBazarQuery();
   const { data: session } = useSession();
+  const [RemoveBazar, { isError, isLoading, isSuccess, error }] =
+    useRemoveBazarMutation();
 
   // Calculate the total amount of your bazar entries
   const myBazarEntries = bazarData?.bazars?.filter(
@@ -17,6 +24,14 @@ const MyBazar = () => {
     (total: number, entry: any) => total + entry.amount,
     0
   );
+
+  const handleRemove = (id: any) => {
+    console.log("delete", id);
+    const agree = window.confirm("Are You Sure ? You Want To Delete");
+    if (agree && id) {
+      RemoveBazar(id);
+    }
+  };
 
   return (
     <div className="mt-16">
@@ -32,6 +47,7 @@ const MyBazar = () => {
                   <th>Bazar</th>
                   <th>Date</th>
                   <th>Amount</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -41,6 +57,14 @@ const MyBazar = () => {
                     <td>{entry?.bazar}</td>
                     <td>{entry?.updatedAt}</td>
                     <td>{entry?.amount}</td>
+                    <td className="flex gap-5">
+                      <button>
+                        <BiEdit className="text-xl"></BiEdit>
+                      </button>
+                      <button onClick={() => handleRemove(entry?._id)}>
+                        <AiOutlineDelete className="text-xl"></AiOutlineDelete>
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>

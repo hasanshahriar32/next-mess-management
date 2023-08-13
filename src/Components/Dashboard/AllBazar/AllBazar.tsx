@@ -16,8 +16,11 @@ const AllBazar = () => {
   ] = useRemoveBazarMutation();
 
   const handleRemove = (id: any) => {
+    const agree = window.confirm("Are you sure ? You Want To Delete");
     console.log("delete", id);
-    RemoveBazar(id);
+    if (agree && id) {
+      RemoveBazar(id);
+    }
   };
 
   let totalAmount = 0; // Initialize the total amount
