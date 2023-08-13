@@ -1,7 +1,7 @@
 import Login from "@/Components/Login/Login";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import { authOptions } from "../api/auth/_nextauth";
 import React from "react";
 
 const page = async () => {
