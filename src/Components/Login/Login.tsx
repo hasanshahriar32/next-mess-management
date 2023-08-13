@@ -6,8 +6,16 @@ import { FiGithub } from "react-icons/fi";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useAppSelector } from "@/app/hooks";
+
+import { useGetBazarQuery } from "@/app/features/bazar/bazarApi";
 
 const Login = () => {
+  const data = useAppSelector((state) => state.user);
+  console.log(data);
+  const { data: allBazar } = useGetBazarQuery();
+  console.log(allBazar);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -34,7 +42,10 @@ const Login = () => {
             <h2 className="mb-2 text-4xl font-semibold">Let's Get Started</h2>
             <p>Signin With Social Media</p>
             <div className="flex justify-center gap-5 mt-5">
-              <FaGoogle className="text-xl  "></FaGoogle>
+              <button onClick={() => signIn("google")}>
+                {" "}
+                <FaGoogle className="text-xl  "></FaGoogle>
+              </button>
               <button onClick={() => signIn("github")}>
                 <FiGithub className="text-xl  "></FiGithub>
               </button>
