@@ -1,4 +1,6 @@
 "use client";
+import { setGrandTotal, setPersonTotals } from "@/app/features/meal/mealSlice";
+import { useAppDispatch } from "@/app/hooks";
 import { useSession } from "next-auth/react";
 import React, { useState, useEffect } from "react";
 
@@ -10,6 +12,7 @@ interface PersonMeals {
 const personNames: string[] = ["Pervez", "Minhaz", "Raihan", "Nasir"];
 
 const HostelMealTracker: React.FC = () => {
+  const dispatch = useAppDispatch();
   const { data: session } = useSession();
   console.log(session);
   const initialData: PersonMeals[] = personNames.map((name) => ({
@@ -37,7 +40,7 @@ const HostelMealTracker: React.FC = () => {
   ) => {
     const updatedData = [...mealData];
     updatedData[personIndex].meals[dayIndex] = newValue;
-    if (session?.user?.email === "p.hossa9254@gmail.com") {
+    if (session?.user?.email === "p.hossain9254@gmail.com") {
       setMealData(updatedData);
     }
   };
@@ -62,6 +65,29 @@ const HostelMealTracker: React.FC = () => {
       0
     );
   };
+
+  const calculatePersonTotals = () => {
+    const calculatedPersonTotals = mealData.map((person) => {
+      const total = person.meals.reduce((total, count) => total + count, 0);
+      return { name: person.name, total };
+    });
+
+    dispatch(setPersonTotals(calculatedPersonTotals)); // Dispatch person totals to Redux
+  };
+
+  const calculateGrandTotals = () => {
+    const calculatedGrandTotal = mealData.reduce(
+      (total, person, personIndex) => total + calculatePersonTotal(personIndex),
+      0
+    );
+
+    dispatch(setGrandTotal(calculatedGrandTotal)); // Dispatch grand total to Redux
+  };
+
+  useEffect(() => {
+    calculatePersonTotals();
+    calculateGrandTotals();
+  }, [mealData]);
 
   return (
     <div className="p-4">
