@@ -1,14 +1,26 @@
 "use client";
 import { P } from "@/Components/ui/Heading/Heading";
-import { useGetBazarQuery } from "@/app/features/bazar/bazarApi";
+import {
+  useGetBazarQuery,
+  useRemoveBazarMutation,
+} from "@/app/features/bazar/bazarApi";
 import React from "react";
+import { BiEdit } from "react-icons/bi";
+import { AiOutlineDelete } from "react-icons/ai";
 
 const AllBazar = () => {
   const { data: allBazar, isLoading, isError } = useGetBazarQuery();
-  console.log(allBazar?.bazars);
+  const [
+    RemoveBazar,
+    { isError: removeIsError, isLoading: removeIsLoading, isSuccess },
+  ] = useRemoveBazarMutation();
+
+  const handleRemove = (id: any) => {
+    console.log("delete", id);
+    RemoveBazar(id);
+  };
 
   let totalAmount = 0; // Initialize the total amount
-
   let content;
   if (isLoading && !isError) {
     content = (
@@ -31,6 +43,7 @@ const AllBazar = () => {
               <th>Date</th>
               <th>Bazar</th>
               <th>Amount</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -43,6 +56,14 @@ const AllBazar = () => {
                   <td>{data?.updatedAt}</td>
                   <td>{data?.bazar}</td>
                   <td>{data?.amount} BDT</td>
+                  <td className="flex gap-5">
+                    <button>
+                      <BiEdit className="text-xl"></BiEdit>
+                    </button>
+                    <button onClick={() => handleRemove(data?._id)}>
+                      <AiOutlineDelete className="text-xl"></AiOutlineDelete>
+                    </button>
+                  </td>
                 </tr>
               );
             })}
