@@ -26,7 +26,15 @@ export const addBazarApi = createApi({
       }),
       invalidatesTags: ["bazars"],
     }),
+    RemoveBazar: builder.mutation<{ success: boolean }, BazarAddRequest>({
+      query: (id) => ({
+        url: `/api/add-bazar?id=${id}`, // Adjust the URL to your API route
+        method: "DELETE",
+      }),
+      invalidatesTags: ["bazars"],
+    }),
   }),
 });
 
-export const { useBazarAddMutation, useGetBazarQuery } = addBazarApi;
+export const { useBazarAddMutation, useGetBazarQuery, useRemoveBazarMutation } =
+  addBazarApi;
