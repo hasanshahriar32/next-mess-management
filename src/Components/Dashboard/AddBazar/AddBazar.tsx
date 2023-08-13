@@ -62,7 +62,7 @@ const AddBazar = () => {
 
       if ("data" in response) {
         // Check if "data" property exists in the response
-        router.push("/dashboard/get-all-bazar");
+        router.push("/dashboard/my-bazar");
         resetForm();
       } else if ("error" in response) {
         // Check if "error" property exists in the response
