@@ -48,15 +48,9 @@
 //     );
 //   }
 // }
-
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import Bazar from "../../../../Models/bazarSchema/bazarSchema";
 import { connectMongoDB } from "../../../../db/mongoDB";
-
-interface UserRequest {
-  json: () => Promise<userInterface>;
-  nextUrl: URL;
-}
 
 interface userInterface {
   name: string;
@@ -65,8 +59,9 @@ interface userInterface {
   bazar: string;
 }
 
-export async function POST(request: UserRequest) {
-  const { name, email, amount, bazar } = await request.json();
+export async function POST(request: NextRequest) {
+  const { name, email, amount, bazar } =
+    (await request.json()) as userInterface;
   await connectMongoDB();
   await Bazar.create({ name, email, amount, bazar });
   return NextResponse.json({ message: "Bazar Added" }, { status: 201 });
@@ -78,7 +73,7 @@ export async function GET() {
   return NextResponse.json({ bazars });
 }
 
-export async function DELETE(request: UserRequest) {
+export async function DELETE(request: NextRequest) {
   const id = request.nextUrl.searchParams.get("id");
   if (!id) {
     return NextResponse.json(

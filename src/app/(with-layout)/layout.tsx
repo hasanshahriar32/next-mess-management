@@ -1,7 +1,6 @@
 import Footer from "@/Components/Footer/Footer";
 import Header from "@/Components/Header/Header";
 import React, { ReactNode } from "react";
-import AuthProvider from "../Providers";
 
 interface LayoutProps {
   children: ReactNode;
@@ -9,7 +8,7 @@ interface LayoutProps {
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="w-9/12 mx-auto">
+    <div className="">
       <Header />
       {children}
       <Footer />

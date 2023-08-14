@@ -12,5 +12,5 @@ export const Subtitle = ({ children, className }: Props): JSX.Element => {
 };
 
 export const P = ({ children, className }: Props): JSX.Element => {
-  return <p className={`text-base ${className}`}>{children}</p>;
+  return <p className={`text-gray-400 ${className}`}>{children}</p>;
 };
