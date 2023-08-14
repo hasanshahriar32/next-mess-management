@@ -5,8 +5,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import listPlugin from "@fullcalendar/list"; // Import the listPlugin for month view
-// import bootstrapPlugin from "@fullcalendar/bootstrap"; // Import the bootstrapPlugin for styling
+import listPlugin from "@fullcalendar/list";
 
 export default class BazarDate extends React.Component {
   state = {
@@ -15,21 +14,19 @@ export default class BazarDate extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="container mx-auto p-4">
         <FullCalendar
           plugins={[
-            // resourceTimelinePlugin,
             dayGridPlugin,
             interactionPlugin,
             timeGridPlugin,
-            listPlugin, // Add the listPlugin
+            listPlugin,
           ]}
-          themeSystem="bootstrap" // Use the bootstrap theme
+          themeSystem="bootstrap"
           headerToolbar={{
             left: "prev,next today",
             center: "title",
-            // right: "resourceTimelineWeek,timeGridWeek,dayGridMonth,listMonth", // Add the week, month, and year views
-            right: "timeGridWeek,dayGridMonth,listMonth", // Add the week, month, and year views
+            right: "timeGridWeek,dayGridMonth,listMonth",
           }}
           initialView="dayGridMonth"
           dateClick={this.handleDateClick}
@@ -38,11 +35,6 @@ export default class BazarDate extends React.Component {
           editable={true}
           selectable={true}
           selectMirror={true}
-          // resources={[
-          //   { id: "a", title: "Auditorium A" },
-          //   { id: "b", title: "Auditorium B", eventColor: "green" },
-          //   { id: "c", title: "Auditorium C", eventColor: "orange" },
-          // ]}
           eventContent={this.renderEventContent}
           events={this.state.events}
         />
@@ -52,11 +44,11 @@ export default class BazarDate extends React.Component {
 
   renderEventContent = (eventInfo) => {
     return (
-      <div>
-        <p>{eventInfo.timeText}</p>
-        <p>{eventInfo.event.title}</p>
+      <div className="flex justify-between items-center p-2 bg-gray-100 rounded">
+        <p className="font-semibold text-gray-800">{eventInfo.timeText}</p>
+        <p className="text-gray-800">{eventInfo.event.title}</p>
         <button
-          className="btn btn-error btn-sm btn-outline"
+          className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded-sm"
           onClick={() => this.handleDeleteEvent(eventInfo.event)}
         >
           Delete
