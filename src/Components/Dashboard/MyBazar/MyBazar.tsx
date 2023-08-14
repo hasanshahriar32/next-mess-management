@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 import React from "react";
 import { BiEdit } from "react-icons/bi";
 import { AiOutlineDelete } from "react-icons/ai";
+import Link from "next/link";
 
 const MyBazar = () => {
   const { data: bazarData } = useGetBazarQuery();
@@ -58,11 +59,13 @@ const MyBazar = () => {
                     <td>{entry?.updatedAt}</td>
                     <td>{entry?.amount}</td>
                     <td className="flex gap-5">
-                      <button>
-                        <BiEdit className="text-xl"></BiEdit>
-                      </button>
+                      <Link href={`/dashboard/edit-my-bazar/${entry?._id}`}>
+                        <button>
+                          <BiEdit className="text-xl cursor-pointer"></BiEdit>
+                        </button>
+                      </Link>
                       <button onClick={() => handleRemove(entry?._id)}>
-                        <AiOutlineDelete className="text-xl"></AiOutlineDelete>
+                        <AiOutlineDelete className="text-xl cursor-pointer"></AiOutlineDelete>
                       </button>
                     </td>
                   </tr>
