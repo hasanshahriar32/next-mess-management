@@ -2,6 +2,7 @@
 import Image from "next/image";
 import CountUp from "react-countup";
 import Container from "../ui/Container/container";
+import { P, Title } from "../ui/Heading/Heading";
 
 const HeroSection = () => {
   return (
@@ -11,21 +12,21 @@ const HeroSection = () => {
           <div className="col-span-1 md:mt-0 mt-14">
             <div className="mb-7">
               <span className="bg-gradient-to-r from-gray-400 via-gray-600 to-blue-800 p-2 md:text-sm rounded-3xl text-white  h-10">
-                Revolutionizing Match Management
+                Revolutionizing Mess Management
               </span>
             </div>
-            <h1 className=" font-bold mt-5 ">
+            <Title className="  mt-5 ">
               <span className="stroke-text text-5xl">
                 Introducing Our Revolutionary
               </span>{" "}
               <br />
-              <span className="text-5xl md:text-7xl ">Match Management </span>
-            </h1>
-            <p className="py-6">
+              <span className="text-5xl md:text-7xl ">Mess Management </span>
+            </Title>
+            <P className="py-6">
               Transform Events: Seamlessly Coordinate, Unleash Unparalleled
               Efficiency. Elevate Your Experience with Our Powerful Management
               Solution. Make Every Moment Count
-            </p>
+            </P>
             <div className="flex justify-between mt-5 w-96">
               <div className="flex flex-col justify-center items-center">
                 <h1 className="md:text-4xl text-2xl">

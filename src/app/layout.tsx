@@ -1,11 +1,10 @@
-import Header from "@/Components/Header/Header";
-import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Space_Grotesk } from "next/font/google";
 import AuthProvider from "./AuthProvider";
 import Providers from "./Providers";
+import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Space_Grotesk({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",

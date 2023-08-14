@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "react";
 
 function Parallax() {
   const [background, setBackground] = useState(20);
-
   const parallaxRef = useRef(null);
   const mountain3 = useRef(null);
   const mountain2 = useRef(null);
@@ -154,7 +153,7 @@ function Parallax() {
         />
         <img ref={stars} className="stars" src="/parallax/stars.svg" />
         <div ref={copy} className="copy">
-          <h1>Journey</h1>
+          <h1 className="text-md">Mess Management</h1>
           <span ref={btn}>Discover more</span>
         </div>
       </div>
