@@ -2,7 +2,7 @@ import Container from "../ui/Container/container";
 
 const Footer = () => {
   return (
-    <div className="border-t-1 border-gray-100 bg-base-200 text-base-content">
+    <div className="border-t-2 border-gray-800 bg-[#282a57] ">
       <Container>
         <footer className="footer py-10 px-4 md:px-2 ">
           <div>

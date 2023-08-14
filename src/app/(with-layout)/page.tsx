@@ -1,11 +1,13 @@
-"use client";
-
-import Hero from "@/Components/Home/Hero";
+import HeroSection from "@/Components/Home/HeroSection";
+import Parallax from "@/Components/Parallax";
 
 export default function Home() {
   return (
     <>
-      <Hero />
+      <Parallax />
+      <div className="">
+        <HeroSection />
+      </div>
     </>
   );
 }
