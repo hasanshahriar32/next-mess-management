@@ -5,6 +5,8 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 import timeGridPlugin from "@fullcalendar/timegrid";
+import listPlugin from "@fullcalendar/list"; // Import the listPlugin for month view
+// import bootstrapPlugin from "@fullcalendar/bootstrap"; // Import the bootstrapPlugin for styling
 
 export default class BazarDate extends React.Component {
   state = {
@@ -16,15 +18,18 @@ export default class BazarDate extends React.Component {
       <div>
         <FullCalendar
           plugins={[
-            resourceTimelinePlugin,
+            // resourceTimelinePlugin,
             dayGridPlugin,
             interactionPlugin,
             timeGridPlugin,
+            listPlugin, // Add the listPlugin
           ]}
+          themeSystem="bootstrap" // Use the bootstrap theme
           headerToolbar={{
             left: "prev,next today",
             center: "title",
-            right: "resourceTimelineWeek,dayGridMonth,timeGridWeek",
+            // right: "resourceTimelineWeek,timeGridWeek,dayGridMonth,listMonth", // Add the week, month, and year views
+            right: "timeGridWeek,dayGridMonth,listMonth", // Add the week, month, and year views
           }}
           initialView="dayGridMonth"
           dateClick={this.handleDateClick}
@@ -33,11 +38,11 @@ export default class BazarDate extends React.Component {
           editable={true}
           selectable={true}
           selectMirror={true}
-          resources={[
-            { id: "a", title: "Auditorium A" },
-            { id: "b", title: "Auditorium B", eventColor: "green" },
-            { id: "c", title: "Auditorium C", eventColor: "orange" },
-          ]}
+          // resources={[
+          //   { id: "a", title: "Auditorium A" },
+          //   { id: "b", title: "Auditorium B", eventColor: "green" },
+          //   { id: "c", title: "Auditorium C", eventColor: "orange" },
+          // ]}
           eventContent={this.renderEventContent}
           events={this.state.events}
         />
