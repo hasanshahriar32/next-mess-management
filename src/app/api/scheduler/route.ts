@@ -1,4 +1,3 @@
-
 import { NextRequest, NextResponse } from "next/server";
 import { connectMongoDB } from "../../../../db/mongoDB";
 import Schedule from "../../../../Models/scheduleSchema/scheduleSchema";
@@ -37,7 +36,10 @@ export async function DELETE(request: NextRequest) {
     await connectMongoDB();
     const deletedSchedule = await Schedule.findByIdAndDelete(id);
     if (!deletedSchedule) {
-      return NextResponse.json({ message: "Schedule not found" }, { status: 404 });
+      return NextResponse.json(
+        { message: "Schedule not found" },
+        { status: 404 }
+      );
     }
     return NextResponse.json({ message: "Schedule deleted" }, { status: 200 });
   } catch (error) {
