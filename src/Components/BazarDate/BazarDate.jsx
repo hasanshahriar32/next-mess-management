@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
@@ -7,36 +7,79 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import axios from "axios";
 
 export default function BazarDate() {
   const { data } = useSession();
   const [events, setEvents] = useState([]);
 
-  const handleDeleteEvent = (eventToDelete) => {
-    if (window.confirm("Are you sure you want to delete this event?")) {
-      setEvents(events.filter((event) => event !== eventToDelete));
-    }
-  };
+  const handleDeleteEvent = async (eventToDelete) => {
+  if (window.confirm("Are you sure you want to delete this event?")) {
+    try {
+      const response = await axios.delete(
+        `http://localhost:3000/api/scheduler?id=${eventToDelete._id}`
+      );
 
-  const handleDateClick = (arg) => {
-    if (
-      window.confirm("Would you like to add an event to " + arg.dateStr + " ?")
-    ) {
-      const title = prompt("Enter Event Title");
-      const description = prompt("Enter Event Description");
-      if (title && description) {
-        setEvents([
-          ...events,
-          {
-            title: title,
-            description: description,
-            start: arg.date,
-            allDay: true,
-          },
-        ]);
+      if (response.status === 200) {
+        setEvents(events.filter((event) => event !== eventToDelete));
+      }
+    } catch (error) {
+      console.error("Error deleting event:", error);
+    }
+  }
+};
+
+const fetchEvents = async () => {
+  try {
+    const response = await axios.get("http://localhost:3000/api/scheduler");
+    const schedules = response.data.schedules;
+
+    const formattedEvents = schedules.map((schedule) => ({
+      _id: schedule._id,
+      title: schedule.title,
+      description: schedule.details,
+      start: new Date(schedule.schedule),
+      allDay: true,
+    }));
+
+    setEvents(formattedEvents);
+  } catch (error) {
+    console.error("Error fetching events:", error);
+  }
+};
+
+// Fetch events on component mount
+useEffect(() => {
+  fetchEvents();
+}, []);
+
+
+
+  const handleDateClick = async (arg) => {
+  if (window.confirm("Would you like to add an event to " + arg.dateStr + " ?")) {
+    const title = prompt("Enter Event Title");
+    const description = prompt("Enter Event Description");
+    
+    if (title && description) {
+      try {
+        const response = await axios.post("http://localhost:3000/api/scheduler", {
+          name: data?.user?.name,
+          email: data?.user?.email,
+          schedule: arg.date.toISOString(),
+          details: description,
+          title: title,
+        });
+
+        if (response.status === 201) {
+          fetchEvents(); // Refresh events after adding
+        }
+      } catch (error) {
+        console.error("Error adding event:", error);
       }
     }
-  };
+  }
+};
+
   const renderEventContent = (eventInfo) => {
     return (
       <div
