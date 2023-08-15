@@ -12,7 +12,6 @@ import axios from "axios";
 export default function BazarDate() {
   const { data } = useSession();
   const [events, setEvents] = useState([]);
-
   const handleDeleteEvent = async (eventIdToDelete) => {
     if (window.confirm("Are you sure you want to delete this event?")) {
       try {
@@ -104,14 +103,16 @@ export default function BazarDate() {
           />
         </div>
         <p className="text-gray-800">{eventInfo.event.title}</p>
-        <button
-          className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded-sm"
-          onClick={() =>
-            handleDeleteEvent(eventInfo.event._def.extendedProps._id)
-          }
-        >
-          Delete
-        </button>
+        {data?.user?.email === eventInfo.event._def.extendedProps?.email && (
+          <button
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded-sm"
+            onClick={() =>
+              handleDeleteEvent(eventInfo.event._def.extendedProps._id)
+            }
+          >
+            Delete
+          </button>
+        )}
       </div>
     );
   };
