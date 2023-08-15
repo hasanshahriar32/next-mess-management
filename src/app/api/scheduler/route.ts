@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
   const { name, email, schedule, details, title, image } =
     (await request.json()) as scheduleInterface;
   await connectMongoDB();
-  await Schedule.create({ name, email, schedule, details, title });
+  await Schedule.create({ name, email, schedule, details, title, image });
   return NextResponse.json({ message: "Schedule Added" }, { status: 201 });
 }
 
