@@ -66,6 +66,7 @@ useEffect(() => {
         const response = await axios.post("http://localhost:3000/api/scheduler", {
           name: data?.user?.name,
           email: data?.user?.email,
+          image: data?.user?.image,
           schedule: arg.date.toISOString(),
           details: description,
           title: title,

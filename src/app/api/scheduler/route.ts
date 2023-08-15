@@ -8,10 +8,11 @@ interface scheduleInterface {
   schedule: string;
   details: string;
   title: string;
+  image: string;
 }
 
 export async function POST(request: NextRequest) {
-  const { name, email, schedule, details, title } =
+  const { name, email, schedule, details, title, image } =
     (await request.json()) as scheduleInterface;
   await connectMongoDB();
   await Schedule.create({ name, email, schedule, details, title });

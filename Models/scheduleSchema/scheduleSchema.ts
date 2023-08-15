@@ -5,6 +5,9 @@ const scheduleSchema = new Schema(
     name: {
       type: String,
     },
+    image: {
+      type: String,
+    },
     email: {
       type: String,
       required: true,
