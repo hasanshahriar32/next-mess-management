@@ -2,28 +2,26 @@
 import { P } from "@/Components/ui/Heading/Heading";
 import {
   useGetBazarQuery,
+  useGetHomeAndBillsQuery,
   useRemoveBazarMutation,
 } from "@/app/features/bazar/bazarApi";
 import React from "react";
 import { BiEdit } from "react-icons/bi";
 import { AiOutlineDelete } from "react-icons/ai";
 
-const AllBazar = () => {
-  const { data: allBazar, isLoading, isError } = useGetBazarQuery();
-  const [
-    RemoveBazar,
-    { isError: removeIsError, isLoading: removeIsLoading, isSuccess },
-  ] = useRemoveBazarMutation();
+const AllHomeRentAndBills = () => {
+  const { data: allExpenses, isLoading, isError } = useGetHomeAndBillsQuery();
+  console.log(allExpenses?.expenses);
 
   const handleRemove = (id: any) => {
     const agree = window.confirm("Are you sure ? You Want To Delete");
     console.log("delete", id);
     if (agree && id) {
-      RemoveBazar(id);
     }
   };
 
-  let totalAmount = 0; // Initialize the total amount
+  let totalHomeRent = 0; // Initialize the total amount
+  let totalBills = 0; // Initialize the total amount
   let content;
   if (isLoading && !isError) {
     content = (
@@ -31,11 +29,11 @@ const AllBazar = () => {
         <div className="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-cyan-500"></div>
       </div>
     );
-  } else if (!isLoading && isError && !allBazar) {
+  } else if (!isLoading && isError && !allExpenses?.expenses) {
     content = <P>There is An Error</P>;
-  } else if (!isLoading && !isError && allBazar?.bazars?.length === 0) {
+  } else if (!isLoading && !isError && allExpenses?.expenses?.length === 0) {
     content = <P>Bazar Not Found</P>;
-  } else if (!isLoading && !isError && allBazar?.bazars?.length > 0) {
+  } else if (!isLoading && !isError && allExpenses?.expenses?.length > 0) {
     content = (
       <div className="overflow-x-auto">
         <table className="table">
@@ -44,21 +42,22 @@ const AllBazar = () => {
               <th></th>
               <th>Name</th>
               <th>Date</th>
-              <th>Bazar</th>
-              <th>Amount</th>
+              <th>HomeRent</th>
+              <th>Bills</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            {allBazar?.bazars?.map((data: any, index: any) => {
-              totalAmount += parseFloat(data.amount); // Add the amount to the total
+            {allExpenses?.expenses?.map((data: any, index: any) => {
+              totalHomeRent += parseFloat(data.homeRent); // Add the amount to the total
+              totalBills += parseFloat(data.bills); // Add the amount to the total
               return (
                 <tr key={index}>
                   <th>{index + 1}</th>
                   <td>{data?.name}</td>
                   <td>{data?.updatedAt}</td>
-                  <td>{data?.bazar}</td>
-                  <td>{data?.amount} BDT</td>
+                  <td>{data?.homeRent}</td>
+                  <td>{data?.bills} BDT</td>
                   <td className="flex gap-5">
                     <button>
                       <BiEdit className="text-xl"></BiEdit>
@@ -77,15 +76,16 @@ const AllBazar = () => {
   }
 
   return (
-    <div>
+    <div className="mt-16">
       {content}
-      {!isLoading && !isError && allBazar?.bazars?.length > 0 && (
+      {!isLoading && !isError && allExpenses?.expenses?.length > 0 && (
         <P className="text-end">
-          Total Bazar Amount: {totalAmount.toFixed(2)} BDT
+          Total Home Remt Amount: {totalHomeRent.toFixed(2)} BDT And Bills :{" "}
+          {totalBills} BDT
         </P>
       )}
     </div>
   );
 };
 
-export default AllBazar;
+export default AllHomeRentAndBills;

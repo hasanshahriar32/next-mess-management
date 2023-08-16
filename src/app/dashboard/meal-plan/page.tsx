@@ -9,7 +9,12 @@ interface PersonMeals {
   meals: number[];
 }
 
-const personNames: string[] = ["Pervez", "Minhaz", "Raihan", "Nasir"];
+const personNames: string[] = [
+  "Pervez Hossain",
+  "Mr. Hasan",
+  "Raihan",
+  "Nasir",
+];
 
 const HostelMealTracker: React.FC = () => {
   const dispatch = useAppDispatch();
