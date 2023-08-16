@@ -74,7 +74,7 @@ const Sidebar = () => {
   const pathname = usePathname();
 
   return (
-    <div className="drawer-side z-50 bg-black border-r-2 border-gray-800">
+    <div className="drawer-side z-50  border-r-2 border-gray-800">
       <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
       <ul className=" w-56  h-full  text-base-content bg-black ">
         <div className="py-6 ">
