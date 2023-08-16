@@ -54,6 +54,12 @@ const Sidebar = () => {
     },
     {
       id: 8,
+      path: "/dashboard/add-homerent-bills",
+      title: " HomeRent & Bills",
+      icon: <FaUser />,
+    },
+    {
+      id: 9,
       path: "/",
       title: "Home",
       icon: <FaUser />,

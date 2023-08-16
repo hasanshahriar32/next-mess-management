@@ -79,9 +79,16 @@ export async function PUT(request: NextRequest, { params }: paramsInterface) {
     newAmount: amount,
     newBazar: bazar,
   } = await request.json();
+  console.log(name, email, amount, bazar);
   try {
     await connectMongoDB();
-    await Bazar.findByIdAndUpdate(id, { name, email, amount, bazar });
+    const updatedBazars = await Bazar.findByIdAndUpdate(id, {
+      name,
+      email,
+      amount,
+      bazar,
+    });
+    console.log("updated  bazar", updatedBazars);
     return NextResponse.json({ message: "Bazar Updated" }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ message: "not found", error }, { status: 201 });

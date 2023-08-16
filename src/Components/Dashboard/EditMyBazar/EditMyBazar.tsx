@@ -12,21 +12,22 @@ import { useRouter } from "next/navigation";
 import React, { useState, ChangeEvent, FormEvent } from "react";
 
 interface BazarInterface {
-  bazar: string;
-  amount: string;
-  name: string;
-  email: string;
+  newBazar: string;
+  newAmount: string;
+  newName: string;
+  newEmail: string;
 }
 
 const EditMyBazar = ({ id }: any) => {
   const { data: singleBazar } = useGetSingleBazarQuery(id);
+  console.log(singleBazar?.bazar);
   const { amount: myAmount, bazar: mySingleBazar } = singleBazar?.bazar ?? {};
   const { data } = useSession();
-  const [bazar, setBazar] = useState(mySingleBazar ?? "");
-  const [amount, setAmount] = useState(myAmount?.toString() ?? "");
+  const [bazar, setBazar] = useState(mySingleBazar);
+  const [amount, setAmount] = useState(myAmount);
   const router = useRouter();
 
-  const [UpdateBazar, { isError, isLoading, isSuccess, error }] =
+  const [updateBazar, { isError, isLoading, isSuccess, error }] =
     useUpdateBazarMutation();
 
   const resetForm = () => {
@@ -49,26 +50,26 @@ const EditMyBazar = ({ id }: any) => {
     e.preventDefault();
 
     const bazarInfo: BazarInterface = {
-      bazar,
-      amount,
-      name: data?.user?.name ?? "",
-      email: data?.user?.email ?? "",
+      newBazar: bazar,
+      newAmount: amount,
+      newName: data?.user?.name ?? "",
+      newEmail: data?.user?.email ?? "",
     };
-    console.log(bazarInfo);
 
     try {
-      const response = await UpdateBazar({
+      const res = await updateBazar({
         id,
-        ...bazarInfo,
-        amount: parseFloat(amount), // Convert amount to a number
+        updatedBazarData: {
+          newBazar: bazarInfo.newBazar,
+          newAmount: parseFloat(bazarInfo.newAmount),
+          newName: bazarInfo.newName,
+          newEmail: bazarInfo.newEmail,
+        },
       });
-      if ("data" in response) {
-        // Check if "data" property exists in the response
+      console.log(res);
+      if ("data" in res) {
         router.push("/dashboard/my-bazar");
         resetForm();
-      } else if ("error" in response) {
-        // Check if "error" property exists in the response
-        console.log("Bazar addition failed.");
       }
     } catch (error) {
       console.log("error", error);
@@ -91,6 +92,7 @@ const EditMyBazar = ({ id }: any) => {
               required
               name="bazar"
               value={bazar}
+              defaultValue={mySingleBazar}
               onChange={handleInputChange}
               className="w-full mb-5 textarea textarea-bordered"
               placeholder="Bazar Details"
@@ -100,6 +102,7 @@ const EditMyBazar = ({ id }: any) => {
               required
               name="amount"
               value={amount}
+              defaultValue={myAmount}
               onChange={handleInputChange}
               placeholder="Enter Bazar Amount"
               className="input input-bordered w-full mb-5"

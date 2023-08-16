@@ -6,6 +6,12 @@ type BazarAddRequest = {
   name: string;
   email: string;
 };
+type UpdateBazarAddRequest = {
+  newBazar: string;
+  newAmount: number;
+  newName: string;
+  newEmail: string;
+};
 
 export const addBazarApi = createApi({
   reducerPath: "bazarAddApi",
@@ -30,14 +36,14 @@ export const addBazarApi = createApi({
       }),
       invalidatesTags: ["bazars"],
     }),
-    UpdateBazar: builder.mutation<
-      { success: boolean },
-      { id: string; bazarInfo: BazarAddRequest }
+    updateBazar: builder.mutation<
+      void,
+      { id: string; updatedBazarData: UpdateBazarAddRequest }
     >({
-      query: ({ id, bazarInfo }) => ({
-        url: `/api/add-bazar/${id}`, // Adjust the URL to your API route
+      query: ({ id, updatedBazarData }) => ({
+        url: `/api/add-bazar/${id}`, // Adjust the URL pattern according to your API
         method: "PUT",
-        body: bazarInfo,
+        body: updatedBazarData,
       }),
       invalidatesTags: ["bazars"],
     }),
@@ -45,6 +51,14 @@ export const addBazarApi = createApi({
       query: (id) => ({
         url: `/api/add-bazar?id=${id}`, // Adjust the URL to your API route
         method: "DELETE",
+      }),
+      invalidatesTags: ["bazars"],
+    }),
+    AddHomeAndBills: builder.mutation<{ success: boolean }, BazarAddRequest>({
+      query: (bazarInfo) => ({
+        url: "/api/add-bazar", // Adjust the URL to your API route
+        method: "POST",
+        body: bazarInfo,
       }),
       invalidatesTags: ["bazars"],
     }),
