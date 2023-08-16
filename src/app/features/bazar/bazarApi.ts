@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { type } from "os";
 
 type BazarAddRequest = {
   bazar: string;
@@ -11,6 +12,13 @@ type UpdateBazarAddRequest = {
   newAmount: number;
   newName: string;
   newEmail: string;
+};
+
+type HomeRentAndBillsRequest = {
+  bills: number;
+  homeRent: number;
+  name: string;
+  email: string;
 };
 
 export const addBazarApi = createApi({
@@ -54,13 +62,20 @@ export const addBazarApi = createApi({
       }),
       invalidatesTags: ["bazars"],
     }),
-    AddHomeAndBills: builder.mutation<{ success: boolean }, BazarAddRequest>({
-      query: (bazarInfo) => ({
-        url: "/api/add-bazar", // Adjust the URL to your API route
+    AddHomeAndBills: builder.mutation<
+      { success: boolean },
+      HomeRentAndBillsRequest
+    >({
+      query: (expenses) => ({
+        url: "/api/add-homerent-bills", // Adjust the URL to your API route
         method: "POST",
-        body: bazarInfo,
+        body: expenses,
       }),
       invalidatesTags: ["bazars"],
+    }),
+    GetHomeAndBills: builder.query<any, void>({
+      query: () => "/api/add-homerent-bills",
+      providesTags: ["bazars"],
     }),
   }),
 });
@@ -71,4 +86,6 @@ export const {
   useRemoveBazarMutation,
   useGetSingleBazarQuery,
   useUpdateBazarMutation,
+  useAddHomeAndBillsMutation,
+  useGetHomeAndBillsQuery,
 } = addBazarApi;

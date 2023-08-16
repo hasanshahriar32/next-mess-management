@@ -55,11 +55,17 @@ const Sidebar = () => {
     {
       id: 8,
       path: "/dashboard/add-homerent-bills",
-      title: " HomeRent & Bills",
+      title: "Add HomeRent & Bills",
       icon: <FaUser />,
     },
     {
       id: 9,
+      path: "/dashboard/all-homerent-bills",
+      title: "All HomeRent & Bills",
+      icon: <FaUser />,
+    },
+    {
+      id: 10,
       path: "/",
       title: "Home",
       icon: <FaUser />,
