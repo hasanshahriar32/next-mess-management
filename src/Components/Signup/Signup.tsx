@@ -4,13 +4,23 @@ import React, { useState, FormEvent } from "react";
 import Link from "next/link";
 import { FaGoogle } from "react-icons/fa";
 import { FiGithub } from "react-icons/fi";
+import { useRouter } from "next/navigation";
+import { useAddUsersMutation } from "@/app/features/bazar/bazarApi";
 
+interface signupInterface {
+  name: string;
+  email: string;
+  password: string;
+  role: string;
+}
 const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  const [AddUsers] = useAddUsersMutation();
+  const router = useRouter();
   const reset = () => {
     setName("");
     setEmail("");
@@ -21,6 +31,24 @@ const Signup = () => {
     e.preventDefault();
     if (!name || !email || !password) {
       setError("All Fields Fillup Needed");
+    }
+    const signupInfo: signupInterface = {
+      name,
+      email,
+      password,
+      role: "user",
+    };
+    console.log(signupInfo);
+
+    try {
+      const response = await AddUsers(signupInfo);
+      console.log(response);
+      // if (response.ok) {
+      //   router.push("/login");
+      //   reset();
+      // }
+    } catch (error) {
+      console.log(error);
     }
   };
 

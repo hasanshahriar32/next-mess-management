@@ -1,4 +1,8 @@
 "use client";
+import {
+  useGetSingleBazarQuery,
+  useGetSingleUserQuery,
+} from "@/app/features/bazar/bazarApi";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,7 +12,9 @@ import { FaUser } from "react-icons/fa";
 const Sidebar = () => {
   const { data } = useSession();
   console.log(data?.user);
-
+  const sessionEmail: any = data?.user?.email;
+  const { data: singleUser } = useGetSingleUserQuery(sessionEmail);
+  console.log(singleUser);
   const navLinks = [
     {
       id: 1,

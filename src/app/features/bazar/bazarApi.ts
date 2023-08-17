@@ -14,6 +14,16 @@ type UpdateBazarAddRequest = {
   newEmail: string;
 };
 
+type signupInfoType = {
+  name: string;
+  email: string;
+  role: string;
+  password: string;
+};
+type userInfoType = {
+  email: string;
+};
+
 type HomeRentAndBillsRequest = {
   bills: number;
   homeRent: number;
@@ -23,7 +33,8 @@ type HomeRentAndBillsRequest = {
 
 export const addBazarApi = createApi({
   reducerPath: "bazarAddApi",
-  tagTypes: ["bazars"],
+  tagTypes: ["bazars", "homeRent"],
+
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:3000",
   }),
@@ -71,11 +82,40 @@ export const addBazarApi = createApi({
         method: "POST",
         body: expenses,
       }),
-      invalidatesTags: ["bazars"],
+      invalidatesTags: ["homeRent"],
     }),
     GetHomeAndBills: builder.query<any, void>({
       query: () => "/api/add-homerent-bills",
-      providesTags: ["bazars"],
+      providesTags: ["homeRent"],
+    }),
+    RemoveHomeRentAndBills: builder.mutation<
+      { success: boolean },
+      HomeRentAndBillsRequest
+    >({
+      query: (id) => ({
+        url: `/api/add-homerent-bills?id=${id}`, // Adjust the URL to your API route
+        method: "DELETE",
+      }),
+      invalidatesTags: ["homeRent"],
+    }),
+
+    AddUsers: builder.mutation<{ success: boolean }, signupInfoType>({
+      query: (underInfo) => ({
+        url: "/api/signup", // Adjust the URL to your API route
+        method: "POST",
+        body: underInfo,
+      }),
+    }),
+    getSingleUser: builder.query<any, void>({
+      query: (email) => `/api/user/${email}`,
+      providesTags: ["bazars"], // Adjust the URL to your API route
+    }),
+    updateUser: builder.mutation<void, { id: string; updatedUser: any }>({
+      query: ({ id, updatedUser }) => ({
+        url: `/api/user/update-user/${id}`, // Adjust the URL pattern according to your API
+        method: "PATCH",
+        body: updatedUser,
+      }),
     }),
   }),
 });
@@ -88,4 +128,8 @@ export const {
   useUpdateBazarMutation,
   useAddHomeAndBillsMutation,
   useGetHomeAndBillsQuery,
+  useRemoveHomeRentAndBillsMutation,
+  useAddUsersMutation,
+  useGetSingleUserQuery,
+  useUpdateUserMutation,
 } = addBazarApi;
