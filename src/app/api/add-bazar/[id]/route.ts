@@ -59,7 +59,7 @@ interface paramsInterface {
 
 export async function GET(request: any, { params }: paramsInterface) {
   const { id } = params;
-  console.log(id);
+
   await connectMongoDB();
   const bazar = await Bazar.findOne({ _id: id });
   return NextResponse.json({ bazar });

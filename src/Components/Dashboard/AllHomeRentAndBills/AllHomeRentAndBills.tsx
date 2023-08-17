@@ -4,6 +4,7 @@ import {
   useGetBazarQuery,
   useGetHomeAndBillsQuery,
   useRemoveBazarMutation,
+  useRemoveHomeRentAndBillsMutation,
 } from "@/app/features/bazar/bazarApi";
 import React from "react";
 import { BiEdit } from "react-icons/bi";
@@ -12,11 +13,13 @@ import { AiOutlineDelete } from "react-icons/ai";
 const AllHomeRentAndBills = () => {
   const { data: allExpenses, isLoading, isError } = useGetHomeAndBillsQuery();
   console.log(allExpenses?.expenses);
+  const [RemoveHomeRentAndBills] = useRemoveHomeRentAndBillsMutation();
 
   const handleRemove = (id: any) => {
     const agree = window.confirm("Are you sure ? You Want To Delete");
     console.log("delete", id);
     if (agree && id) {
+      RemoveHomeRentAndBills(id);
     }
   };
 
@@ -45,6 +48,7 @@ const AllHomeRentAndBills = () => {
               <th>HomeRent</th>
               <th>Bills</th>
               <th>Action</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
@@ -65,6 +69,18 @@ const AllHomeRentAndBills = () => {
                     <button onClick={() => handleRemove(data?._id)}>
                       <AiOutlineDelete className="text-xl"></AiOutlineDelete>
                     </button>
+                  </td>
+
+                  <td>
+                    {data?.homeRent === 1500 && data?.bills === 417 ? (
+                      <>
+                        <P>Paid</P>
+                      </>
+                    ) : (
+                      <>
+                        <P>Unpaid</P>
+                      </>
+                    )}
                   </td>
                 </tr>
               );

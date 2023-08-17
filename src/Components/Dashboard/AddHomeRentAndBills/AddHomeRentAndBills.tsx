@@ -27,8 +27,7 @@ const AddHomeRentAndBills = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Home Rent:", homeRent);
-    console.log("Bills:", bills);
+
     const expensesInfo: HomeRentAndBillsInterface = {
       bills: parseFloat(bills),
       homeRent: parseFloat(homeRent),
@@ -41,6 +40,7 @@ const AddHomeRentAndBills = () => {
       console.log(response);
       if ("data" in response) {
         resetForm();
+        router.push("/dashboard/add-homerent-bills");
       }
     } catch (error) {}
   };
@@ -52,12 +52,14 @@ const AddHomeRentAndBills = () => {
           <input
             placeholder="HomeRent"
             value={homeRent}
+            required
             onChange={(e) => setHomeRent(e.target.value)}
             className="input input-bordered w-full mb-5"
           ></input>
           <input
             placeholder="Bills"
             value={bills}
+            required
             onChange={(e) => setBills(e.target.value)}
             className="input input-bordered w-full mb-5"
           ></input>
