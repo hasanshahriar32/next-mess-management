@@ -96,7 +96,7 @@ function Parallax() {
         copy.current,
         {
           y: "-250%",
-          opacity: 1,
+          opacity: 5,
         },
         0
       );
