@@ -54,20 +54,25 @@ import User from "../../../../Models/userSchema/userSchema";
 import { connectMongoDB } from "../../../../db/mongoDB";
 import { NextApiRequest } from "next";
 
-interface UserRequest extends NextApiRequest {
-  body: userInterface;
+// interface UserRequest extends NextApiRequest {
+//   body: userInterface;
+// }
+interface UserRequest {
+  json: () => Promise<userInterface>;
+  nextUrl: URL;
 }
-
 interface userInterface {
   name: string;
   email: string;
+  password: string;
+  role: string;
 }
 
 export async function POST(req: UserRequest) {
   try {
-    const { name, email } = req.body;
+    const { name, email, password, role } = await req.json();
     await connectMongoDB();
-    await User.create({ name, email });
+    await User.create({ name, email, password, role });
     return NextResponse.json({ message: "User Created" }, { status: 201 });
   } catch (error) {
     return NextResponse.json(
@@ -91,16 +96,18 @@ export async function GET() {
 }
 
 export async function DELETE(req: UserRequest) {
-  const id = req.query.id as string;
+  const id = req.nextUrl.searchParams.get("id");
+  console.log("user id", id);
   if (!id) {
     return NextResponse.json(
-      { message: "Id Parameter Missing" },
+      { message: "ID parameter missing" },
       { status: 400 }
     );
   }
   try {
     await connectMongoDB();
     const user = await User.findByIdAndDelete(id);
+    console.log("Delete User", user);
     if (!user) {
       return NextResponse.json({ message: "User Not Found" }, { status: 404 });
     }
