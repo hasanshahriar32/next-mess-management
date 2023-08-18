@@ -33,7 +33,7 @@ type HomeRentAndBillsRequest = {
 
 export const addBazarApi = createApi({
   reducerPath: "bazarAddApi",
-  tagTypes: ["bazars", "homeRent"],
+  tagTypes: ["bazars", "homeRent", "users"],
 
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:3000",
@@ -105,10 +105,11 @@ export const addBazarApi = createApi({
         method: "POST",
         body: underInfo,
       }),
+      invalidatesTags: ["users"],
     }),
     getSingleUser: builder.query<any, void>({
       query: (email) => `/api/user/${email}`,
-      providesTags: ["bazars"], // Adjust the URL to your API route
+      providesTags: ["users"], // Adjust the URL to your API route
     }),
     updateUser: builder.mutation<void, { id: string; updatedUser: any }>({
       query: ({ id, updatedUser }) => ({
@@ -116,6 +117,18 @@ export const addBazarApi = createApi({
         method: "PATCH",
         body: updatedUser,
       }),
+      invalidatesTags: ["users"],
+    }),
+    AllUser: builder.query<any, void>({
+      query: () => `/api/user`,
+      providesTags: ["users"],
+    }),
+    DeleteUser: builder.mutation({
+      query: (id) => ({
+        url: `/api/user?id=${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["users"],
     }),
   }),
 });
@@ -132,4 +145,6 @@ export const {
   useAddUsersMutation,
   useGetSingleUserQuery,
   useUpdateUserMutation,
+  useAllUserQuery,
+  useDeleteUserMutation,
 } = addBazarApi;

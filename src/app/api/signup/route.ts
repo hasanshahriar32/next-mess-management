@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import { connectMongoDB } from "../../../../db/mongoDB";
 import User from "../../../../Models/userSchema/userSchema";
 
-export async function POST(req: NextResponse) {
+export async function POST(req: any) {
   try {
     const { name, email, password, role } = await req.json();
     console.log(name, email, password, role);

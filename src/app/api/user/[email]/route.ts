@@ -87,7 +87,7 @@ interface paramsInterface {
 //   newPassword: string;
 // }
 
-export async function GET(req: NextApiRequest, { params }: paramsInterface) {
+export async function GET(req: any, { params }: paramsInterface) {
   const { email } = params;
   console.log(email);
   if (!email) {

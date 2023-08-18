@@ -6,7 +6,7 @@ import { connectMongoDB } from "../../../../../db/mongoDB";
 import User from "../../../../../Models/userSchema/userSchema";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-const authOptions = {
+const authOptions: any = {
   providers: [
     CredentialsProvider({
       name: "credentials",
@@ -49,5 +49,5 @@ const authOptions = {
   },
 };
 
-const handle: NextApiHandler = NextAuth(authOptions);
+const handle = NextAuth(authOptions);
 export { handle as GET, handle as POST };

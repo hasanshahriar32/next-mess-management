@@ -43,10 +43,10 @@ const Signup = () => {
     try {
       const response = await AddUsers(signupInfo);
       console.log(response);
-      // if (response.ok) {
-      //   router.push("/login");
-      //   reset();
-      // }
+      if ("data" in response) {
+        router.push("/login");
+        reset();
+      }
     } catch (error) {
       console.log(error);
     }
