@@ -1,7 +1,6 @@
 "use client";
 import { setGrandTotal, setPersonTotals } from "@/app/features/meal/mealSlice";
 import { useAppDispatch } from "@/app/hooks";
-import { useSession } from "next-auth/react";
 import React, { useState, useEffect } from "react";
 
 interface PersonMeals {
@@ -18,9 +17,8 @@ const personNames: string[] = [
 
 const HostelMealTracker: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { data: session } = useSession();
-  console.log(session);
-  const initialData: PersonMeals[] = personNames.map((name) => ({
+
+  const initialData: PersonMeals[] = personNames?.map((name) => ({
     name: name,
     meals: Array(31).fill(0),
   }));
@@ -45,9 +43,7 @@ const HostelMealTracker: React.FC = () => {
   ) => {
     const updatedData = [...mealData];
     updatedData[personIndex].meals[dayIndex] = newValue;
-    if (session?.user?.email === "p.hossain9254@gmail.com") {
-      setMealData(updatedData);
-    }
+    setMealData(updatedData);
   };
 
   const calculatePersonTotal = (personIndex: number): number => {

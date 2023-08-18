@@ -1,11 +1,13 @@
 "use client";
 import HostelMealTracker from "@/app/dashboard/meal-plan/page";
-import React from "react";
+import React, { useEffect } from "react";
 import Container from "../ui/Container/container";
 import { useGetBazarQuery } from "@/app/features/bazar/bazarApi";
 import { useAppSelector } from "@/app/hooks";
 import { P, Title } from "../ui/Heading/Heading";
 import { useSession } from "next-auth/react";
+import { useDispatch } from "react-redux";
+import { setTotalBazarAmount } from "@/app/features/meal/mealSlice";
 
 const About = () => {
   const data1 = useAppSelector((state) => state.meal.personTotals);
@@ -15,6 +17,7 @@ const About = () => {
 
   const { data: session } = useSession();
   console.log(session);
+  const dispatch = useDispatch();
 
   const { data: allBazar, isLoading, isError } = useGetBazarQuery();
   console.log(allBazar?.bazars);
@@ -43,9 +46,12 @@ const About = () => {
         personTotalAmounts[x.name] += price;
       }
     }
+    localStorage.setItem("totalAmount", JSON.stringify(totalAmount));
+    dispatch(setTotalBazarAmount(totalAmount));
     console.log(totalAmount);
   }
   console.log(totalAmount);
+
   const average: any = (totalAmount / data2).toFixed(2);
   console.log(average);
   return (
@@ -58,8 +64,9 @@ const About = () => {
           <P>Mill Rate :{average} BDT</P>
         </div>
         <div className="mb-5">
-          {data1?.map(({ name, total }) => {
+          {data1?.map(({ name, total }: any) => {
             const personAmount = personTotalAmounts[name] || 0;
+            console.log(personAmount);
             const personTotalMillRate = total * average;
             return (
               <P key={name}>
