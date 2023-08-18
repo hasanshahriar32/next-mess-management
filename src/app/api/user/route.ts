@@ -68,7 +68,7 @@ interface userInterface {
   role: string;
 }
 
-export async function POST(req: UserRequest) {
+export async function POST(req: any) {
   try {
     const { name, email, password, role } = await req.json();
     await connectMongoDB();
@@ -95,7 +95,7 @@ export async function GET() {
   }
 }
 
-export async function DELETE(req: UserRequest) {
+export async function DELETE(req: any) {
   const id = req.nextUrl.searchParams.get("id");
   console.log("user id", id);
   if (!id) {

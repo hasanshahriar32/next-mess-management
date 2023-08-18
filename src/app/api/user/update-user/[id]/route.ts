@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { connectMongoDB } from "../../../../../../db/mongoDB";
 import User from "../../../../../../Models/userSchema/userSchema";
-import { NextApiRequest } from "next";
+
 interface paramsInterface {
   params: {
     // email: string;
