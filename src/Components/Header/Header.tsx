@@ -78,6 +78,9 @@ const Header: React.FC<HeaderProps> = () => {
                     <Link href={"/dashboard"}>Dashboard</Link>
                   </li>
                   <li>
+                    <Link href={"/admin-panel"}>Admin Panel</Link>
+                  </li>
+                  <li>
                     <a onClick={handleSignOut}>Logout</a>
                   </li>
                 </ul>
