@@ -98,20 +98,25 @@ function SelectedDatesDisplay({ selectedDates }) {
 }
 
 export default function DateRangePickerWithDisplay() {
-  const [isDesktop, setIsDesktop] = React.useState(window?.innerWidth >= 768);
+  const [isDesktop, setIsDesktop] = React.useState(
+  typeof window !== 'undefined' ? window.innerWidth >= 768 : false
+);
+
   const [selectedDates, setSelectedDates] = React.useState([null, null]);
 
   React.useEffect(() => {
-    const handleResize = () => {
-      setIsDesktop(window?.innerWidth >= 768);
-    };
+  const handleResize = () => {
+    setIsDesktop(typeof window !== 'undefined' ? window.innerWidth >= 768 : false);
+  };
 
-    window?.addEventListener("resize", handleResize);
-
+  if (typeof window !== 'undefined') {
+    window.addEventListener("resize", handleResize);
     return () => {
-      window?.removeEventListener("resize", handleResize);
+      window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }
+}, []);
+
 
   const handleDateChange = (newDates) => {
     setSelectedDates(newDates);
