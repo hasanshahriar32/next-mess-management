@@ -88,7 +88,7 @@ const Sidebar = () => {
   return (
     <div className="drawer-side z-50  border-r-2 border-gray-800">
       <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
-      <ul className=" w-56  max-h-full overflow-hidden text-base-content bg-black ">
+      <ul className=" w-56  overflow-y-auto overflow-hidden text-base-content bg-black ">
         <div className="py-6 ">
           <div className="mx-3 py-2 bg-blue-600 cursor-pointer">
             <p className="text-center text-white text-xl uppercase ">logo</p>
@@ -109,7 +109,7 @@ const Sidebar = () => {
           </li>
         ))}
 
-        <div className="hidden absolute bottom-0 lg:flex py-4 px-2 justify-between w-full  border-t border-gray-800 ">
+        <div className="hidden  bottom-0 lg:flex py-4 px-2 justify-between w-full  border-t border-gray-800 ">
           <a href="#" className="flex items-center gap-2 ">
             <Image
               className="object-cover rounded-full h-7 w-7"
