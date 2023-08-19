@@ -6,12 +6,14 @@ type BazarAddRequest = {
   amount: number;
   name: string;
   email: string;
+  month: string;
 };
 type UpdateBazarAddRequest = {
   newBazar: string;
   newAmount: number;
   newName: string;
   newEmail: string;
+  newMonth: string;
 };
 
 type signupInfoType = {
@@ -29,6 +31,7 @@ type HomeRentAndBillsRequest = {
   homeRent: number;
   name: string;
   email: string;
+  month: string;
 };
 
 export const addBazarApi = createApi({

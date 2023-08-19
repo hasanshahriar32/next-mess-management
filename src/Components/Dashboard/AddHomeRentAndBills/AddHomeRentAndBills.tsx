@@ -11,11 +11,13 @@ interface HomeRentAndBillsInterface {
   homeRent: number;
   name: string;
   email: string;
+  month: string;
 }
 import React, { FormEvent, useState } from "react";
 const AddHomeRentAndBills = () => {
   const [homeRent, setHomeRent] = useState("");
   const [bills, setBills] = useState("");
+  const [month, setMonth] = useState("");
   const { data } = useSession();
   const router = useRouter();
 
@@ -23,7 +25,23 @@ const AddHomeRentAndBills = () => {
   const resetForm = () => {
     setHomeRent("");
     setBills("");
+    setMonth("");
   };
+
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -31,6 +49,7 @@ const AddHomeRentAndBills = () => {
     const expensesInfo: HomeRentAndBillsInterface = {
       bills: parseFloat(bills),
       homeRent: parseFloat(homeRent),
+      month,
       name: data?.user?.name ?? "",
       email: data?.user?.email ?? "",
     };
@@ -49,6 +68,20 @@ const AddHomeRentAndBills = () => {
       <Container>
         <Title className="mb-5">Home Rent And Bills</Title>
         <form onSubmit={handleSubmit}>
+          <select
+            name="month"
+            value={month}
+            onChange={(e) => setMonth(e.target.value)}
+            className="mb-5 select select-bordered w-full "
+          >
+            {months?.map((month) => {
+              return (
+                <>
+                  <option>{month}</option>
+                </>
+              );
+            })}
+          </select>
           <input
             placeholder="HomeRent"
             value={homeRent}

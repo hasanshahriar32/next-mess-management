@@ -78,8 +78,9 @@ export async function PUT(request: NextRequest, { params }: paramsInterface) {
     newEmail: email,
     newAmount: amount,
     newBazar: bazar,
+    newMonth: month,
   } = await request.json();
-  console.log(name, email, amount, bazar);
+  console.log(name, email, amount, bazar, month);
   try {
     await connectMongoDB();
     const updatedBazars = await Bazar.findByIdAndUpdate(id, {
@@ -87,6 +88,7 @@ export async function PUT(request: NextRequest, { params }: paramsInterface) {
       email,
       amount,
       bazar,
+      month,
     });
     console.log("updated  bazar", updatedBazars);
     return NextResponse.json({ message: "Bazar Updated" }, { status: 201 });
