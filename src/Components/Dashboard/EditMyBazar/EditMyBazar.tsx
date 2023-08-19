@@ -16,15 +16,36 @@ interface BazarInterface {
   newAmount: string;
   newName: string;
   newEmail: string;
+  newMonth: string;
 }
+
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 
 const EditMyBazar = ({ id }: any) => {
   const { data: singleBazar } = useGetSingleBazarQuery(id);
   console.log(singleBazar?.bazar);
-  const { amount: myAmount, bazar: mySingleBazar } = singleBazar?.bazar ?? {};
+  const {
+    amount: myAmount,
+    bazar: mySingleBazar,
+    month: myMonth,
+  } = singleBazar?.bazar ?? {};
   const { data } = useSession();
   const [bazar, setBazar] = useState(mySingleBazar);
   const [amount, setAmount] = useState(myAmount);
+  const [month, setMonth] = useState(myMonth);
   const router = useRouter();
 
   const [updateBazar, { isError, isLoading, isSuccess, error }] =
@@ -33,16 +54,19 @@ const EditMyBazar = ({ id }: any) => {
   const resetForm = () => {
     setBazar("");
     setAmount("");
+    setMonth("");
   };
 
   const handleInputChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     if (name === "bazar") {
       setBazar(value);
     } else if (name === "amount") {
       setAmount(value);
+    } else if (name === "month") {
+      setMonth(value);
     }
   };
 
@@ -52,10 +76,11 @@ const EditMyBazar = ({ id }: any) => {
     const bazarInfo: BazarInterface = {
       newBazar: bazar,
       newAmount: amount,
+      newMonth: month,
       newName: data?.user?.name ?? "",
       newEmail: data?.user?.email ?? "",
     };
-
+    console.log(bazarInfo);
     try {
       const res = await updateBazar({
         id,
@@ -64,6 +89,7 @@ const EditMyBazar = ({ id }: any) => {
           newAmount: parseFloat(bazarInfo.newAmount),
           newName: bazarInfo.newName,
           newEmail: bazarInfo.newEmail,
+          newMonth: bazarInfo.newMonth,
         },
       });
       console.log(res);
@@ -88,6 +114,21 @@ const EditMyBazar = ({ id }: any) => {
       ) : (
         <>
           <form onSubmit={handleSubmit}>
+            <select
+              name="month"
+              value={month}
+              defaultValue={myMonth}
+              onChange={handleInputChange}
+              className="mb-5 select select-bordered w-full "
+            >
+              {months?.map((month) => {
+                return (
+                  <>
+                    <option>{month}</option>
+                  </>
+                );
+              })}
+            </select>
             <textarea
               required
               name="bazar"

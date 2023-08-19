@@ -11,8 +11,11 @@ import { BiEdit } from "react-icons/bi";
 import { AiOutlineDelete } from "react-icons/ai";
 import { usePathname } from "next/navigation";
 import { PrimaryButton } from "@/Components/ui/Buttons/PrimaryButton";
+interface AllHomeRentAndBillsProps {
+  month: string;
+}
 
-const AllHomeRentAndBills = () => {
+const HomeRentAndBills: React.FC<AllHomeRentAndBillsProps> = ({ month }) => {
   const pathname = usePathname();
   console.log(pathname);
   const { data: allExpenses, isLoading, isError } = useGetHomeAndBillsQuery();
@@ -39,7 +42,7 @@ const AllHomeRentAndBills = () => {
   } else if (!isLoading && isError && !allExpenses?.expenses) {
     content = <P>There is An Error</P>;
   } else if (!isLoading && !isError && allExpenses?.expenses?.length === 0) {
-    content = <P>Bazar Not Found</P>;
+    content = <P>Home Rent And Bills Not Found</P>;
   } else if (!isLoading && !isError && allExpenses?.expenses?.length > 0) {
     content = (
       <div className="overflow-x-auto border-2  border-white rounded-lg p-5">
@@ -56,36 +59,47 @@ const AllHomeRentAndBills = () => {
             </tr>
           </thead>
           <tbody>
-            {allExpenses?.expenses.map((data: any, index: any) => {
-              totalHomeRent += parseFloat(data.homeRent); // Add the amount to the total
-              totalBills += parseFloat(data.bills); // Add the amount to the total
-              return (
-                <tr key={index}>
-                  <th>{index + 1}</th>
-                  <td>{data?.name}</td>
+            {allExpenses?.expenses
+              ?.filter((m: any) => m?.month === month)
+              .map((data: any, index: any) => {
+                totalHomeRent += parseFloat(data.homeRent); // Add the amount to the total
+                totalBills += parseFloat(data.bills); // Add the amount to the total
+                return (
+                  <tr key={index}>
+                    <th>{index + 1}</th>
+                    <td>{data?.name}</td>
 
-                  <td>{data?.month}</td>
-                  <td>{data?.homeRent}</td>
-                  <td>{data?.bills} BDT</td>
-                  <td className="flex gap-5">
-                    <button>
-                      <BiEdit className="text-xl"></BiEdit>
-                    </button>
-                    <button onClick={() => handleRemove(data?._id)}>
-                      <AiOutlineDelete className="text-xl"></AiOutlineDelete>
-                    </button>
-                  </td>
+                    <td>{data?.month}</td>
+                    <td>{data?.homeRent}</td>
+                    <td>{data?.bills} BDT</td>
+                    <td className="flex gap-5">
+                      <button>
+                        <BiEdit className="text-xl"></BiEdit>
+                      </button>
+                      <button onClick={() => handleRemove(data?._id)}>
+                        <AiOutlineDelete className="text-xl"></AiOutlineDelete>
+                      </button>
+                    </td>
 
-                  <td>
-                    <button className="font-bold text-[#06B6D4]">Unpaid</button>
-                  </td>
-                </tr>
-              );
-            })}
+                    <td>
+                      <button className="font-bold text-[#06B6D4]">
+                        Unpaid
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
           </tbody>
         </table>
       </div>
     );
+  }
+
+  const filteredExpenses = allExpenses?.expenses?.filter(
+    (m: any) => m?.month === month
+  );
+  if (filteredExpenses?.length === 0) {
+    content = <P>No Data Found For {month}</P>;
   }
 
   return (
@@ -104,4 +118,4 @@ const AllHomeRentAndBills = () => {
   );
 };
 
-export default AllHomeRentAndBills;
+export default HomeRentAndBills;

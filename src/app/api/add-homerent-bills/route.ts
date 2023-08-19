@@ -7,6 +7,7 @@ interface userInterface {
   email: string;
   homeRent: number;
   bills: string;
+  month: string;
 }
 
 interface paramsInterface {
@@ -16,10 +17,10 @@ interface paramsInterface {
 }
 
 export async function POST(request: NextRequest) {
-  const { name, email, homeRent, bills } =
+  const { name, email, homeRent, bills, month } =
     (await request.json()) as userInterface;
   await connectMongoDB();
-  await HomeRentAndBills.create({ name, email, homeRent, bills });
+  await HomeRentAndBills.create({ name, email, homeRent, bills, month });
   return NextResponse.json(
     { message: "HomeRent And Bills Added" },
     { status: 201 }

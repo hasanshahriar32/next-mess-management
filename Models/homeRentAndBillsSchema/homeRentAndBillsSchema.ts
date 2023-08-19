@@ -18,6 +18,10 @@ const bazarSchema = new Schema(
       type: Number,
       required: true,
     },
+    month: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,
