@@ -39,8 +39,7 @@ const DashboardComponent = () => {
   const { data: session } = useSession();
   const sessionEmail: any = session?.user?.email;
   const { data: singleUser } = useGetSingleUserQuery(sessionEmail);
-  const [month, setMonth] = useState("");
-  console.log(month);
+
   const [name, setName] = useState("");
   const handleRemove = () => {};
   let content;
@@ -157,7 +156,7 @@ const DashboardComponent = () => {
     "November",
     "December",
   ];
-
+  const [month, setMonth] = useState(months[new Date().getMonth()]);
   const UserName = ["Pervez Hossain", "Sakib Vai Pro", "Raihan", "Hasan"];
 
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
@@ -294,14 +293,13 @@ const DashboardComponent = () => {
             </div>
             <div>
               <P className="my-5">Home Rent And Bills</P>
-
               <div>
                 <div>
                   <select
                     name="month"
                     value={month}
                     onChange={(e) => setMonth(e.target.value)}
-                    className=" text-black bg-transparent select select-bordered w-full "
+                    className="  bg-transparent border-2 border-white  select select-bordered w-full "
                   >
                     {months?.map((month) => {
                       return (
@@ -316,8 +314,8 @@ const DashboardComponent = () => {
               <HomeRentAndBills month={month}></HomeRentAndBills>
             </div>
           </div>
-          <div className="col-span-1">
-            <div className="h-44 ">
+          <div className="col-span-1 border-2 border-white rounded-lg">
+            <div className="h-96">
               <h2>Chart</h2>
             </div>
           </div>

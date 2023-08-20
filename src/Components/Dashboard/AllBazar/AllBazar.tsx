@@ -1,10 +1,10 @@
 "use client";
-import { P } from "@/Components/ui/Heading/Heading";
+import { P, Title } from "@/Components/ui/Heading/Heading";
 import {
   useGetBazarQuery,
   useRemoveBazarMutation,
 } from "@/app/features/bazar/bazarApi";
-import React from "react";
+import React, { useState } from "react";
 import { BiEdit } from "react-icons/bi";
 import { AiOutlineDelete } from "react-icons/ai";
 
@@ -22,6 +22,21 @@ const AllBazar = () => {
       RemoveBazar(id);
     }
   };
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const [month, setMonth] = useState(months[new Date().getMonth()]);
 
   let totalAmount = 0; // Initialize the total amount
   let content;
@@ -44,32 +59,36 @@ const AllBazar = () => {
               <th></th>
               <th>Name</th>
               <th>Date</th>
+              <th>Month</th>
               <th>Bazar</th>
               <th>Amount</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            {allBazar?.bazars?.map((data: any, index: any) => {
-              totalAmount += parseFloat(data.amount); // Add the amount to the total
-              return (
-                <tr key={index}>
-                  <th>{index + 1}</th>
-                  <td>{data?.name}</td>
-                  <td>{data?.updatedAt}</td>
-                  <td>{data?.bazar}</td>
-                  <td>{data?.amount} BDT</td>
-                  <td className="flex gap-5">
-                    <button>
-                      <BiEdit className="text-xl"></BiEdit>
-                    </button>
-                    <button onClick={() => handleRemove(data?._id)}>
-                      <AiOutlineDelete className="text-xl"></AiOutlineDelete>
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
+            {allBazar?.bazars
+              ?.filter((m: any) => m.month === month)
+              .map((data: any, index: any) => {
+                totalAmount += parseFloat(data.amount); // Add the amount to the total
+                return (
+                  <tr key={index}>
+                    <th>{index + 1}</th>
+                    <td>{data?.name}</td>
+                    <td>{data?.updatedAt}</td>
+                    <td>{data?.month}</td>
+                    <td>{data?.bazar}</td>
+                    <td>{data?.amount} BDT</td>
+                    <td className="flex gap-5">
+                      <button>
+                        <BiEdit className="text-xl"></BiEdit>
+                      </button>
+                      <button onClick={() => handleRemove(data?._id)}>
+                        <AiOutlineDelete className="text-xl"></AiOutlineDelete>
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
           </tbody>
         </table>
       </div>
@@ -78,9 +97,30 @@ const AllBazar = () => {
 
   return (
     <div>
+      <div className="flex justify-between mb-5">
+        <div>
+          <Title className="mb-5">All Bazar</Title>
+        </div>
+        <div>
+          <select
+            name="month"
+            value={month}
+            onChange={(e) => setMonth(e.target.value)}
+            className="  bg-transparent border-2 border-white  select select-bordered w-full "
+          >
+            {months?.map((month) => {
+              return (
+                <>
+                  <option>{month}</option>
+                </>
+              );
+            })}
+          </select>
+        </div>
+      </div>
       {content}
       {!isLoading && !isError && allBazar?.bazars?.length > 0 && (
-        <P className="text-end">
+        <P className="text-end mt-5 ">
           Total Bazar Amount: {totalAmount.toFixed(2)} BDT
         </P>
       )}
