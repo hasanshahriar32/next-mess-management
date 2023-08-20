@@ -58,6 +58,8 @@ export async function POST(request: NextRequest) {
       const newValidity = await Admin.findByIdAndUpdate(adminExists._id, {
         validity,
         adminMaker,
+        administrationTitle
+        
       });
       return NextResponse.json(
         { message: "Validity Updated", newValidity },
