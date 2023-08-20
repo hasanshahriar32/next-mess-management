@@ -5,6 +5,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { StaticDateRangePicker } from "@mui/x-date-pickers-pro/StaticDateRangePicker";
 import { FormControlLabel, Switch } from "@mui/material";
+import { useSession } from "next-auth/react";
+import axios from "axios";
 
 const shortcutsItems = [
   {
@@ -48,6 +50,39 @@ const shortcutsItems = [
 ];
 
 function SelectedDatesDisplay({ selectedDates }) {
+  const { data } = useSession();
+  const sessionEmail = data?.user?.email;
+  const handleSubmit = async(e) =>{
+    e.preventDefault();
+    const form = e.target;
+    const title = form.title.value;
+    const email = form.email.value;
+    // console.log(title, email);
+    const dataToPost = {
+              email,  
+              validity:{
+                startDate: `${selectedDates[0].format("YYYY-MM-DD")}`,
+                endDate: `${selectedDates[1].format("YYYY-MM-DD")}`
+              }, 
+              adminMaker: sessionEmail,
+              administrationTitle: title
+            }
+            console.log(dataToPost)
+    try {
+          const response = await axios.post(
+            "http://localhost:3000/api/admin/manage-admin",
+            dataToPost
+          );
+          console.log(response)
+          if (response.status === 201) {
+            // fetchEvents(); // Refresh events after adding
+            alert(response?.data?.message)
+          }
+        } catch (error) {
+          console.error("Error adding event:", error);
+          alert(error?.response?.data?.message)
+        }
+  }
   return (
     <div className="hero min-h-screen ">
       <div className="hero-content flex-col lg:flex-row-reverse">
@@ -62,7 +97,7 @@ function SelectedDatesDisplay({ selectedDates }) {
           )}
         </div>
         <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-          <div className="card-body">
+          <form onSubmit={handleSubmit} className="card-body">
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email</span>
@@ -70,6 +105,7 @@ function SelectedDatesDisplay({ selectedDates }) {
               <input
                 type="email"
                 placeholder="email"
+                name="email"
                 className="input input-bordered"
               />
             </div>
@@ -80,6 +116,7 @@ function SelectedDatesDisplay({ selectedDates }) {
               <input
                 type="text"
                 placeholder="title"
+                name="title"
                 className="input input-bordered"
               />
               {/*
@@ -90,9 +127,9 @@ function SelectedDatesDisplay({ selectedDates }) {
               </label>*/}
             </div>
             <div className="form-control mt-6">
-              <button className="btn btn-warning">Set Admin</button>
+              <button type="submit" className="btn btn-warning">Set Admin</button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
