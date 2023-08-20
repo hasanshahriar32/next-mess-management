@@ -76,26 +76,30 @@ import { NextApiRequest } from "next";
 
 interface paramsInterface {
   params: {
-    id: string;
+    email: string;
   };
 }
 
-interface userInterface {
-  newName: string;
-  newEmail: string;
-}
+// interface userInterface {
+//   newName: string;
+//   newEmail: string;
+//   newRole: string;
+//   newPassword: string;
+// }
 
-export async function GET(req: NextApiRequest, { params }: paramsInterface) {
-  const { id } = params;
-  if (!id) {
+export async function GET(req: any, { params }: paramsInterface) {
+  const { email } = params;
+  console.log(email);
+  if (!email) {
     return NextResponse.json(
-      { message: "id Parameter Not Found" },
+      { message: "email Parameter Not Found" },
       { status: 400 }
     );
   }
   try {
     await connectMongoDB();
-    const user = await User.findOne({ _id: id });
+    const user = await User.findOne({ email: email });
+    console.log(user);
     if (!user) {
       return NextResponse.json({ message: "User Not Found" }, { status: 404 });
     }
@@ -108,28 +112,38 @@ export async function GET(req: NextApiRequest, { params }: paramsInterface) {
   }
 }
 
-export async function PUT(req: NextApiRequest, { params }: paramsInterface) {
-  const { id } = params;
-  const { newName: name, newEmail: email }: userInterface = req.body;
-  if (!id) {
-    return NextResponse.json(
-      { message: "id Parameter Not Found" },
-      { status: 400 }
-    );
-  }
+// export async function PUT(req: NextApiRequest, { params }: paramsInterface) {
+//   const { id } = params;
+//   const {
+//     newName: name,
+//     newEmail: email,
+//     newRole: role,
+//     newPassword: password,
+//   }: userInterface = req.body;
+//   if (!id) {
+//     return NextResponse.json(
+//       { message: "id Parameter Not Found" },
+//       { status: 400 }
+//     );
+//   }
 
-  try {
-    await connectMongoDB();
-    const userUpdate = await User.findByIdAndUpdate(id, { name, email });
+//   try {
+//     await connectMongoDB();
+//     const userUpdate = await User.findByIdAndUpdate(id, {
+//       name,
+//       email,
+//       password,
+//       role,
+//     });
 
-    if (!userUpdate) {
-      return NextResponse.json({ message: "User Not Found" }, { status: 404 });
-    }
-    return NextResponse.json({ message: "User Updated" });
-  } catch (error) {
-    return NextResponse.json(
-      { message: "Error updating user", error },
-      { status: 500 }
-    );
-  }
-}
+//     if (!userUpdate) {
+//       return NextResponse.json({ message: "User Not Found" }, { status: 404 });
+//     }
+//     return NextResponse.json({ message: "User Updated" });
+//   } catch (error) {
+//     return NextResponse.json(
+//       { message: "Error updating user", error },
+//       { status: 500 }
+//     );
+//   }
+// }
