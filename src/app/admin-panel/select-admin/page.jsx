@@ -68,26 +68,27 @@ function SelectedDatesDisplay({ selectedDates }) {
                 <span className="label-text">Email</span>
               </label>
               <input
-                type="text"
+                type="email"
                 placeholder="email"
                 className="input input-bordered"
               />
             </div>
-            {/* <div className="form-control">
+            <div className="form-control">
               <label className="label">
-                <span className="label-text">Password</span>
+                <span className="label-text">Title of Administration</span>
               </label>
               <input
                 type="text"
-                placeholder="password"
+                placeholder="title"
                 className="input input-bordered"
               />
+              {/*
               <label className="label">
                 <a href="#" className="label-text-alt link link-hover">
                   Forgot password?
                 </a>
-              </label>
-            </div> */}
+              </label>*/}
+            </div>
             <div className="form-control mt-6">
               <button className="btn btn-warning">Set Admin</button>
             </div>
