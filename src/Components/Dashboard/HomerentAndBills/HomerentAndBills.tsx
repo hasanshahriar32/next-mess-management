@@ -1,16 +1,14 @@
 "use client";
 import { P } from "@/Components/ui/Heading/Heading";
 import {
-  useGetBazarQuery,
   useGetHomeAndBillsQuery,
-  useRemoveBazarMutation,
   useRemoveHomeRentAndBillsMutation,
 } from "@/app/features/bazar/bazarApi";
 import React from "react";
 import { BiEdit } from "react-icons/bi";
 import { AiOutlineDelete } from "react-icons/ai";
 import { usePathname } from "next/navigation";
-import { PrimaryButton } from "@/Components/ui/Buttons/PrimaryButton";
+
 interface AllHomeRentAndBillsProps {
   month: string;
 }
