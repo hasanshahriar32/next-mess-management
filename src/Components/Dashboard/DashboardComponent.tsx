@@ -27,6 +27,7 @@ import {
 } from "recharts";
 import AllHomeRentAndBills from "./AllHomeRentAndBills/AllHomeRentAndBills";
 import HomeRentAndBills from "./HomerentAndBills/HomerentAndBills";
+import AllBazar from "./AllBazar/AllBazar";
 
 const DashboardComponent = () => {
   const totalBazar = useAppSelector((state) => state.meal.totalBazarAmount);
@@ -283,6 +284,9 @@ const DashboardComponent = () => {
             <P className="text-end text-white">This Month</P>
           </div>
         </div>
+      </div>
+      <div className="my-16 border-2 border-white rounded-lg p-5">
+        <AllBazar></AllBazar>
       </div>
       <div>
         <P className="mb-5">All Users</P>

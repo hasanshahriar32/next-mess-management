@@ -7,7 +7,7 @@ import {
   useGetSingleUserQuery,
 } from "@/app/features/bazar/bazarApi";
 import { useSession } from "next-auth/react";
-import React from "react";
+import React, { useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { BiEdit } from "react-icons/bi";
 
@@ -30,6 +30,21 @@ const AllUser = () => {
       }
     }
   };
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const [month, setMonth] = useState(months[new Date().getMonth()]);
 
   let content;
   if (isLoading && !isError) {
