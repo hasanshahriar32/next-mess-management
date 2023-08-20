@@ -1,5 +1,5 @@
 "use client";
-import { P, Title } from "@/Components/ui/Heading/Heading";
+import { P, Subtitle, Title } from "@/Components/ui/Heading/Heading";
 import {
   useAllUserQuery,
   useGetBazarQuery,
@@ -78,7 +78,7 @@ const AllBazar = () => {
       <div>
         <div className="flex justify-between items-center mb-5">
           <div>
-            <Title className="mb-5">All Bazar</Title>
+            <Subtitle>All Bazar</Subtitle>
           </div>
           <div className="flex items-center gap-10">
             <div>
@@ -115,7 +115,7 @@ const AllBazar = () => {
             <div className="overflow-x-auto">
               <table className="table">
                 <thead>
-                  <tr className="bg-base-200">
+                  <tr className="bg-white text-black">
                     <th></th>
                     <th>Name</th>
                     <th>Date</th>

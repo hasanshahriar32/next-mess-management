@@ -59,7 +59,7 @@ const DashboardComponent = () => {
       <div className="overflow-x-auto">
         <table className="table">
           <thead>
-            <tr className="text-white">
+            <tr className="text-black bg-white">
               <th></th>
               <th>Name</th>
               <th>Email</th>
@@ -165,7 +165,7 @@ const DashboardComponent = () => {
     <div>
       <Title>OverView</Title>
       <div className="grid grid-cols-4 gap-10 my-10">
-        <div className="grid grid-cols-2  text-white p-3 font-semibold rounded-lg cursor-pointer border-2 border-white">
+        <div className="grid grid-cols-2  text-white p-5 font-semibold rounded-lg cursor-pointer border-2 border-white">
           <div className="flex flex-col justify-between">
             {" "}
             <P className="text-white">Total User</P>
@@ -195,7 +195,7 @@ const DashboardComponent = () => {
             <P className="text-end text-white">This Month</P>
           </div>
         </div>
-        <div className="grid grid-cols-2  text-white p-3 font-semibold rounded-lg cursor-pointer border-2 border-white">
+        <div className="grid grid-cols-2  text-white p-5 font-semibold rounded-lg cursor-pointer border-2 border-white">
           <div className="flex flex-col justify-between">
             <P className="text-white">Total Bazar</P>
             <P className="text-white">{totalBazar} BDT</P>
@@ -224,7 +224,7 @@ const DashboardComponent = () => {
             <P className="text-end text-white">This Month</P>
           </div>
         </div>
-        <div className="grid grid-cols-2  text-white p-3 font-semibold rounded-lg cursor-pointer border-2 border-white">
+        <div className="grid grid-cols-2  text-white p-5 font-semibold rounded-lg cursor-pointer border-2 border-white">
           <div className="flex flex-col justify-between">
             {" "}
             <P className="text-white">Total Mill</P>
@@ -254,7 +254,7 @@ const DashboardComponent = () => {
             <P className="text-end text-white">This Month</P>
           </div>
         </div>
-        <div className="grid grid-cols-2  text-white p-3 font-semibold rounded-lg cursor-pointer border-2 border-white">
+        <div className="grid grid-cols-2  text-white p-5 font-semibold rounded-lg cursor-pointer border-2 border-white">
           <div className="flex flex-col justify-between">
             {" "}
             <P className="text-white">Mill Rate</P>
@@ -288,41 +288,13 @@ const DashboardComponent = () => {
       <div className="my-16 border-2 border-white rounded-lg p-5">
         <AllBazar></AllBazar>
       </div>
+      <div className="my-16 border-2 border-white rounded-lg p-5">
+        <HomeRentAndBills></HomeRentAndBills>
+      </div>
       <div>
-        <P className="mb-5">All Users</P>
-        <div className="grid grid-cols-3 items-center gap-10">
-          <div className="col-span-2">
-            <div className="  border-2 border-white rounded-lg px-6 py-3">
-              {content}
-            </div>
-            <div>
-              <P className="my-5">Home Rent And Bills</P>
-              <div>
-                <div>
-                  <select
-                    name="month"
-                    value={month}
-                    onChange={(e) => setMonth(e.target.value)}
-                    className="  bg-transparent border-2 border-white  select select-bordered w-full "
-                  >
-                    {months?.map((month) => {
-                      return (
-                        <>
-                          <option>{month}</option>
-                        </>
-                      );
-                    })}
-                  </select>
-                </div>
-              </div>
-              <HomeRentAndBills month={month}></HomeRentAndBills>
-            </div>
-          </div>
-          <div className="col-span-1 border-2 border-white rounded-lg">
-            <div className="h-96">
-              <h2>Chart</h2>
-            </div>
-          </div>
+        <div className=" border-2 border-white rounded-lg px-6 py-3">
+          <Subtitle className="my-5">All Users</Subtitle>
+          {content}
         </div>
       </div>
     </div>
