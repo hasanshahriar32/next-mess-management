@@ -1,12 +1,11 @@
 "use client";
-import React, { useState, FormEvent, useEffect } from "react";
+import { useAppSelector } from "@/app/hooks";
+import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { FormEvent, useState } from "react";
 import { FaGoogle } from "react-icons/fa";
 import { FiGithub } from "react-icons/fi";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
-import { useAppSelector } from "@/app/hooks";
 
 import { useGetBazarQuery } from "@/app/features/bazar/bazarApi";
 
