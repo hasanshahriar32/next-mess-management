@@ -30,6 +30,18 @@ const AdminSidebar = () => {
     },
     {
       id: 3,
+      path: "/admin-panel/manage-admins",
+      title: "Manage Admins",
+      icon: <FaUser />,
+    },
+    {
+      id: 4,
+      path: "/admin-panel/manage-users",
+      title: "Manage Users",
+      icon: <FaUser />,
+    },
+    {
+      id: 30,
       path: "/",
       title: "Home",
       icon: <FaUser />,

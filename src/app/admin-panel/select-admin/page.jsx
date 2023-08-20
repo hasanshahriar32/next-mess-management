@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { StaticDateRangePicker } from "@mui/x-date-pickers-pro/StaticDateRangePicker";
+import { FormControlLabel, Switch } from "@mui/material";
 
 const shortcutsItems = [
   {
@@ -99,28 +100,34 @@ function SelectedDatesDisplay({ selectedDates }) {
 
 export default function DateRangePickerWithDisplay() {
   const [isDesktop, setIsDesktop] = React.useState(
-  typeof window !== 'undefined' ? window.innerWidth >= 768 : false
-);
+    typeof window !== "undefined" ? window.innerWidth >= 768 : false
+  );
 
   const [selectedDates, setSelectedDates] = React.useState([null, null]);
 
   React.useEffect(() => {
-  const handleResize = () => {
-    setIsDesktop(typeof window !== 'undefined' ? window.innerWidth >= 768 : false);
-  };
-
-  if (typeof window !== 'undefined') {
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
+    const handleResize = () => {
+      setIsDesktop(
+        typeof window !== "undefined" ? window.innerWidth >= 768 : false
+      );
     };
-  }
-}, []);
 
+    if (typeof window !== "undefined") {
+      window.addEventListener("resize", handleResize);
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      };
+    }
+  }, []);
 
   const handleDateChange = (newDates) => {
     setSelectedDates(newDates);
     console.log("Selected dates:", newDates);
+  };
+
+  const [future, setFuture] = React.useState(false);
+  const handleChangeDense = (event) => {
+    setFuture(event.target.checked);
   };
 
   return (
@@ -135,9 +142,13 @@ export default function DateRangePickerWithDisplay() {
               actionBar: { actions: [] },
             }}
             calendars={isDesktop ? 2 : 1}
-            // disablePast
+            disablePast={future}
             onChange={handleDateChange}
             value={selectedDates}
+          />
+          <FormControlLabel
+            control={<Switch checked={future} onChange={handleChangeDense} />}
+            label="Disable Past"
           />
         </LocalizationProvider>
         <SelectedDatesDisplay selectedDates={selectedDates} />
