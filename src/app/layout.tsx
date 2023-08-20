@@ -4,7 +4,7 @@ import AuthProvider from "./AuthProvider";
 import Providers from "./Providers";
 import "./globals.css";
 
-const inter = Space_Grotesk({ subsets: ["latin"] });
+const space_Grotesk = Space_Grotesk({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,7 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={space_Grotesk.className}>
         <AuthProvider>
           <Providers>{children}</Providers>
         </AuthProvider>
