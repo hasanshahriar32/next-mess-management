@@ -46,34 +46,35 @@ const Sidebar = () => {
       title: "Add Bazar",
       icon: <FaUser />,
     },
+
     {
       id: 6,
-      path: "/dashboard/get-all-bazar",
-      title: "All Bazar",
-      icon: <FaUser />,
-    },
-    {
-      id: 7,
       path: "/dashboard/my-bazar",
       title: "My Bazar",
       icon: <FaUser />,
     },
     {
-      id: 8,
+      id: 7,
       path: "/dashboard/add-homerent-bills",
       title: "Add HomeRent & Bills",
       icon: <FaUser />,
     },
     {
-      id: 9,
+      id: 8,
       path: "/dashboard/all-homerent-bills",
       title: "All HomeRent & Bills",
       icon: <FaUser />,
     },
     {
-      id: 10,
+      id: 9,
       path: "/dashboard/all-user",
       title: "All User",
+      icon: <FaUser />,
+    },
+    {
+      id: 10,
+      path: "/dashboard/all-users-bazar",
+      title: "All Users Bazar",
       icon: <FaUser />,
     },
     {

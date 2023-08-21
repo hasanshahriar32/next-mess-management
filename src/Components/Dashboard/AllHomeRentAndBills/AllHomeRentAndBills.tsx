@@ -1,12 +1,13 @@
 "use client";
-import { P } from "@/Components/ui/Heading/Heading";
+import { P, Title } from "@/Components/ui/Heading/Heading";
 import {
+  useAllUserQuery,
   useGetBazarQuery,
   useGetHomeAndBillsQuery,
   useRemoveBazarMutation,
   useRemoveHomeRentAndBillsMutation,
 } from "@/app/features/bazar/bazarApi";
-import React from "react";
+import React, { useState } from "react";
 import { BiEdit } from "react-icons/bi";
 import { AiOutlineDelete } from "react-icons/ai";
 import { usePathname } from "next/navigation";
@@ -17,8 +18,10 @@ const AllHomeRentAndBills = () => {
   console.log(pathname);
   const { data: allExpenses, isLoading, isError } = useGetHomeAndBillsQuery();
   console.log(allExpenses?.expenses);
-  const [RemoveHomeRentAndBills] = useRemoveHomeRentAndBillsMutation();
 
+  const { data: allUser } = useAllUserQuery();
+  const [RemoveHomeRentAndBills] = useRemoveHomeRentAndBillsMutation();
+  const [name, setName] = useState("");
   const handleRemove = (id: any) => {
     const agree = window.confirm("Are you sure ? You Want To Delete");
     console.log("delete", id);
@@ -26,9 +29,40 @@ const AllHomeRentAndBills = () => {
       RemoveHomeRentAndBills(id);
     }
   };
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const [month, setMonth] = useState(months[new Date().getMonth()]);
 
-  let totalHomeRent = 0; // Initialize the total amount
-  let totalBills = 0; // Initialize the total amount
+  // Filter expenses based on selected month
+  const filteredExpenses =
+    month === "All"
+      ? allExpenses?.expenses
+      : allExpenses?.expenses?.filter((data: any) => data.month === month);
+
+  // Calculate total amounts for home rent and bills
+  let totalHomeRent =
+    filteredExpenses?.reduce(
+      (total: any, data: any) => total + parseFloat(data.homeRent),
+      0
+    ) || 0;
+  let totalBills =
+    filteredExpenses?.reduce(
+      (total: any, data: any) => total + parseFloat(data.bills),
+      0
+    ) || 0;
+
   let content;
   if (isLoading && !isError) {
     content = (
@@ -45,7 +79,7 @@ const AllHomeRentAndBills = () => {
       <div className="overflow-x-auto border-2  border-white rounded-lg p-5">
         <table className="table ">
           <thead>
-            <tr className="text-white">
+            <tr className="bg-white rounded-lg text-black">
               <th></th>
               <th>Name</th>
               <th>Month</th>
@@ -56,7 +90,7 @@ const AllHomeRentAndBills = () => {
             </tr>
           </thead>
           <tbody>
-            {allExpenses?.expenses.map((data: any, index: any) => {
+            {filteredExpenses?.map((data: any, index: any) => {
               totalHomeRent += parseFloat(data.homeRent); // Add the amount to the total
               totalBills += parseFloat(data.bills); // Add the amount to the total
               return (
@@ -89,7 +123,30 @@ const AllHomeRentAndBills = () => {
   }
 
   return (
-    <div className="mt-5">
+    <div className="mt-16">
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <Title className="mb-5">All Users Homes Rent And Bills</Title>
+        </div>
+        <div>
+          <div>
+            <select
+              name="month"
+              value={month}
+              onChange={(e) => setMonth(e.target.value)}
+              className="bg-transparent border-2 border-white select select-bordered w-full"
+            >
+              <option value="All">All Months</option>
+              {months?.map((month) => (
+                <option key={month} value={month}>
+                  {month}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </div>
+
       {content}
       {!isLoading &&
         !isError &&

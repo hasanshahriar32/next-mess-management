@@ -20,11 +20,6 @@ const MyBazar = () => {
   const myBazarEntries = bazarData?.bazars?.filter(
     (entry: any) => entry.email === session?.user?.email
   );
-  console.log(myBazarEntries);
-  const totalAmount = myBazarEntries?.reduce(
-    (total: number, entry: any) => total + entry.amount,
-    0
-  );
 
   const handleRemove = (id: any) => {
     console.log("delete", id);
@@ -50,6 +45,10 @@ const MyBazar = () => {
   const [month, setMonth] = useState(months[new Date().getMonth()]);
   const filteredBazarEntries = myBazarEntries?.filter(
     (m: any) => m.month === month
+  );
+  const totalAmount = filteredBazarEntries?.reduce(
+    (total: number, entry: any) => total + parseFloat(entry.amount),
+    0
   );
   return (
     <div className="mt-16">

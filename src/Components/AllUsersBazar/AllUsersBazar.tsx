@@ -1,5 +1,5 @@
 "use client";
-import { P, Subtitle, Title } from "@/Components/ui/Heading/Heading";
+import { P, Title } from "@/Components/ui/Heading/Heading";
 import {
   useAllUserQuery,
   useGetBazarQuery,
@@ -9,7 +9,7 @@ import React, { useEffect, useState } from "react";
 import { BiEdit } from "react-icons/bi";
 import { AiOutlineDelete } from "react-icons/ai";
 
-const AllBazar = () => {
+const AllUsersBazar = () => {
   const { data: allBazar, isLoading, isError } = useGetBazarQuery();
   const [
     RemoveBazar,
@@ -41,23 +41,8 @@ const AllBazar = () => {
 
   const defaultMonth = months[new Date().getMonth()];
   const [month, setMonth] = useState(defaultMonth);
-  const [name, setName] = useState("");
 
-  const usersWithDefaultMonthData = allBazar?.bazars
-    ?.filter((m: any) => m.month === defaultMonth)
-    .map((data: any) => data.name);
-
-  // If the selected name is empty and there are users with default month data, set the name state to the first user
-  useEffect(() => {
-    if (name === "" && usersWithDefaultMonthData?.length > 0) {
-      setName(usersWithDefaultMonthData[0]);
-    }
-  }, [name, usersWithDefaultMonthData]);
-
-  // Filter the data based on selected month and name
-  const filteredData = allBazar?.bazars?.filter(
-    (m: any) => m.month === month && m?.name === name
-  );
+  const filteredData = allBazar?.bazars?.filter((m: any) => m.month === month);
   let totalAmount = 0; // Initialize the total amount
   let content;
 
@@ -74,15 +59,15 @@ const AllBazar = () => {
   }
 
   return (
-    <div>
+    <div className="my-16">
       <div>
         <div className="flex justify-between items-center mb-5">
           <div>
-            <Subtitle>All Bazar</Subtitle>
+            <Title className="mb-5">All Bazar</Title>
           </div>
           <div className="flex items-center gap-10">
             <div>
-              <P>Filter by User Name and Month,</P>
+              <P>Filter by Month,</P>
             </div>
             <div>
               <select
@@ -96,18 +81,6 @@ const AllBazar = () => {
                 ))}
               </select>
             </div>
-            <div>
-              <select
-                name="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="bg-transparent border-2 border-white select select-bordered w-full"
-              >
-                {allUser?.users.map((user: any) => (
-                  <option key={user.name}>{user.name}</option>
-                ))}
-              </select>
-            </div>
           </div>
         </div>
         <div>
@@ -115,7 +88,7 @@ const AllBazar = () => {
             <div className="overflow-x-auto">
               <table className="table">
                 <thead>
-                  <tr className="bg-white text-black">
+                  <tr className="bg-base-200">
                     <th></th>
                     <th>Name</th>
                     <th>Date</th>
@@ -151,9 +124,7 @@ const AllBazar = () => {
               </table>
             </div>
           ) : (
-            <P className="mt-3 text-center">
-              No Data Found of {name} for {month}
-            </P>
+            <P className="mt-3 text-center">No Data Found for {month}</P>
           )}
           {content}
           {!isLoading &&
@@ -170,4 +141,4 @@ const AllBazar = () => {
   );
 };
 
-export default AllBazar;
+export default AllUsersBazar;
