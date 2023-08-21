@@ -4,6 +4,8 @@ import AuthProvider from "./AuthProvider";
 import Providers from "./Providers";
 import "./globals.css";
 import Head from "next/head"; // Import the Head component from Next.js
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "../Components/theme/theme";
 
 const space_Grotesk = Space_Grotesk({ subsets: ["latin"] });
 
@@ -28,7 +30,9 @@ export default function RootLayout({
       </Head>
       <body className={space_Grotesk.className}>
         <AuthProvider>
+          <ThemeProvider theme={theme}>
           <Providers>{children}</Providers>
+          </ThemeProvider>
         </AuthProvider>
       </body>
     </html>
