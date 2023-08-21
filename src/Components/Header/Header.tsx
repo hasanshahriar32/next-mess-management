@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import Container from "../ui/Container/container";
+import { P } from "../ui/Heading/Heading";
 
 // Define types for session and status
 interface UserSession {
@@ -19,6 +20,8 @@ interface HeaderProps {}
 
 const Header: React.FC<HeaderProps> = () => {
   const { status, data: session } = useSession();
+  console.log(session);
+  console.log(status);
 
   const handleSignOut = async () => {
     await signOut({
@@ -44,19 +47,20 @@ const Header: React.FC<HeaderProps> = () => {
                 </>
               </div>
               <div className="dropdown dropdown-end">
-                {session?.user?.image && (
+                {session?.user?.name && (
                   <label
                     tabIndex={0}
                     className="btn btn-ghost btn-circle avatar"
                   >
                     <div className="w-10 rounded-full">
-                      <Image
+                      {/* <Image
                         src={session?.user.image}
                         alt=""
                         width={50}
                         height={50}
                         className="rounded-full"
-                      />
+                      /> */}
+                      <P>{session?.user?.name}</P>
                     </div>
                   </label>
                 )}
@@ -72,6 +76,9 @@ const Header: React.FC<HeaderProps> = () => {
                   </li>
                   <li>
                     <Link href={"/dashboard"}>Dashboard</Link>
+                  </li>
+                  <li>
+                    <Link href={"/admin-panel"}>Admin Panel</Link>
                   </li>
                   <li>
                     <a onClick={handleSignOut}>Logout</a>

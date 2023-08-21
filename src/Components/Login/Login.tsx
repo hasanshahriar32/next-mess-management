@@ -1,18 +1,28 @@
 "use client";
-import React, { useState, FormEvent, useEffect } from "react";
+import { useAppSelector } from "@/app/hooks";
+import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { FormEvent, useState } from "react";
 import { FaGoogle } from "react-icons/fa";
 import { FiGithub } from "react-icons/fi";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
-import { useAppSelector } from "@/app/hooks";
 
-import { useGetBazarQuery } from "@/app/features/bazar/bazarApi";
+import {
+  useGetBazarQuery,
+  useGetSingleUserQuery,
+} from "@/app/features/bazar/bazarApi";
 
 const Login = () => {
   const data = useAppSelector((state) => state.user);
   console.log(data);
+  const { status, data: session } = useSession();
+  console.log(session);
+  const sessionEmail: any = session?.user?.email ?? "";
+  console.log(sessionEmail);
+  const { data: singleUserData, isError: userQueryError } =
+    useGetSingleUserQuery(sessionEmail);
+  console.log(singleUserData);
+
   const { data: allBazar } = useGetBazarQuery();
   console.log(allBazar);
 
@@ -20,16 +30,33 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
-  const { status, data: session } = useSession();
-  console.log(session);
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
       setError("All Fields Fillup Needed");
     }
+
+    try {
+      const res = await signIn("credentials", {
+        email,
+        password,
+      });
+      console.log("Sign In Response:", res);
+
+      // if (res.error) {
+      //   setError("Invalid credentials");
+      //   return;
+      // }
+
+      // If sign-in is successful, navigate to the profile page
+      // router.replace("/profile");
+    } catch (error) {
+      console.error("Sign In Error:", error);
+      setError("An error occurred while signing in");
+    }
   };
   // Navigate to the about page
-
   if (status === "authenticated") {
     router.push("/");
   }

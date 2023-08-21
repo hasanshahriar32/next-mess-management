@@ -15,6 +15,7 @@ interface BazarInterface {
   amount: string;
   name: string;
   email: string;
+  month: string;
 }
 
 const AddBazar = () => {
@@ -23,6 +24,7 @@ const AddBazar = () => {
   const { data } = useSession();
   const [bazar, setBazar] = useState("");
   const [amount, setAmount] = useState("");
+  const [month, setMonth] = useState("");
   const router = useRouter();
 
   const [BazarAdd, { data: Bazar, isError, isLoading, error, isSuccess }] =
@@ -31,16 +33,19 @@ const AddBazar = () => {
   const resetForm = () => {
     setBazar("");
     setAmount("");
+    setMonth("");
   };
 
   const handleInputChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     if (name === "bazar") {
       setBazar(value);
     } else if (name === "amount") {
       setAmount(value);
+    } else if (name === "month") {
+      setMonth(value);
     }
   };
 
@@ -50,10 +55,11 @@ const AddBazar = () => {
     const bazarInfo: BazarInterface = {
       bazar,
       amount,
+      month,
       name: data?.user?.name ?? "",
       email: data?.user?.email ?? "",
     };
-
+    console.log(bazarInfo);
     try {
       const response = await BazarAdd({
         ...bazarInfo,
@@ -73,6 +79,21 @@ const AddBazar = () => {
     }
   };
 
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
   return (
     <Container>
       <Title className="my-8">Add Bazar</Title>
@@ -85,6 +106,20 @@ const AddBazar = () => {
       ) : (
         <>
           <form onSubmit={handleSubmit}>
+            <select
+              name="month"
+              value={month}
+              onChange={handleInputChange}
+              className="mb-5 select select-bordered w-full "
+            >
+              {months?.map((month) => {
+                return (
+                  <>
+                    <option>{month}</option>
+                  </>
+                );
+              })}
+            </select>
             <textarea
               required
               name="bazar"
@@ -93,6 +128,7 @@ const AddBazar = () => {
               className="w-full mb-5 textarea textarea-bordered"
               placeholder="Bazar Details"
             ></textarea>
+
             <input
               type="text"
               required
