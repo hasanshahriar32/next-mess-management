@@ -62,7 +62,7 @@ const AllUser = () => {
       <div className="overflow-x-auto">
         <table className="table">
           <thead>
-            <tr className="bg-base-200">
+            <tr className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 px-4 py-2 font-semibold rounded-lg">
               <th></th>
               <th>Name</th>
               <th>Email</th>

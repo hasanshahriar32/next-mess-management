@@ -73,6 +73,21 @@ const ApproveBazar = () => {
     }
   };
 
+  const handleUnApprove = (id: string) => {
+    const agree = window.confirm(
+      "Are You Sure, you want to UnApprove The Bazar"
+    );
+    if (agree && id) {
+      const approveBazarData = {
+        id,
+        updatedBazarData: {
+          newBazarStatus: false,
+        },
+      };
+      approveBazar(approveBazarData);
+    }
+  };
+
   return (
     <div className="my-16">
       <div>
@@ -135,7 +150,11 @@ const ApproveBazar = () => {
                         <td>
                           {data?.bazarStatus === true ? (
                             <>
-                              <button>AlReady Approved</button>
+                              <button
+                                onClick={() => handleUnApprove(data?._id)}
+                              >
+                                AlReady Approved
+                              </button>
                             </>
                           ) : (
                             <>

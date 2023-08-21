@@ -329,7 +329,7 @@ const DashboardComponent = () => {
           </div>
         </div>
       </div>
-      <div className="my-16 border-2 border-white rounded-lg p-5">
+      <div className="my-16 border-2   border-white rounded-lg p-5 min-h-72">
         <AllBazar></AllBazar>
       </div>
       <div className="my-16 border-2 border-white rounded-lg p-5">

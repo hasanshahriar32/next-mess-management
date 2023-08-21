@@ -22,12 +22,15 @@ const bazarSchema = new Schema(
       type: String,
       required: true,
     },
+    homeRentAndBills: {
+      type: Boolean,
+      required: true,
+    },
   },
   {
     timestamps: true,
   }
 );
-
 const HomeRentAndBills =
   models.homeAndBill || model("homeAndBill", bazarSchema);
 export default HomeRentAndBills;
