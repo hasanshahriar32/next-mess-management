@@ -1,37 +1,48 @@
 "use client";
+import { useAllUserQuery } from "@/app/features/bazar/bazarApi";
 import { setGrandTotal, setPersonTotals } from "@/app/features/meal/mealSlice";
 import { useAppDispatch } from "@/app/hooks";
 import React, { useState, useEffect } from "react";
 
 interface PersonMeals {
-  name: string;
+  name: any;
   meals: number[];
 }
 
-const personNames: string[] = [
-  "Pervez Hossain",
-  "Mr. Hasan",
-  "Raihan",
-  "Nasir",
-];
+// const personNames: string[] = [
+//   "Pervez Hossain",
+//   "Mr. Hasan",
+//   "Raihan",
+//   "Nasir",
+// ];
 
-const HostelMealTracker: React.FC = () => {
+const HostelMealTracker = () => {
   const dispatch = useAppDispatch();
+  const { data: allUsers, isLoading } = useAllUserQuery();
+  console.log(allUsers?.users);
 
-  const initialData: PersonMeals[] = personNames?.map((name) => ({
-    name: name,
-    meals: Array(31).fill(0),
-  }));
+  const [mealData, setMealData] = useState<PersonMeals[]>([]);
 
-  const [mealData, setMealData] = useState<PersonMeals[]>(initialData);
+  const initialData: PersonMeals[] =
+    allUsers?.users?.map((user: any) => ({
+      name: user?.name,
+      meals: Array(31).fill(0),
+    })) || [];
+
   useEffect(() => {
     const savedData = localStorage.getItem("mealData");
     if (savedData) {
-      setMealData(JSON.parse(savedData));
+      try {
+        const parsedData = JSON.parse(savedData);
+        if (Array.isArray(parsedData)) {
+          setMealData(parsedData);
+        }
+      } catch (error) {
+        console.error("Error parsing saved meal data:", error);
+      }
     }
   }, []);
 
-  // Save data to localStorage whenever mealData changes
   useEffect(() => {
     localStorage.setItem("mealData", JSON.stringify(mealData));
   }, [mealData]);
@@ -54,21 +65,21 @@ const HostelMealTracker: React.FC = () => {
   };
 
   const calculateDayTotal = (dayIndex: number): number => {
-    return mealData.reduce(
+    return mealData?.reduce(
       (total, person) => total + person.meals[dayIndex],
       0
     );
   };
 
   const calculateGrandTotal = (): number => {
-    return mealData.reduce(
+    return mealData?.reduce(
       (total, person) => total + calculatePersonTotal(mealData.indexOf(person)),
       0
     );
   };
 
   const calculatePersonTotals = () => {
-    const calculatedPersonTotals = mealData.map((person) => {
+    const calculatedPersonTotals = mealData?.map((person) => {
       const total = person.meals.reduce((total, count) => total + count, 0);
       return { name: person.name, total };
     });
@@ -77,7 +88,7 @@ const HostelMealTracker: React.FC = () => {
   };
 
   const calculateGrandTotals = () => {
-    const calculatedGrandTotal = mealData.reduce(
+    const calculatedGrandTotal = mealData?.reduce(
       (total, person, personIndex) => total + calculatePersonTotal(personIndex),
       0
     );
@@ -107,7 +118,7 @@ const HostelMealTracker: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {mealData.map((person, personIndex) => (
+            {mealData?.map((person, personIndex) => (
               <tr key={personIndex}>
                 <td className="px-2 py-1 border">{person.name}</td>
                 {person.meals.map((count, dayIndex) => (

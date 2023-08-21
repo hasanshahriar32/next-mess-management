@@ -79,6 +79,12 @@ const Sidebar = () => {
     },
     {
       id: 11,
+      path: "/dashboard/approve-bazar",
+      title: "Approve Bazar",
+      icon: <FaUser />,
+    },
+    {
+      id: 12,
       path: "/",
       title: "Home",
       icon: <FaUser />,
