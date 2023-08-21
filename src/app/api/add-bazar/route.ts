@@ -61,10 +61,11 @@ interface userInterface {
 }
 
 export async function POST(request: any) {
-  const { name, email, amount, bazar, month } = await request.json();
+  const { name, email, amount, bazar, month, bazarStatus } =
+    await request.json();
   await connectMongoDB();
-  await Bazar.create({ name, email, amount, bazar, month });
-  console.log("from add bazar", name, email, amount, month, bazar);
+  await Bazar.create({ name, email, amount, bazar, month, bazarStatus });
+  console.log("from add bazar", name, email, amount, month, bazar, bazarStatus);
   return NextResponse.json({ message: "Bazar Added" }, { status: 201 });
 }
 

@@ -7,6 +7,7 @@ type BazarAddRequest = {
   name: string;
   email: string;
   month: string;
+  bazarStatus: boolean;
 };
 type UpdateBazarAddRequest = {
   newBazar: string;
@@ -14,6 +15,11 @@ type UpdateBazarAddRequest = {
   newName: string;
   newEmail: string;
   newMonth: string;
+  newBazarStatus: boolean;
+};
+
+type ApproveBazarAddRequest = {
+  newBazarStatus: boolean;
 };
 
 type signupInfoType = {
@@ -55,6 +61,17 @@ export const addBazarApi = createApi({
         url: "/api/add-bazar", // Adjust the URL to your API route
         method: "POST",
         body: bazarInfo,
+      }),
+      invalidatesTags: ["bazars"],
+    }),
+    approveBazar: builder.mutation<
+      void,
+      { id: string; updatedBazarData: ApproveBazarAddRequest }
+    >({
+      query: ({ id, updatedBazarData }) => ({
+        url: `/api/add-bazar/${id}`, // Adjust the URL pattern according to your API
+        method: "PATCH",
+        body: updatedBazarData,
       }),
       invalidatesTags: ["bazars"],
     }),
