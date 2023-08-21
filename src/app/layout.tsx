@@ -3,6 +3,7 @@ import { Space_Grotesk } from "next/font/google";
 import AuthProvider from "./AuthProvider";
 import Providers from "./Providers";
 import "./globals.css";
+import Head from "next/head"; // Import the Head component from Next.js
 
 const space_Grotesk = Space_Grotesk({ subsets: ["latin"] });
 
@@ -18,6 +19,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <Head>
+        {/* Include Tailwind CSS CDN */}
+        <link
+          href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.7/dist/tailwind.min.css"
+          rel="stylesheet"
+        />
+      </Head>
       <body className={space_Grotesk.className}>
         <AuthProvider>
           <Providers>{children}</Providers>
