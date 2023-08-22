@@ -38,6 +38,11 @@ type HomeRentAndBillsRequest = {
   name: string;
   email: string;
   month: string;
+  homeRentAndBills: boolean;
+};
+
+type ApproveHomeRentAndBillsRequest = {
+  newHomeRentAndBills: boolean;
 };
 
 export const addBazarApi = createApi({
@@ -100,6 +105,17 @@ export const addBazarApi = createApi({
       query: (expenses) => ({
         url: "/api/add-homerent-bills", // Adjust the URL to your API route
         method: "POST",
+        body: expenses,
+      }),
+      invalidatesTags: ["homeRent"],
+    }),
+    ApproveHomeRentAndBills: builder.mutation<
+      void,
+      { id: string; expenses: ApproveHomeRentAndBillsRequest }
+    >({
+      query: ({ id, expenses }) => ({
+        url: `/api/add-homerent-bills/${id}`, // Adjust the URL to your API route
+        method: "PATCH",
         body: expenses,
       }),
       invalidatesTags: ["homeRent"],
@@ -167,4 +183,5 @@ export const {
   useUpdateUserMutation,
   useAllUserQuery,
   useDeleteUserMutation,
+  useApproveHomeRentAndBillsMutation,
 } = addBazarApi;

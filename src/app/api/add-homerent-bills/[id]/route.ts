@@ -49,3 +49,33 @@ export async function PUT(request: NextRequest, { params }: paramsInterface) {
     return NextResponse.json({ message: "not found", error }, { status: 201 });
   }
 }
+
+export async function PATCH(request: NextRequest, { params }: paramsInterface) {
+  const { id } = params;
+  if (!id) {
+    return NextResponse.json(
+      { message: "id Parameter Not Found" },
+      { status: 201 }
+    );
+  }
+  const { newHomeRentAndBills: homeRentAndBills } = await request.json();
+  try {
+    await connectMongoDB();
+    const updateExpenses = await HomeRentAndBills.findByIdAndUpdate(
+      id,
+      {
+        homeRentAndBills,
+      },
+      {
+        new: true,
+      }
+    );
+    console.log("Expenses Update", updateExpenses);
+    return NextResponse.json(
+      { message: "HomeRent And Bills Updated", updateExpenses },
+      { status: 201 }
+    );
+  } catch (error) {
+    return NextResponse.json({ message: "not found", error }, { status: 201 });
+  }
+}
