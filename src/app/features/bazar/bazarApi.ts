@@ -124,6 +124,10 @@ export const addBazarApi = createApi({
       query: () => "/api/add-homerent-bills",
       providesTags: ["homeRent"],
     }),
+    getSingleHomeRentAndBills: builder.query<any, void>({
+      query: (email) => `/api/add-homerent-bills/get-homerent-bills/${email}`,
+      providesTags: ["homeRent"], // Adjust the URL to your API route
+    }),
     RemoveHomeRentAndBills: builder.mutation<
       { success: boolean },
       HomeRentAndBillsRequest
@@ -184,4 +188,5 @@ export const {
   useAllUserQuery,
   useDeleteUserMutation,
   useApproveHomeRentAndBillsMutation,
+  useGetSingleHomeRentAndBillsQuery,
 } = addBazarApi;

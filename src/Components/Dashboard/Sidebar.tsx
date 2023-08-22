@@ -85,6 +85,18 @@ const Sidebar = () => {
     },
     {
       id: 12,
+      path: "/dashboard/select-homerent-bills",
+      title: "Select Home Rent And Bills",
+      icon: <FaUser />,
+    },
+    {
+      id: 13,
+      path: "/dashboard/report-card",
+      title: "Repor Card",
+      icon: <FaUser />,
+    },
+    {
+      id: 14,
       path: "/",
       title: "Home",
       icon: <FaUser />,

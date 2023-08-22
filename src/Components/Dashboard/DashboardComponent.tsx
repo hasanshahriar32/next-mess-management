@@ -28,6 +28,7 @@ import {
 import AllHomeRentAndBills from "./AllHomeRentAndBills/AllHomeRentAndBills";
 import HomeRentAndBills from "./HomerentAndBills/HomerentAndBills";
 import AllBazar from "./AllBazar/AllBazar";
+import Link from "next/link";
 
 const DashboardComponent = () => {
   const totalBazar = useAppSelector((state) => state.meal.totalBazarAmount);
@@ -64,6 +65,7 @@ const DashboardComponent = () => {
               <th>Name</th>
               <th>Email</th>
               <th>Action</th>
+              <th>Report Card</th>
             </tr>
           </thead>
           <tbody>
@@ -89,6 +91,11 @@ const DashboardComponent = () => {
                         <P>Only Admin Can Take Action</P>
                       </>
                     )}
+                  </td>
+                  <td>
+                    <Link href={`/dashboard/report-card/${data?.email}`}>
+                      <button> Make Report Card</button>
+                    </Link>
                   </td>
                 </tr>
               );
@@ -329,7 +336,7 @@ const DashboardComponent = () => {
           </div>
         </div>
       </div>
-      <div className="my-16 border-2   border-white rounded-lg p-5 min-h-72">
+      <div className="   my-16 border-2   border-white rounded-lg p-5 min-h-72">
         <AllBazar></AllBazar>
       </div>
       <div className="my-16 border-2 border-white rounded-lg p-5">

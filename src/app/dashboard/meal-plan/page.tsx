@@ -2,10 +2,11 @@
 import { useAllUserQuery } from "@/app/features/bazar/bazarApi";
 import { setGrandTotal, setPersonTotals } from "@/app/features/meal/mealSlice";
 import { useAppDispatch } from "@/app/hooks";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 interface PersonMeals {
   name: any;
+  email: string;
   meals: number[];
 }
 
@@ -19,16 +20,29 @@ interface PersonMeals {
 const HostelMealTracker = () => {
   const dispatch = useAppDispatch();
   const { data: allUsers, isLoading } = useAllUserQuery();
-  console.log(allUsers?.users);
+  console.log("Fetched User Data:", allUsers?.users);
 
-  const [mealData, setMealData] = useState<PersonMeals[]>([]);
+  // Use useRef for storing the initial data
+  const initialDataRef = useRef<PersonMeals[]>([]);
 
-  const initialData: PersonMeals[] =
+  // Initialize mealData based on the fetched user data
+  const initialMealData: PersonMeals[] =
     allUsers?.users?.map((user: any) => ({
       name: user?.name,
+      email: user?.email,
       meals: Array(31).fill(0),
     })) || [];
 
+  // Set initialMealData to mealData only once
+  const [mealData, setMealData] = useState<PersonMeals[]>(initialMealData);
+
+  useEffect(() => {
+    // Update the initialDataRef when mealData changes
+    initialDataRef.current = mealData;
+  }, [mealData, allUsers?.users]);
+
+  console.log("Data to Save:", mealData);
+  //localStorage.setItem("mealData", JSON.stringify(mealData));
   useEffect(() => {
     const savedData = localStorage.getItem("mealData");
     if (savedData) {
@@ -36,6 +50,7 @@ const HostelMealTracker = () => {
         const parsedData = JSON.parse(savedData);
         if (Array.isArray(parsedData)) {
           setMealData(parsedData);
+          initialDataRef.current = parsedData;
         }
       } catch (error) {
         console.error("Error parsing saved meal data:", error);
@@ -55,6 +70,17 @@ const HostelMealTracker = () => {
     const updatedData = [...mealData];
     updatedData[personIndex].meals[dayIndex] = newValue;
     setMealData(updatedData);
+
+    // Get the current user's email and update the corresponding object in initialData
+    const email = updatedData[personIndex].email;
+    const userDataIndex = initialDataRef.current.findIndex(
+      (user: any) => user.email === email
+    );
+    if (userDataIndex !== -1) {
+      const initialDataCopy = [...initialDataRef.current];
+      initialDataCopy[userDataIndex].meals[dayIndex] = newValue;
+      initialDataRef.current = initialDataCopy;
+    }
   };
 
   const calculatePersonTotal = (personIndex: number): number => {
@@ -81,9 +107,10 @@ const HostelMealTracker = () => {
   const calculatePersonTotals = () => {
     const calculatedPersonTotals = mealData?.map((person) => {
       const total = person.meals.reduce((total, count) => total + count, 0);
-      return { name: person.name, total };
+      console.log(total);
+      return { name: person?.name, total, email: person?.email };
     });
-
+    console.log(calculatedPersonTotals);
     dispatch(setPersonTotals(calculatedPersonTotals)); // Dispatch person totals to Redux
   };
 
