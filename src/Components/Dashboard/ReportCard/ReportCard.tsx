@@ -7,7 +7,7 @@ import {
 } from "@/app/features/bazar/bazarApi";
 import { useAppSelector } from "@/app/hooks";
 import { useSession } from "next-auth/react";
-import React from "react";
+import React, { useState } from "react";
 
 const ReportCard = ({ email: userEmail }: any) => {
   const { data: singleUser } = useGetSingleUserQuery(userEmail);
@@ -27,6 +27,9 @@ const ReportCard = ({ email: userEmail }: any) => {
   console.log(average);
   const { data: allBazar, isLoading, isError } = useGetBazarQuery();
   console.log(allBazar?.bazars);
+  const [dynamicData, setDynamicData] = useState<Record<string, any>>({});
+  const [personAmount, setPersonAmount] = useState("");
+  const [total, setTotal] = useState();
   let personTotalAmounts: Record<string, number> = {};
   let content;
   if (isLoading && !isError) {
@@ -54,6 +57,46 @@ const ReportCard = ({ email: userEmail }: any) => {
 
     //dispatch(setTotalBazarAmount(totalAmount));
   }
+  const handleButtonClick = async () => {
+    // Create an array of objects with the dynamic data for each person
+    const dynamicDataArray =
+      personTotal
+        ?.filter((e: any) => e?.email === singleUser?.user?.email)
+        ?.map(({ name, total }: any) => {
+          const personAmount: any = personTotalAmounts[name] || 0;
+          return {
+            name,
+            total,
+            personAmount,
+            expenseForMeal: parseFloat((average * total).toFixed(2)),
+            paymentDifference: parseFloat(
+              (personAmount - average * total).toFixed(2)
+            ),
+          };
+        }) || [];
+
+    // Create the dataToSave object including the dynamicDataArray
+    const dataToSave = {
+      userEmail: singleUser?.user?.email,
+      totalBazar: totalBazar,
+      totalMeal: totalMill,
+      average: parseFloat(average),
+      dynamicData: dynamicDataArray,
+      // Add more dynamic data properties as needed
+    };
+    console.log(dataToSave);
+
+    const response = await fetch("/api/report-card", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(dataToSave),
+    });
+
+    console.log(response);
+  };
+
   return (
     <div className="my-16">
       <Title className="mb-3">
@@ -70,11 +113,11 @@ const ReportCard = ({ email: userEmail }: any) => {
       {personTotal
         ?.filter((e: any) => e?.email === singleUser?.user?.email)
         ?.map(({ name, total }: any) => {
-          const personAmount = personTotalAmounts[name] || 0;
-          console.log(personAmount);
+          const personAmount: any = personTotalAmounts[name] || 0;
+
           return (
             <>
-              <div className="border-2 border-white rounded-lg p-5 my-10">
+              <div className="">
                 <P>Total Meal: {`${total}`}</P>
                 <P>Payment For Meal : {`${personAmount}`} BDT</P>
 
@@ -89,6 +132,8 @@ const ReportCard = ({ email: userEmail }: any) => {
             </>
           );
         })}
+
+      <button onClick={handleButtonClick}>Save Data to Database</button>
     </div>
   );
 };
