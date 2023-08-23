@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 import { ToastContainer, toast } from "react-toastify";
 import loading from "../../loading";
 import "react-toastify/dist/ReactToastify.css";
+import Image from "next/image";
 
 const ManageDevelopers = () => {
   const [admin, setAdmin] = useState([]);
@@ -261,9 +262,11 @@ const ManageDevelopers = () => {
                                 }}
                               >
                                 {" "}
-                                <img
+                                <Image
+                                  height={20}
+                                  width={20}
                                   src={user?.pic}
-                                  className="w-6"
+                                  // className="w-6"
                                   alt=""
                                 />{" "}
                                 {user?.name}
