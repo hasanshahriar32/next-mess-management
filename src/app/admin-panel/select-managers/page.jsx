@@ -52,37 +52,37 @@ const shortcutsItems = [
 function SelectedDatesDisplay({ selectedDates }) {
   const { data } = useSession();
   const sessionEmail = data?.user?.email;
-  const handleSubmit = async(e) =>{
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
     const title = form.title.value;
     const email = form.email.value;
     // console.log(title, email);
     const dataToPost = {
-              email,  
-              validity:{
-                startDate: `${selectedDates[0].format("YYYY-MM-DD")}`,
-                endDate: `${selectedDates[1].format("YYYY-MM-DD")}`
-              }, 
-              adminMaker: sessionEmail,
-              administrationTitle: title
-            }
-            console.log(dataToPost)
+      email,
+      validity: {
+        startDate: `${selectedDates[0].format("YYYY-MM-DD")}`,
+        endDate: `${selectedDates[1].format("YYYY-MM-DD")}`,
+      },
+      adminMaker: sessionEmail,
+      administrationTitle: title,
+    };
+    console.log(dataToPost);
     try {
-          const response = await axios.post(
-            "https://inn.vercel.app/api/admin/manage-admin",
-            dataToPost
-          );
-          console.log(response)
-          if (response.status === 201) {
-            // fetchEvents(); // Refresh events after adding
-            alert(response?.data?.message)
-          }
-        } catch (error) {
-          console.error("Error adding event:", error);
-          alert(error?.response?.data?.message)
-        }
-  }
+      const response = await axios.post(
+        "http://localhost:3000/api/admin/manage-manager",
+        dataToPost
+      );
+      console.log(response);
+      if (response.status === 201) {
+        // fetchEvents(); // Refresh events after adding
+        alert(response?.data?.message);
+      }
+    } catch (error) {
+      console.error("Error adding event:", error);
+      alert(error?.response?.data?.message);
+    }
+  };
   return (
     <div className="hero min-h-screen ">
       <div className="hero-content flex-col lg:flex-row-reverse">
@@ -127,7 +127,9 @@ function SelectedDatesDisplay({ selectedDates }) {
               </label>*/}
             </div>
             <div className="form-control mt-6">
-              <button type="submit" className="btn btn-warning">Set Admin</button>
+              <button type="submit" className="btn btn-warning">
+                Set Admin
+              </button>
             </div>
           </form>
         </div>
