@@ -7,6 +7,7 @@ import { StaticDateRangePicker } from "@mui/x-date-pickers-pro/StaticDateRangePi
 import { FormControlLabel, Switch } from "@mui/material";
 import { useSession } from "next-auth/react";
 import axios from "axios";
+import { env } from "process";
 
 const shortcutsItems = [
   {
@@ -70,7 +71,7 @@ function SelectedDatesDisplay({ selectedDates }) {
     console.log(dataToPost);
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/admin/manage-manager",
+        `http://localhost:3000/api/admin/manage-manager`,
         dataToPost
       );
       console.log(response);

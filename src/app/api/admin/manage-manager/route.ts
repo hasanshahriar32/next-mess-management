@@ -80,10 +80,7 @@ export async function GET() {
   return NextResponse.json({ admin });
 }
 
-export async function DELETE(
-  request: NextRequest,
-  { params }: paramsInterface
-) {
+export async function DELETE(request: NextRequest) {
   const id = request.nextUrl.searchParams.get("id");
   if (!id) {
     return NextResponse.json(
@@ -93,20 +90,14 @@ export async function DELETE(
   }
   try {
     await connectMongoDB();
-    const expenses = await Manager.findByIdAndDelete(id);
-    if (!expenses) {
-      return NextResponse.json(
-        { message: "Home Rent And Bazar Not Found" },
-        { status: 404 }
-      );
+    const deletedManager = await Manager.findByIdAndDelete(id);
+    if (!deletedManager) {
+      return NextResponse.json({ message: "Manager not found" }, { status: 404 });
     }
-    return NextResponse.json(
-      { message: "Home Rent And Bazar Deleted" },
-      { status: 200 }
-    );
+    return NextResponse.json({ message: "Manager deleted" }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
-      { message: "Error deleting Home Rent And Bazar", error },
+      { message: "Error deleting Manager", error },
       { status: 500 }
     );
   }
