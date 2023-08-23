@@ -36,8 +36,14 @@ const AdminSidebar = () => {
     },
     {
       id: 4,
-      path: "/admin-panel/manage-users",
+      path: "/dashboard/all-user",
       title: "Manage Users",
+      icon: <FaUser />,
+    },
+    {
+      id: 5,
+      path: "/admin-panel/manage-admins",
+      title: "Manage Admins",
       icon: <FaUser />,
     },
     {
