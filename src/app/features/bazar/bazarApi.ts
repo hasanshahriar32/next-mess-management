@@ -44,10 +44,26 @@ type HomeRentAndBillsRequest = {
 type ApproveHomeRentAndBillsRequest = {
   newHomeRentAndBills: boolean;
 };
+interface DynamicDataItem {
+  name: string;
+  total: number;
+  personAmount: number;
+  expenseForMeal: number;
+  paymentDifference: number;
+}
+
+interface Data {
+  average: number;
+  dynamicData: DynamicDataItem[];
+  month: string;
+  totalBazar: number;
+  totalMeal: number;
+  userEmail: string;
+}
 
 export const addBazarApi = createApi({
   reducerPath: "bazarAddApi",
-  tagTypes: ["bazars", "homeRent", "users"],
+  tagTypes: ["bazars", "homeRent", "users", "reportCard"],
 
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:3000",
@@ -170,6 +186,18 @@ export const addBazarApi = createApi({
       }),
       invalidatesTags: ["users"],
     }),
+    AddReportCard: builder.mutation<{ success: boolean }, Data>({
+      query: (reportCard) => ({
+        url: "/api/report-card", // Adjust the URL to your API route
+        method: "POST",
+        body: reportCard,
+      }),
+      invalidatesTags: ["reportCard"],
+    }),
+    getReportCard: builder.query<any, void>({
+      query: () => `/api/report-card`,
+      providesTags: ["reportCard"],
+    }),
   }),
 });
 
@@ -189,4 +217,6 @@ export const {
   useDeleteUserMutation,
   useApproveHomeRentAndBillsMutation,
   useGetSingleHomeRentAndBillsQuery,
+  useAddReportCardMutation,
+  useGetReportCardQuery,
 } = addBazarApi;

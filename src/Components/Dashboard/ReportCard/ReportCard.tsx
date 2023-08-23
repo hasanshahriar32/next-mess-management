@@ -1,18 +1,21 @@
 "use client";
 import { P, Subtitle, Title } from "@/Components/ui/Heading/Heading";
 import {
+  useAddReportCardMutation,
   useGetBazarQuery,
   useGetSingleHomeRentAndBillsQuery,
   useGetSingleUserQuery,
 } from "@/app/features/bazar/bazarApi";
 import { useAppSelector } from "@/app/hooks";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const ReportCard = ({ email: userEmail }: any) => {
   const { data: singleUser } = useGetSingleUserQuery(userEmail);
   console.log(singleUser?.user);
-
+  const router = useRouter();
+  const [AddReportCard] = useAddReportCardMutation();
   const { data: SingleHomeRentAndBills } =
     useGetSingleHomeRentAndBillsQuery(userEmail);
   console.log(SingleHomeRentAndBills?.expenses);
@@ -27,9 +30,7 @@ const ReportCard = ({ email: userEmail }: any) => {
   console.log(average);
   const { data: allBazar, isLoading, isError } = useGetBazarQuery();
   console.log(allBazar?.bazars);
-  const [dynamicData, setDynamicData] = useState<Record<string, any>>({});
-  const [personAmount, setPersonAmount] = useState("");
-  const [total, setTotal] = useState();
+
   let personTotalAmounts: Record<string, number> = {};
   let content;
   if (isLoading && !isError) {
@@ -57,6 +58,24 @@ const ReportCard = ({ email: userEmail }: any) => {
 
     //dispatch(setTotalBazarAmount(totalAmount));
   }
+
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const defaultMonth = months[new Date().getMonth()];
+  const [month, setMonth] = useState(defaultMonth);
   const handleButtonClick = async () => {
     // Create an array of objects with the dynamic data for each person
     const dynamicDataArray =
@@ -80,21 +99,24 @@ const ReportCard = ({ email: userEmail }: any) => {
       userEmail: singleUser?.user?.email,
       totalBazar: totalBazar,
       totalMeal: totalMill,
+      month: month,
+      homeRent: SingleHomeRentAndBills?.expenses?.homeRent,
+      bills: SingleHomeRentAndBills?.expenses?.bills,
       average: parseFloat(average),
       dynamicData: dynamicDataArray,
-      // Add more dynamic data properties as needed
     };
     console.log(dataToSave);
 
-    const response = await fetch("/api/report-card", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(dataToSave),
-    });
+    try {
+      const res = await AddReportCard(dataToSave);
+      console.log(res);
 
-    console.log(response);
+      if ("data" in res) {
+        router.push("/dashboard/users-report-card");
+      }
+    } catch (error) {
+      console.log("Report Creating Failed");
+    }
   };
 
   return (
@@ -103,37 +125,65 @@ const ReportCard = ({ email: userEmail }: any) => {
         Report Card For ,{" "}
         <span className="text-[#06B6D4]">{singleUser?.user?.name}</span>
       </Title>
-      <P>Email : {singleUser?.user?.email}</P>
-      <P>Home Rent : {SingleHomeRentAndBills?.expenses?.homeRent} BDT</P>
-      <P>others Bills : {SingleHomeRentAndBills?.expenses?.bills} BDT</P>
-      <P>Total Bazar : {totalBazar} BDT</P>
-      <P>Total Meal : {totalMill}</P>
-      <P>Average : {average} BDT</P>
+      <div className="flex gap-10">
+        <div>
+          {" "}
+          <P>Email : {singleUser?.user?.email}</P>
+          <P>Home Rent : {SingleHomeRentAndBills?.expenses?.homeRent} BDT</P>
+          <P>others Bills : {SingleHomeRentAndBills?.expenses?.bills} BDT</P>
+          <P>Total Bazar : {totalBazar} BDT</P>
+          <P>Total Meal : {totalMill}</P>
+        </div>
+        <div>
+          {" "}
+          <P>Average : {average} BDT</P>
+          {personTotal
+            ?.filter((e: any) => e?.email === singleUser?.user?.email)
+            ?.map(({ name, total }: any) => {
+              const personAmount: any = personTotalAmounts[name] || 0;
 
-      {personTotal
-        ?.filter((e: any) => e?.email === singleUser?.user?.email)
-        ?.map(({ name, total }: any) => {
-          const personAmount: any = personTotalAmounts[name] || 0;
+              return (
+                <>
+                  <div className="">
+                    <P>Total Meal: {`${total}`}</P>
+                    <P>Payment For Meal : {`${personAmount}`} BDT</P>
 
-          return (
-            <>
-              <div className="">
-                <P>Total Meal: {`${total}`}</P>
-                <P>Payment For Meal : {`${personAmount}`} BDT</P>
+                    <P>
+                      Expense For Meal : {`${(average * total).toFixed(2)}`} BDT
+                    </P>
+                    <P>
+                      Payment Difference:{" "}
+                      {`${(personAmount - average * total).toFixed(2)}`} BDT
+                    </P>
+                  </div>
+                </>
+              );
+            })}
+        </div>
+      </div>
 
-                <P>
-                  Expense For Meal : {`${(average * total).toFixed(2)}`} BDT
-                </P>
-                <P>
-                  Payment Difference:{" "}
-                  {`${(personAmount - average * total).toFixed(2)}`} BDT
-                </P>
-              </div>
-            </>
-          );
-        })}
-
-      <button onClick={handleButtonClick}>Save Data to Database</button>
+      <div className="flex gap-10 items-center">
+        <div>
+          <select
+            name="month"
+            value={month}
+            onChange={(e) => setMonth(e.target.value)}
+            className="bg-transparent border-2 my-5 border-white select select-bordered w-full"
+          >
+            {months.map((month) => (
+              <option key={month}>{month}</option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <button
+            className="text-white  bg-gradient-to-r from-cyan-500 to-blue-500 px-4 py-3 font-semibold rounded-lg"
+            onClick={handleButtonClick}
+          >
+            Create Report Card
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
