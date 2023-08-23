@@ -670,14 +670,14 @@ const ManageDevelopers = () => {
                 <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
                   Showing
                   <span class="font-semibold text-gray-900 dark:text-white">
-                    1-10
+                    {/* 1-10 */}-{admin?.length}-
                   </span>
                   of
                   <span class="font-semibold text-gray-900 dark:text-white">
-                    1000
+                    {/* 1000 */}-{admin?.length}
                   </span>
                 </span>
-                <ul class="inline-flex items-stretch -space-x-px">
+                <ul class="inline-flex disabled items-stretch -space-x-px">
                   <li>
                     <a
                       href="#"
