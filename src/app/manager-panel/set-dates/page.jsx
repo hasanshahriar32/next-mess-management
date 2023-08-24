@@ -6,7 +6,7 @@ import { CalendarComponent } from "@syncfusion/ej2-react-calendars";
 import React from "react";
 import { registerLicense } from "@syncfusion/ej2-base";
 registerLicense(
-  "ORg4AjUWIQA/Gnt2VVhkQlFaclxJXGFWfVJpTGpQdk5xdV9DaVZUTWY/P1ZhSXxQdkRiXn5YdHNQR2FaVEI="
+  `Ngo9BigBOggjHTQxAR8/V1NGaF1cXGNCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdgWXdcdHVTRmVZWURxXUU=`
 );
 const DateSelect = () => {
   let calendarInstance;
@@ -128,8 +128,12 @@ const DateSelect = () => {
   };
 
   return (
-    <div className="text-lg lg:text-4xl py-6 text-center">
-      <h1>আপনার মানেজারির স্থায়িত্বকাল নির্ধারণ করুন</h1>
+    <div className="text-xl lg:text-4xl py-6 text-center">
+      <h1>Set dates for bazar picking</h1>
+      <p className="text-sm lg:text-xl py-3 text-center">
+        The users will be able to pick their bazar dates from the dates you set.
+        You can set multiple dates.
+      </p>
       <div
         className="hero  "
         // style={{ backgroundImage: `url("https://placeimg.com/1000/800/tech")` }}
