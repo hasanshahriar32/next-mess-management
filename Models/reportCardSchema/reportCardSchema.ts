@@ -13,6 +13,9 @@ const averageSchema = new Schema(
     totalBazar: Number,
     totalMeal: Number,
     userEmail: String,
+    month: String,
+    homeRent: Number,
+    bills: Number,
   },
   {
     timestamps: true,

@@ -4,8 +4,16 @@ import { connectMongoDB } from "../../../../db/mongoDB";
 
 export async function POST(request: any) {
   try {
-    const { average, dynamicData, totalBazar, totalMeal, userEmail } =
-      await request.json();
+    const {
+      average,
+      dynamicData,
+      totalBazar,
+      totalMeal,
+      userEmail,
+      month,
+      homeRent,
+      bills,
+    } = await request.json();
 
     // Convert the dynamicData array into an array of dynamicDataSchema objects
     const dynamicDataArray = dynamicData.map((item: any) => ({
@@ -22,10 +30,13 @@ export async function POST(request: any) {
     // Create a new report card document
     await ReportCard.create({
       average,
+      month,
       dynamicData: dynamicDataArray,
       totalBazar,
       totalMeal,
       userEmail,
+      homeRent,
+      bills,
     });
 
     console.log(
@@ -34,7 +45,10 @@ export async function POST(request: any) {
       dynamicDataArray,
       totalBazar,
       totalMeal,
-      userEmail
+      userEmail,
+      month,
+      homeRent,
+      bills
     );
 
     return NextResponse.json({ message: "Report Card Added" }, { status: 201 });

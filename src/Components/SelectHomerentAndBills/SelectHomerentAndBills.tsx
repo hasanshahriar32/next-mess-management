@@ -1,9 +1,13 @@
 "use client";
 import React, { useState, useEffect } from "react";
-
-const SelectHomerentAndBills = () => {
-  const [inputSets, setInputSets] = useState(
-    JSON.parse(localStorage.getItem("inputSets")) || [
+interface InputSet {
+  homeRent: string | null;
+  bills: string | null;
+  userName: string | null;
+}
+const SelectHomerentAndBills: React.FC = () => {
+  const [inputSets, setInputSets] = useState<InputSet[]>(
+    JSON.parse(localStorage.getItem("inputSets:")) || [
       { homeRent: "", bills: "", userName: "" },
     ]
   );
@@ -24,7 +28,7 @@ const SelectHomerentAndBills = () => {
   };
 
   const handleInputChange = (index: any, field: any, value: any) => {
-    const updatedInputSets = [...inputSets];
+    const updatedInputSets: any = [...inputSets];
     updatedInputSets[index][field] = value;
     setInputSets(updatedInputSets);
   };

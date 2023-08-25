@@ -63,7 +63,7 @@ const ApproveBazar = () => {
   const handleApprove = (id: string) => {
     const agree = window.confirm("Are You SUre, you want to Approve The Bazar");
     if (agree && id) {
-      const approveBazarData = {
+      const approveBazarData: any = {
         id,
         updatedBazarData: {
           newBazarStatus: true,
@@ -78,7 +78,7 @@ const ApproveBazar = () => {
       "Are You Sure, you want to UnApprove The Bazar"
     );
     if (agree && id) {
-      const approveBazarData = {
+      const approveBazarData: any = {
         id,
         updatedBazarData: {
           newBazarStatus: false,
