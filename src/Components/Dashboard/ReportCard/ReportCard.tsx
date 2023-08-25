@@ -97,11 +97,11 @@ const ReportCard = ({ email: userEmail }: any) => {
     // Create the dataToSave object including the dynamicDataArray
     const dataToSave = {
       userEmail: singleUser?.user?.email,
-      totalBazar: totalBazar,
-      totalMeal: totalMill,
+      totalBazar: parseFloat(totalBazar),
+      totalMeal: parseFloat(totalMill),
       month: month,
-      homeRent: SingleHomeRentAndBills?.expenses?.homeRent,
-      bills: SingleHomeRentAndBills?.expenses?.bills,
+      homeRent: parseFloat(SingleHomeRentAndBills?.expenses?.homeRent),
+      bills: parseFloat(SingleHomeRentAndBills?.expenses?.bills),
       average: parseFloat(average),
       dynamicData: dynamicDataArray,
     };
@@ -141,13 +141,11 @@ const ReportCard = ({ email: userEmail }: any) => {
             ?.filter((e: any) => e?.email === singleUser?.user?.email)
             ?.map(({ name, total }: any) => {
               const personAmount: any = personTotalAmounts[name] || 0;
-
               return (
                 <>
                   <div className="">
                     <P>Total Meal: {`${total}`}</P>
                     <P>Payment For Meal : {`${personAmount}`} BDT</P>
-
                     <P>
                       Expense For Meal : {`${(average * total).toFixed(2)}`} BDT
                     </P>

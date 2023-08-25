@@ -41,7 +41,7 @@ const DashboardComponent = () => {
   const { data: session } = useSession();
   const sessionEmail: any = session?.user?.email;
   const { data: singleUser } = useGetSingleUserQuery(sessionEmail);
-
+  console.log(singleUser);
   const [name, setName] = useState("");
   const handleRemove = () => {};
   let content;
@@ -342,39 +342,11 @@ const DashboardComponent = () => {
       <div className="my-16 border-2 border-white rounded-lg p-5">
         <HomeRentAndBills></HomeRentAndBills>
       </div>
-      <div className="grid grid-cols-3 gap-10">
-        <div className="col-span-2">
-          <div className=" border-2 border-white rounded-lg px-6 py-3">
-            <Subtitle className="my-5">All Users</Subtitle>
-            {content}
-          </div>
-        </div>
-        <div className="col-span-1">
-          <div className="h-96">
-            {" "}
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                width={500}
-                height={300}
-                data={barChartData}
-                margin={{
-                  top: 5,
 
-                  left: 20,
-                  bottom: 5,
-                }}
-              >
-                <XAxis dataKey="name" />
-                {/* <YAxis /> */}
-                <Tooltip
-                  contentStyle={{ background: "white", border: "none" }}
-                />
-                <Legend />
-                <Bar dataKey="pv" fill="#8884d8" />
-                <Bar dataKey="uv" fill="#82ca9d" />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+      <div>
+        <div className=" border-2 border-white rounded-lg px-6 py-3">
+          <Subtitle className="my-5">All Users</Subtitle>
+          {content}
         </div>
       </div>
     </div>

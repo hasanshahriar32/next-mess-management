@@ -27,6 +27,15 @@ type signupInfoType = {
   email: string;
   role: string;
   password: string;
+  bloodGroup: string;
+  idCard: number;
+  messMemberStatus: boolean;
+  month: string;
+  parentNumber: number;
+  personalNumber: number;
+  religious: string;
+  selectedImage: string;
+  reportCardStatus: boolean;
 };
 type userInfoType = {
   email: string;
@@ -59,6 +68,8 @@ interface Data {
   totalBazar: number;
   totalMeal: number;
   userEmail: string;
+  homeRent: number;
+  bills: number;
 }
 
 export const addBazarApi = createApi({

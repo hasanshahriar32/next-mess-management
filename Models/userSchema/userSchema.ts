@@ -19,6 +19,42 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    bloodGroup: {
+      type: String,
+      required: true,
+    },
+    idCard: {
+      type: Number,
+      required: true,
+    },
+    messMemberStatus: {
+      type: Boolean,
+      required: true,
+    },
+    month: {
+      type: String,
+      required: true,
+    },
+    parentNumber: {
+      type: Number,
+      required: true,
+    },
+    personalNumber: {
+      type: Number,
+      required: true,
+    },
+    religious: {
+      type: String,
+      required: true,
+    },
+    reportCardStatus: {
+      type: Boolean,
+      required: true,
+    },
+    selectedImage: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,
