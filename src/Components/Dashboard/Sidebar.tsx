@@ -108,6 +108,12 @@ const Sidebar = () => {
       icon: <FaUser />,
     },
     {
+      id: 16,
+      path: "/dashboard/meal-count",
+      title: "Meal Count",
+      icon: <FaUser />,
+    },
+    {
       id: 15,
       path: "/",
       title: "Home",
