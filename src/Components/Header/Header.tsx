@@ -4,6 +4,7 @@ import Link from "next/link";
 import React from "react";
 import Container from "../ui/Container/container";
 import { P } from "../ui/Heading/Heading";
+import Image from "next/image";
 
 // Define types for session and status
 interface UserSession {
