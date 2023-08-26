@@ -31,7 +31,7 @@ export default function RootLayout({
       <body className={space_Grotesk.className}>
         <AuthProvider>
           <ThemeProvider theme={theme}>
-          <Providers>{children}</Providers>
+            <Providers>{children}</Providers>
           </ThemeProvider>
         </AuthProvider>
       </body>

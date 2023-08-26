@@ -35,7 +35,15 @@ const Header: React.FC<HeaderProps> = () => {
         <Container className="">
           <div className="navbar">
             <div className="flex-1">
-              <a className="btn btn-ghost normal-case text-xl">Logo</a>
+              <a className="btn btn-ghost normal-case text-xl">
+                <Image 
+                src="https://i.ibb.co/PGNP90L/Green-Yellow-White-Modern-Farm-House-Logo-4.png"
+                height={50}
+                width={50}
+                alt="logo"
+                />
+                <p className="hidden md:flex">Mess Management</p>
+              </a>
             </div>
             <div className="flex-none gap-2">
               <div className="flex gap-5 items-center">
@@ -43,7 +51,7 @@ const Header: React.FC<HeaderProps> = () => {
                   <Link href={"/"}>Home</Link>
                   <Link href={"/about"}>About</Link>
                   <Link href={"/contact"}>Contact</Link>
-                  {!session?.user?.image && <Link href={"/login"}>Login</Link>}
+                  {!session?.user?.email && <Link href={"/login"}>Login</Link>}
                 </>
               </div>
               <div className="dropdown dropdown-end">
@@ -53,13 +61,13 @@ const Header: React.FC<HeaderProps> = () => {
                     className="btn btn-ghost btn-circle avatar"
                   >
                     <div className="w-10 rounded-full">
-                      {/* <Image
-                        src={session?.user.image}
+                      <Image
+                        src={session?.user?.image}
                         alt=""
                         width={50}
                         height={50}
                         className="rounded-full"
-                      /> */}
+                      />
                       <P>{session?.user?.name}</P>
                     </div>
                   </label>
