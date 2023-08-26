@@ -17,6 +17,7 @@ interface BazarInterface {
   newName: string;
   newEmail: string;
   newMonth: string;
+  newBazarStatus: boolean;
 }
 
 const months = [
@@ -36,7 +37,7 @@ const months = [
 
 const EditMyBazar = ({ id }: any) => {
   const { data: singleBazar } = useGetSingleBazarQuery(id);
-  console.log(singleBazar?.bazar);
+  console.log(singleBazar?.bazar?.bazarStatus);
   const {
     amount: myAmount,
     bazar: mySingleBazar,
@@ -77,6 +78,7 @@ const EditMyBazar = ({ id }: any) => {
       newBazar: bazar,
       newAmount: amount,
       newMonth: month,
+      newBazarStatus: false,
       newName: data?.user?.name ?? "",
       newEmail: data?.user?.email ?? "",
     };
@@ -90,6 +92,7 @@ const EditMyBazar = ({ id }: any) => {
           newName: bazarInfo.newName,
           newEmail: bazarInfo.newEmail,
           newMonth: bazarInfo.newMonth,
+          newBazarStatus: bazarInfo?.newBazarStatus,
         },
       });
       console.log(res);

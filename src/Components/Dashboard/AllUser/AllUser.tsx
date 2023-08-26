@@ -1,6 +1,6 @@
 "use client";
 
-import { P } from "@/Components/ui/Heading/Heading";
+import { P, Title } from "@/Components/ui/Heading/Heading";
 import {
   useAllUserQuery,
   useDeleteUserMutation,
@@ -62,11 +62,10 @@ const AllUser = () => {
       <div className="overflow-x-auto">
         <table className="table">
           <thead>
-            <tr className="bg-base-200">
+            <tr className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 px-4 py-2 font-semibold rounded-lg">
               <th></th>
               <th>Name</th>
               <th>Email</th>
-
               <th>Action</th>
             </tr>
           </thead>
@@ -102,8 +101,31 @@ const AllUser = () => {
       </div>
     );
   }
-
-  return <div className="mt-16">{content}</div>;
+  return (
+    <div className="mt-16">
+      <div className="flex justify-between my-5">
+        <div>
+          <Title>All Users</Title>
+        </div>
+        <div className="flex gap-5 items-center">
+          <P>Filter By Month</P>
+          <div>
+            <select
+              name="month"
+              value={month}
+              onChange={(e) => setMonth(e.target.value)}
+              className="bg-transparent border-2 border-white select select-bordered w-full"
+            >
+              {months.map((month) => (
+                <option key={month}>{month}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </div>
+      {content}
+    </div>
+  );
 };
 
 export default AllUser;

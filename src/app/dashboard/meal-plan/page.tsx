@@ -1,37 +1,63 @@
 "use client";
+import { useAllUserQuery } from "@/app/features/bazar/bazarApi";
 import { setGrandTotal, setPersonTotals } from "@/app/features/meal/mealSlice";
 import { useAppDispatch } from "@/app/hooks";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 interface PersonMeals {
-  name: string;
+  name: any;
+  email: string;
   meals: number[];
 }
 
-const personNames: string[] = [
-  "Pervez Hossain",
-  "Mr. Hasan",
-  "Raihan",
-  "Nasir",
-];
+// const personNames: string[] = [
+//   "Pervez Hossain",
+//   "Mr. Hasan",
+//   "Raihan",
+//   "Nasir",
+// ];
 
-const HostelMealTracker: React.FC = () => {
+const HostelMealTracker = () => {
   const dispatch = useAppDispatch();
+  const { data: allUsers, isLoading } = useAllUserQuery();
+  console.log("Fetched User Data:", allUsers?.users);
 
-  const initialData: PersonMeals[] = personNames?.map((name) => ({
-    name: name,
-    meals: Array(31).fill(0),
-  }));
+  // Use useRef for storing the initial data
+  const initialDataRef = useRef<PersonMeals[]>([]);
 
-  const [mealData, setMealData] = useState<PersonMeals[]>(initialData);
+  // Initialize mealData based on the fetched user data
+  const initialMealData: PersonMeals[] =
+    allUsers?.users?.map((user: any) => ({
+      name: user?.name,
+      email: user?.email,
+      meals: Array(31).fill(0),
+    })) || [];
+
+  // Set initialMealData to mealData only once
+  const [mealData, setMealData] = useState<PersonMeals[]>(initialMealData);
+
+  useEffect(() => {
+    // Update the initialDataRef when mealData changes
+    initialDataRef.current = mealData;
+  }, [mealData, allUsers?.users]);
+
+  console.log("Data to Save:", mealData);
+  //localStorage.setItem("mealData", JSON.stringify(mealData));
   useEffect(() => {
     const savedData = localStorage.getItem("mealData");
     if (savedData) {
-      setMealData(JSON.parse(savedData));
+      try {
+        const parsedData = JSON.parse(savedData);
+        if (Array.isArray(parsedData)) {
+          setMealData(parsedData);
+          initialDataRef.current = parsedData;
+        }
+      } catch (error) {
+        console.error("Error parsing saved meal data:", error);
+      }
     }
   }, []);
 
-  // Save data to localStorage whenever mealData changes
   useEffect(() => {
     localStorage.setItem("mealData", JSON.stringify(mealData));
   }, [mealData]);
@@ -44,6 +70,17 @@ const HostelMealTracker: React.FC = () => {
     const updatedData = [...mealData];
     updatedData[personIndex].meals[dayIndex] = newValue;
     setMealData(updatedData);
+
+    // Get the current user's email and update the corresponding object in initialData
+    const email = updatedData[personIndex].email;
+    const userDataIndex = initialDataRef.current.findIndex(
+      (user: any) => user.email === email
+    );
+    if (userDataIndex !== -1) {
+      const initialDataCopy = [...initialDataRef.current];
+      initialDataCopy[userDataIndex].meals[dayIndex] = newValue;
+      initialDataRef.current = initialDataCopy;
+    }
   };
 
   const calculatePersonTotal = (personIndex: number): number => {
@@ -54,30 +91,31 @@ const HostelMealTracker: React.FC = () => {
   };
 
   const calculateDayTotal = (dayIndex: number): number => {
-    return mealData.reduce(
+    return mealData?.reduce(
       (total, person) => total + person.meals[dayIndex],
       0
     );
   };
 
   const calculateGrandTotal = (): number => {
-    return mealData.reduce(
+    return mealData?.reduce(
       (total, person) => total + calculatePersonTotal(mealData.indexOf(person)),
       0
     );
   };
 
   const calculatePersonTotals = () => {
-    const calculatedPersonTotals = mealData.map((person) => {
+    const calculatedPersonTotals = mealData?.map((person) => {
       const total = person.meals.reduce((total, count) => total + count, 0);
-      return { name: person.name, total };
+      console.log(total);
+      return { name: person?.name, total, email: person?.email };
     });
-
+    console.log(calculatedPersonTotals);
     dispatch(setPersonTotals(calculatedPersonTotals)); // Dispatch person totals to Redux
   };
 
   const calculateGrandTotals = () => {
-    const calculatedGrandTotal = mealData.reduce(
+    const calculatedGrandTotal = mealData?.reduce(
       (total, person, personIndex) => total + calculatePersonTotal(personIndex),
       0
     );
@@ -107,7 +145,7 @@ const HostelMealTracker: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {mealData.map((person, personIndex) => (
+            {mealData?.map((person, personIndex) => (
               <tr key={personIndex}>
                 <td className="px-2 py-1 border">{person.name}</td>
                 {person.meals.map((count, dayIndex) => (

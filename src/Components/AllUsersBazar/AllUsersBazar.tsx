@@ -43,6 +43,7 @@ const AllUsersBazar = () => {
   const [month, setMonth] = useState(defaultMonth);
 
   const filteredData = allBazar?.bazars?.filter((m: any) => m.month === month);
+  console.log(filteredData);
   let totalAmount = 0; // Initialize the total amount
   let content;
 
@@ -91,7 +92,6 @@ const AllUsersBazar = () => {
                   <tr className="bg-base-200">
                     <th></th>
                     <th>Name</th>
-                    <th>Date</th>
                     <th>Month</th>
                     <th>Bazar</th>
                     <th>Amount</th>
@@ -99,27 +99,29 @@ const AllUsersBazar = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredData.map((data: any, index: any) => {
-                    totalAmount += parseFloat(data.amount); // Add the amount to the total
-                    return (
-                      <tr key={index}>
-                        <th>{index + 1}</th>
-                        <td>{data?.name}</td>
-                        <td>{data?.updatedAt}</td>
-                        <td>{data?.month}</td>
-                        <td>{data?.bazar}</td>
-                        <td>{data?.amount} BDT</td>
-                        <td className="flex gap-5">
-                          <button>
-                            <BiEdit className="text-xl"></BiEdit>
-                          </button>
-                          <button onClick={() => handleRemove(data?._id)}>
-                            <AiOutlineDelete className="text-xl"></AiOutlineDelete>
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  })}
+                  {filteredData
+                    ?.filter((d: any) => d?.bazarStatus === true)
+                    ?.map((data: any, index: any) => {
+                      totalAmount += parseFloat(data.amount); // Add the amount to the total
+                      return (
+                        <tr key={index}>
+                          <th>{index + 1}</th>
+                          <td>{data?.name}</td>
+
+                          <td>{data?.month}</td>
+                          <td>{data?.bazar}</td>
+                          <td>{data?.amount} BDT</td>
+                          <td className="flex gap-5">
+                            <button>
+                              <BiEdit className="text-xl"></BiEdit>
+                            </button>
+                            <button onClick={() => handleRemove(data?._id)}>
+                              <AiOutlineDelete className="text-xl"></AiOutlineDelete>
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
                 </tbody>
               </table>
             </div>

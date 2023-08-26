@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectMongoDB } from "../../../../../db/mongoDB";
-import Admin from "../../../../../Models/adminSchema/adminSchema";
+
 import User from "../../../../../Models/userSchema/userSchema";
+import Manager from "../../../../../Models/managerSchema/managerSchema";
 
 interface userInterface {
   name: string;
@@ -26,7 +27,7 @@ export async function POST(request: NextRequest) {
   console.log(currentAdminMaker);
   if (currentAdminMaker?.role !== "superAdmin") {
     return NextResponse.json(
-      { message: "Only superAdmins can assign admin" },
+      { message: "Only superAdmins can assign manager" },
       { status: 404 }
     );
   }
@@ -34,9 +35,9 @@ export async function POST(request: NextRequest) {
   if (!userExists) {
     return NextResponse.json({ message: "User Not Found" }, { status: 404 });
   }
-  const adminExists = await Admin.findOne({ email });
+  const adminExists = await Manager.findOne({ email });
   if (!adminExists) {
-    const newAdmin = await Admin.create({
+    const newAdmin = await Manager.create({
       name: userExists?.name,
       email,
       image: userExists?.image,
@@ -55,11 +56,10 @@ export async function POST(request: NextRequest) {
     const expiry = new Date().getTime() > new Date(validity.endDate).getTime();
     console.log(expiry);
     if (!expiry) {
-      const newValidity = await Admin.findByIdAndUpdate(adminExists._id, {
+      const newValidity = await Manager.findByIdAndUpdate(adminExists._id, {
         validity,
         adminMaker,
-        administrationTitle
-        
+        administrationTitle,
       });
       return NextResponse.json(
         { message: "Validity Updated", newValidity },
@@ -76,14 +76,11 @@ export async function POST(request: NextRequest) {
 
 export async function GET() {
   await connectMongoDB();
-  const admin = await Admin.find();
+  const admin = await Manager.find();
   return NextResponse.json({ admin });
 }
 
-export async function DELETE(
-  request: NextRequest,
-  { params }: paramsInterface
-) {
+export async function DELETE(request: NextRequest) {
   const id = request.nextUrl.searchParams.get("id");
   if (!id) {
     return NextResponse.json(
@@ -93,20 +90,14 @@ export async function DELETE(
   }
   try {
     await connectMongoDB();
-    const expenses = await Admin.findByIdAndDelete(id);
-    if (!expenses) {
-      return NextResponse.json(
-        { message: "Home Rent And Bazar Not Found" },
-        { status: 404 }
-      );
+    const deletedManager = await Manager.findByIdAndDelete(id);
+    if (!deletedManager) {
+      return NextResponse.json({ message: "Manager not found" }, { status: 404 });
     }
-    return NextResponse.json(
-      { message: "Home Rent And Bazar Deleted" },
-      { status: 200 }
-    );
+    return NextResponse.json({ message: "Manager deleted" }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
-      { message: "Error deleting Home Rent And Bazar", error },
+      { message: "Error deleting Manager", error },
       { status: 500 }
     );
   }

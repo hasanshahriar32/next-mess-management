@@ -24,20 +24,26 @@ const AdminSidebar = () => {
     },
     {
       id: 2,
-      path: "/admin-panel/select-admin",
-      title: "Select Admin",
+      path: "/admin-panel/select-managers",
+      title: "Select Managers",
       icon: <FaUser />,
     },
     {
       id: 3,
-      path: "/admin-panel/manage-admins",
-      title: "Manage Admins",
+      path: "/admin-panel/manage-managers",
+      title: "Manage Managers",
       icon: <FaUser />,
     },
     {
       id: 4,
-      path: "/admin-panel/manage-users",
+      path: "/dashboard/all-user",
       title: "Manage Users",
+      icon: <FaUser />,
+    },
+    {
+      id: 5,
+      path: "/admin-panel/manage-admins",
+      title: "Manage Admins",
       icon: <FaUser />,
     },
     {

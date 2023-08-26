@@ -16,6 +16,7 @@ interface BazarInterface {
   name: string;
   email: string;
   month: string;
+  bazarStatus: boolean;
 }
 
 const AddBazar = () => {
@@ -56,6 +57,7 @@ const AddBazar = () => {
       bazar,
       amount,
       month,
+      bazarStatus: false,
       name: data?.user?.name ?? "",
       email: data?.user?.email ?? "",
     };

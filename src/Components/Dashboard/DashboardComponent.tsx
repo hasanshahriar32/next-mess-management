@@ -28,6 +28,7 @@ import {
 import AllHomeRentAndBills from "./AllHomeRentAndBills/AllHomeRentAndBills";
 import HomeRentAndBills from "./HomerentAndBills/HomerentAndBills";
 import AllBazar from "./AllBazar/AllBazar";
+import Link from "next/link";
 
 const DashboardComponent = () => {
   const totalBazar = useAppSelector((state) => state.meal.totalBazarAmount);
@@ -40,7 +41,7 @@ const DashboardComponent = () => {
   const { data: session } = useSession();
   const sessionEmail: any = session?.user?.email;
   const { data: singleUser } = useGetSingleUserQuery(sessionEmail);
-
+  console.log(singleUser);
   const [name, setName] = useState("");
   const handleRemove = () => {};
   let content;
@@ -59,11 +60,12 @@ const DashboardComponent = () => {
       <div className="overflow-x-auto">
         <table className="table">
           <thead>
-            <tr className="text-black bg-white">
+            <tr className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 px-4 py-2 font-semibold rounded-lg">
               <th></th>
               <th>Name</th>
               <th>Email</th>
               <th>Action</th>
+              <th>Report Card</th>
             </tr>
           </thead>
           <tbody>
@@ -90,6 +92,11 @@ const DashboardComponent = () => {
                       </>
                     )}
                   </td>
+                  <td>
+                    <Link href={`/dashboard/report-card/${data?.email}`}>
+                      <button> Make Report Card</button>
+                    </Link>
+                  </td>
                 </tr>
               );
             })}
@@ -100,6 +107,50 @@ const DashboardComponent = () => {
   }
 
   const data = [
+    {
+      name: "Page A",
+      uv: 4000,
+      pv: 2400,
+      amt: 2400,
+    },
+    {
+      name: "Page B",
+      uv: 3000,
+      pv: 1398,
+      amt: 2210,
+    },
+    {
+      name: "Page C",
+      uv: 2000,
+      pv: 9800,
+      amt: 2290,
+    },
+    {
+      name: "Page D",
+      uv: 2780,
+      pv: 3908,
+      amt: 2000,
+    },
+    {
+      name: "Page E",
+      uv: 1890,
+      pv: 4800,
+      amt: 2181,
+    },
+    {
+      name: "Page F",
+      uv: 2390,
+      pv: 3800,
+      amt: 2500,
+    },
+    {
+      name: "Page G",
+      uv: 3490,
+      pv: 4300,
+      amt: 2100,
+    },
+  ];
+  const barChartData = [
     {
       name: "Page A",
       uv: 4000,
@@ -285,12 +336,13 @@ const DashboardComponent = () => {
           </div>
         </div>
       </div>
-      <div className="my-16 border-2 border-white rounded-lg p-5">
+      <div className="   my-16 border-2   border-white rounded-lg p-5 min-h-72">
         <AllBazar></AllBazar>
       </div>
       <div className="my-16 border-2 border-white rounded-lg p-5">
         <HomeRentAndBills></HomeRentAndBills>
       </div>
+
       <div>
         <div className=" border-2 border-white rounded-lg px-6 py-3">
           <Subtitle className="my-5">All Users</Subtitle>

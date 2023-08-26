@@ -12,6 +12,7 @@ interface HomeRentAndBillsInterface {
   name: string;
   email: string;
   month: string;
+  homeRentAndBills: boolean;
 }
 import React, { FormEvent, useState } from "react";
 const AddHomeRentAndBills = () => {
@@ -50,6 +51,7 @@ const AddHomeRentAndBills = () => {
       bills: parseFloat(bills),
       homeRent: parseFloat(homeRent),
       month,
+      homeRentAndBills: false,
       name: data?.user?.name ?? "",
       email: data?.user?.email ?? "",
     };

@@ -9,6 +9,7 @@ import React, { useState } from "react";
 import { BiEdit } from "react-icons/bi";
 import { AiOutlineDelete } from "react-icons/ai";
 import Link from "next/link";
+import AddBazar from "../AddBazar/AddBazar";
 
 const MyBazar = () => {
   const { data: bazarData } = useGetBazarQuery();
@@ -82,7 +83,7 @@ const MyBazar = () => {
             <div className="overflow-x-auto">
               <table className="table">
                 <thead>
-                  <tr className="bg-base-200">
+                  <tr className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 px-4 py-2 font-semibold rounded-lg">
                     <th>Serial No</th>
                     <th>Bazar</th>
                     <th>Date</th>
