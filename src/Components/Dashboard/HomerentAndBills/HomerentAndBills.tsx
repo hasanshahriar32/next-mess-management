@@ -60,7 +60,20 @@ const AllBazar = () => {
   const filteredData = allExpenses?.expenses?.filter(
     (m: any) => m.month === month && m?.name === name
   );
-  let totalAmount = 0; // Initialize the total amount
+  let totalHomeRentAmount = 0; // Initialize the total amount
+  if (filteredData?.length > 0) {
+    totalHomeRentAmount = filteredData?.reduce((acc: number, data: any) => {
+      const parsedAmount = parseFloat(data.homeRent);
+      return isNaN(parsedAmount) ? acc : acc + parsedAmount;
+    }, 0);
+  }
+  let billsAmount = 0; // Initialize the total amount
+  if (filteredData?.length > 0) {
+    billsAmount = filteredData?.reduce((acc: number, data: any) => {
+      const parsedAmount = parseFloat(data.bills);
+      return isNaN(parsedAmount) ? acc : acc + parsedAmount;
+    }, 0);
+  }
   let content;
 
   if (isLoading && !isError) {
@@ -72,7 +85,7 @@ const AllBazar = () => {
   } else if (!isLoading && isError && !allExpenses?.expenses) {
     content = <P>There is an error</P>;
   } else if (!isLoading && !isError && allExpenses?.expenses?.length === 0) {
-    content = <P>Bazar not found</P>;
+    content = <P>Home Rent And Bills not found</P>;
   }
 
   return (
@@ -129,14 +142,22 @@ const AllBazar = () => {
                 </thead>
                 <tbody>
                   {filteredData.map((data: any, index: any) => {
-                    totalAmount += parseFloat(data.amount); // Add the amount to the total
                     return (
                       <tr key={index}>
                         <th>{index + 1}</th>
                         <td>{data?.name}</td>
                         <td>{data?.updatedAt}</td>
                         <td>{data?.month}</td>
-                        <td>{data?.homeRent} BDT</td>
+                        <td>
+                          {data?.homeRent ? (
+                            <>{data?.homeRent}</>
+                          ) : (
+                            <>
+                              <P>You Didn't Provide Home Rent</P>
+                            </>
+                          )}{" "}
+                          BDT
+                        </td>
                         <td>{data?.bills} BDT</td>
                         <td className="flex gap-5">
                           <button>
@@ -151,6 +172,15 @@ const AllBazar = () => {
                   })}
                 </tbody>
               </table>
+              {!isLoading &&
+                !isError &&
+                allExpenses?.expenses?.length > 0 &&
+                filteredData?.length !== 0 && (
+                  <P className="text-end mt-5 ">
+                    Total Home Rent Amount: {totalHomeRentAmount.toFixed(2)} And
+                    Bills : {billsAmount.toFixed(1)} BDT
+                  </P>
+                )}
             </div>
           ) : (
             <P className="mt-3 text-center">
@@ -158,14 +188,6 @@ const AllBazar = () => {
             </P>
           )}
           {content}
-          {!isLoading &&
-            !isError &&
-            allExpenses?.expenses?.length > 0 &&
-            filteredData?.length !== 0 && (
-              <P className="text-end mt-5 ">
-                Total Bazar Amount: {totalAmount.toFixed(2)} BDT
-              </P>
-            )}
         </div>
       </div>
     </div>
