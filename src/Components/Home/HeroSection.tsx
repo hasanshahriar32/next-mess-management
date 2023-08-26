@@ -7,7 +7,7 @@ import { P, Title } from "../ui/Heading/Heading";
 const HeroSection = () => {
   return (
     <Container className="">
-      <div className="hero h-screen text-white  ">
+      <div className=" text-white h-[90vh]  ">
         <div className="md:px-0 flex-col  md:grid md:grid-cols-2 md:w-full  h-full flex  items-center justify-between ">
           <div className="col-span-1 md:mt-0 mt-14">
             <div className="mb-7">

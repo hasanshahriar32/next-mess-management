@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 interface InputSet {
   homeRent: string | null;
   bills: string | null;
@@ -7,7 +7,7 @@ interface InputSet {
 }
 const SelectHomerentAndBills: React.FC = () => {
   const [inputSets, setInputSets] = useState<InputSet[]>(
-    JSON.parse(localStorage.getItem("inputSets:")) || [
+    JSON.parse(localStorage.getItem("inputSets") ?? "[]") || [
       { homeRent: "", bills: "", userName: "" },
     ]
   );

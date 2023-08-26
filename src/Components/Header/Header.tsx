@@ -1,6 +1,5 @@
 "use client";
 import { signOut, useSession } from "next-auth/react";
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import Container from "../ui/Container/container";
@@ -30,7 +29,7 @@ const Header: React.FC<HeaderProps> = () => {
   };
 
   return (
-    <div className=" z-50  sticky top-0   bg-[#282a57] ">
+    <div className=" z-50 bg-[#282a57] w-full">
       <div className=" border-b-2 border-gray-800 shadow-sm">
         <Container className="">
           <div className="navbar">
