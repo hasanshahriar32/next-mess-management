@@ -4,6 +4,7 @@ import Link from "next/link";
 import React from "react";
 import Container from "../ui/Container/container";
 import { P } from "../ui/Heading/Heading";
+import { useGetSingleUserQuery } from "@/app/features/bazar/bazarApi";
 import Image from "next/image";
 
 // Define types for session and status
@@ -20,8 +21,10 @@ interface HeaderProps {}
 
 const Header: React.FC<HeaderProps> = () => {
   const { status, data: session } = useSession();
+  const sessionEmail: any = session?.user?.email;
+  const { data: singleUser } = useGetSingleUserQuery(sessionEmail);
   console.log(session);
-  console.log(status);
+  console.log(singleUser);
 
   const handleSignOut = async () => {
     await signOut({
@@ -61,14 +64,13 @@ const Header: React.FC<HeaderProps> = () => {
                     className="btn btn-ghost btn-circle avatar"
                   >
                     <div className="w-10 rounded-full">
-                      {/* <Image
-                        src={session?.user?.image}
+                      <Image
+                        src={singleUser?.user?.selectedImage}
                         alt=""
                         width={50}
                         height={50}
                         className="rounded-full"
-                      /> */}
-                      <P>{session?.user?.name}</P>
+                      />
                     </div>
                   </label>
                 )}
