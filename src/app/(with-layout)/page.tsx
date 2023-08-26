@@ -1,12 +1,18 @@
+import Cat from "@/Components/Cat/cat";
+import Gallery from "@/Components/Gallery/Gallery";
 import HeroSection from "@/Components/Home/HeroSection";
-import Parallax from "@/Components/Parallax";
+import Review from "@/Components/Review/Review";
+import Services from "@/Components/services/Services";
 
 export default function Home() {
   return (
     <>
-      <Parallax />
-      <div className="">
+      <div className="flex flex-col w-full gap-5">
         <HeroSection />
+        <Services />
+        <Gallery />
+        <Review />
+        <Cat />
       </div>
     </>
   );
