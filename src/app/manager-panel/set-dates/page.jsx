@@ -66,6 +66,30 @@ export default function Page() {
                 </div>
               </div>
             </div>
+            <form>
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text text-secondary">
+                      Managing Slot Name
+                    </span>
+                  </label>
+                  <input
+                    type="text"
+                    name="slot"
+                    placeholder="Hasan's July management"
+                    className="input input-ghost input-bordered"
+                    required={true}
+                  />
+                </div>
+                {/* //add selectedValues to the form responsse  */}
+
+                <button
+                  className="btn btn-success my-3 btn-outline"
+                  type="submit"
+                >
+                  Confirm
+                </button>
+              </form>
           </div>
 
           <div className="text-lg">
@@ -91,30 +115,7 @@ export default function Page() {
                   <div key={date}>{new Date(date).toLocaleDateString()}</div>
                 ))}
               </div>
-              <form>
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text text-secondary">
-                      Managing Slot Name
-                    </span>
-                  </label>
-                  <input
-                    type="text"
-                    name="slot"
-                    placeholder="Hasan's July management"
-                    className="input input-ghost input-bordered"
-                    required={true}
-                  />
-                </div>
-                {/* //add selectedValues to the form responsse  */}
-
-                <button
-                  className="btn btn-success my-3 btn-outline"
-                  type="submit"
-                >
-                  Confirm
-                </button>
-              </form>
+              
             </div>
           </div>
         </div>
