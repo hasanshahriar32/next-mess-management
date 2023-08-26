@@ -8,6 +8,7 @@ const nextConfig = {
       "*",
       "www.pngkey.com",
       "https://imgbb.com",
+      "images.unsplash.com",
     ],
   },
 };
