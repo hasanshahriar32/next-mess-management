@@ -7,11 +7,11 @@ import { P } from "../ui/Heading/Heading";
 import Image from "next/image";
 
 // Define types for session and status
-interface UserSession {
-  user: {
-    image: string | null;
-  };
-}
+// interface UserSession {
+//   user: {
+//     image: string | null;
+//   };
+// }
 
 type SessionStatus = "authenticated" | "loading" | "unauthenticated";
 
@@ -36,11 +36,11 @@ const Header: React.FC<HeaderProps> = () => {
           <div className="navbar">
             <div className="flex-1">
               <a className="btn btn-ghost normal-case text-xl">
-                <Image 
-                src="https://i.ibb.co/PGNP90L/Green-Yellow-White-Modern-Farm-House-Logo-4.png"
-                height={50}
-                width={50}
-                alt="logo"
+                <Image
+                  src="https://i.ibb.co/PGNP90L/Green-Yellow-White-Modern-Farm-House-Logo-4.png"
+                  height={50}
+                  width={50}
+                  alt="logo"
                 />
                 <p className="hidden md:flex">Mess Management</p>
               </a>
@@ -61,13 +61,13 @@ const Header: React.FC<HeaderProps> = () => {
                     className="btn btn-ghost btn-circle avatar"
                   >
                     <div className="w-10 rounded-full">
-                      <Image
+                      {/* <Image
                         src={session?.user?.image}
                         alt=""
                         width={50}
                         height={50}
                         className="rounded-full"
-                      />
+                      /> */}
                       <P>{session?.user?.name}</P>
                     </div>
                   </label>
