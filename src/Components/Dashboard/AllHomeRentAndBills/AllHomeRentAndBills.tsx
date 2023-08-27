@@ -133,8 +133,6 @@ const AllHomeRentAndBills = () => {
           </thead>
           <tbody>
             {filteredExpenses?.map((data: any, index: any) => {
-              totalHomeRent += parseFloat(data.homeRent); // Add the amount to the total
-              totalBills += parseFloat(data.bills); // Add the amount to the total
               return (
                 <tr key={index}>
                   <th>{index + 1}</th>
@@ -238,15 +236,12 @@ const AllHomeRentAndBills = () => {
       </div>
 
       {content}
-      {!isLoading &&
-        !isError &&
-        allExpenses?.expenses?.length > 0 &&
-        pathname === "/dashboard/all-homerent-bills" && (
-          <P className="text-end my-5">
-            Total Home Remt Amount: {totalHomeRent.toFixed(2)} BDT And Bills :{" "}
-            {totalBills} BDT
-          </P>
-        )}
+      {!isLoading && !isError && allExpenses?.expenses?.length > 0 && (
+        <P className="text-end my-5">
+          Total Home Remt Amount: {totalHomeRent.toFixed(2)} BDT And Bills :{" "}
+          {totalBills} BDT
+        </P>
+      )}
     </div>
   );
 };

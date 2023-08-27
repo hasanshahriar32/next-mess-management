@@ -1,22 +1,17 @@
 "use client";
 
-import React, { useState } from "react";
+import { useAllUserQuery } from "@/app/features/bazar/bazarApi";
+import React, { useEffect, useState } from "react";
 
 const MealInputComponent = () => {
-  const allUsers = [
-    { id: 1, name: "User 1", email: "user1@example.com" },
-    { id: 2, name: "User 2", email: "user2@example.com" },
-    { id: 3, name: "User 3", email: "user3@example.com" },
-    // ... add more users as needed
-  ];
+  const { data: allUsers } = useAllUserQuery();
 
-  const [selectedUser, setSelectedUser] = useState(allUsers[0].id);
+  const [selectedUser, setSelectedUser] = useState("");
   const [mealDate, setMealDate] = useState("");
   const [mealNumber, setMealNumber] = useState("");
-  console.log(selectedUser);
-
   const handleUserChange = (event: any) => {
     setSelectedUser(event.target.value);
+    console.log(event.target.value);
   };
 
   const handleMealDateChange = (event: any) => {
@@ -27,51 +22,98 @@ const MealInputComponent = () => {
     setMealNumber(event.target.value);
   };
 
-  const handleSubmit = () => {
-    const selectedUserData = allUsers?.find((user) => user.id === selectedUser);
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    const selectedUserData = await allUsers?.users?.find(
+      (user: any) => user._id === selectedUser
+    );
     console.log(selectedUserData);
-    // if (selectedUserData) {
-    //   const mealData = {
-    //     user: selectedUser,
-    //     email: selectedUserData.email,
-    //     date: mealDate,
-    //     number: mealNumber,
-    //   };
 
-    //   console.log(mealData);
-    // } else {
-    //   console.log("Selected user data not found");
-    // }
+    const dateObject = new Date(mealDate);
+    const monthName = dateObject.toLocaleString("default", { month: "long" });
+    const year = dateObject.getFullYear();
+    const dayOfMonth = dateObject.getDate();
+    // console.log("Month Name:", monthName);
+    // console.log("Year:", year);
+    // console.log("Day of Month:", dayOfMonth);
+    if (selectedUserData) {
+      const mealData = {
+        user: selectedUserData?.name,
+        email: selectedUserData.email,
+        date: mealDate,
+        mealNumber,
+        month: monthName,
+        year,
+        dayOfMonth,
+      };
+      console.log(mealData);
+    }
   };
 
   return (
-    <div>
-      <label htmlFor="userSelect">Select User: </label>
-      <select id="userSelect" value={selectedUser} onChange={handleUserChange}>
-        {allUsers?.map((user) => (
-          <option key={user.id} value={user?.id}>
-            {user.name}
-          </option>
-        ))}
-      </select>
-      <br />
-      <label htmlFor="mealDate">Meal Date: </label>
-      <input
-        type="date"
-        id="mealDate"
-        value={mealDate}
-        onChange={handleMealDateChange}
-      />
-      <br />
-      <label htmlFor="mealNumber">Meal Number: </label>
-      <input
-        type="number"
-        id="mealNumber"
-        value={mealNumber}
-        onChange={handleMealNumberChange}
-      />
-      <br />
-      <button onClick={handleSubmit}>Submit</button>
+    <div className="my-16">
+      {allUsers?.users?.length > 0 ? (
+        <>
+          {" "}
+          <form onSubmit={handleSubmit}>
+            <div className="grid grid-cols-3 gap-10">
+              <div className="flex flex-col">
+                <label htmlFor="userSelect " className="mb-3">
+                  Select User:{" "}
+                </label>
+                <select
+                  id="userSelect"
+                  value={selectedUser}
+                  onChange={handleUserChange}
+                  required
+                  className="border-2 border-white select select-bordered w-full"
+                >
+                  <option className="selected">Select Users</option>
+                  {allUsers?.users?.map((user: any) => (
+                    <option key={user.id} value={user._id}>
+                      {user?.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex flex-col">
+                <label htmlFor="mealDate " className="mb-3">
+                  Meal Date:{" "}
+                </label>
+                <input
+                  type="date"
+                  id="mealDate"
+                  value={mealDate}
+                  required
+                  className="border-2 border-white select select-bordered w-full"
+                  onChange={handleMealDateChange}
+                />
+              </div>
+              <div className="flex flex-col">
+                <label htmlFor="mealNumber " className="mb-3">
+                  Meal Number:{" "}
+                </label>
+                <input
+                  type="number"
+                  id="mealNumber"
+                  value={mealNumber}
+                  required
+                  className="border-2  border-white select select-bordered w-full"
+                  onChange={handleMealNumberChange}
+                />
+              </div>
+            </div>
+            <button
+              type="submit"
+              className=" mt-5 text-white bg-gradient-to-r from-cyan-500 to-blue-500 px-4 py-2 font-semibold rounded-lg"
+            >
+              Submit
+            </button>
+          </form>
+        </>
+      ) : (
+        <>Loading user data...</>
+      )}
     </div>
   );
 };

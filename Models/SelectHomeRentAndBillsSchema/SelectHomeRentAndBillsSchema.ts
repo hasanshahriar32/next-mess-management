@@ -1,15 +1,20 @@
 import { Schema, model, models } from "mongoose";
 
+const billsSchema = new Schema({
+  netBill: Number,
+  gasBill: Number,
+  electricityBill: Number,
+});
 const homeRentAndBillsSubSchema = new Schema({
   homeRent: Number,
-  bills: Number,
-  userName: String,
+  bills: [billsSchema],
+  user: String,
+  date: String,
+  dayOfMonth: Number,
+  email: String,
+  month: String,
+  year: Number,
 });
-
-// const homeRentAndBillsSchema = new Schema({
-//   arrayOfObjects: [homeRentAndBillsSubSchema],
-// });
-
 const HomeRentAndBillsModel =
   models.SelectHomeRentAndBills ||
   model("SelectHomeRentAndBills", homeRentAndBillsSubSchema);
