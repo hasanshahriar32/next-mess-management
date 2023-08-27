@@ -1,4 +1,4 @@
-import SelectRentAndBills from "@/Components/Dashboard/SelectRentAndBills/SelectRentAndBills";
+// import SelectRentAndBills from "@/Components/Dashboard/SelectRentAndBills/SelectRentAndBills";
 import React from "react";
 
 const page = () => {
