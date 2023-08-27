@@ -168,7 +168,7 @@ const AllHomeRentAndBills = () => {
                               onClick={() => handleUnPaid(data?._id)}
                               className="font-bold text-[#06B6D4]"
                             >
-                              Paid
+                              Approved
                             </button>
                           </>
                         ) : (
@@ -178,7 +178,7 @@ const AllHomeRentAndBills = () => {
                               onClick={() => handlePaid(data?._id)}
                               className="font-bold text-[#06B6D4]"
                             >
-                              UnPaid
+                              UnApproved
                             </button>
                           </>
                         )}

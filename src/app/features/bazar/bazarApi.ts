@@ -230,10 +230,7 @@ export const addBazarApi = createApi({
       providesTags: ["reportCard"],
     }),
 
-    AddSelectHomeRentAndBills: builder.mutation<
-      { success: boolean },
-      homeRentAndBillsSubSchema
-    >({
+    AddSelectHomeRentAndBills: builder.mutation<{ success: boolean }, any>({
       query: (homeRentAndBills) => ({
         url: "/api/select-homerent-bills", // Adjust the URL to your API route
         method: "POST",

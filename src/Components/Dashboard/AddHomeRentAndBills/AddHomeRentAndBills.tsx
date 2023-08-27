@@ -33,13 +33,13 @@ const AddHomeRentAndBills = () => {
   const { data } = useSession();
   const router = useRouter();
 
-  // const { data: homeRentAndBills } = useGetSelectHomeRentAndBillsQuery();
-  // console.log(homeRentAndBills?.users);
   const sessionEmail: any = data?.user?.email;
   const { data: getHomeRentAndBills } =
     useGetSingleSelectHomeRentAndBillsQuery(sessionEmail);
-  console.log(getHomeRentAndBills?.homeRentAndBills?.bills);
+  console.log(getHomeRentAndBills?.homeRentAndBills);
 
+  const { data: myHomeRentAndBills } = useGetHomeAndBillsQuery();
+  console.log(myHomeRentAndBills);
   const [AddHomeRentAndBills] = useAddHomeAndBillsMutation();
   const resetForm = () => {
     setHomeRent("");

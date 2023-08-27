@@ -159,7 +159,7 @@ const AllBazar = () => {
                           BDT
                         </td>
                         <td>{data?.bills} BDT</td>
-                        <td className="flex gap-5">
+                        <td className="flex gap-5 items-center">
                           <button>
                             <BiEdit className="text-xl"></BiEdit>
                           </button>

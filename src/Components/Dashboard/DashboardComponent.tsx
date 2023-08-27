@@ -114,7 +114,7 @@ const DashboardComponent = () => {
 
                         <td>{data?.email}</td>
                         <td className="flex gap-5">
-                          {singleUser?.user?.role === "Admin" ? (
+                          {singleUser?.user?.role === "superAdmin" ? (
                             <>
                               {" "}
                               <button>

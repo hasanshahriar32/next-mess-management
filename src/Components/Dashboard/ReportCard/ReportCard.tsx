@@ -104,6 +104,7 @@ const ReportCard = ({ email: userEmail }: any) => {
       bills: parseFloat(SingleHomeRentAndBills?.expenses?.bills),
       average: parseFloat(average),
       dynamicData: dynamicDataArray,
+      image: singleUser?.user?.selectedImage,
     };
     console.log(dataToSave);
 
