@@ -29,6 +29,7 @@ import AllHomeRentAndBills from "./AllHomeRentAndBills/AllHomeRentAndBills";
 import HomeRentAndBills from "./HomerentAndBills/HomerentAndBills";
 import AllBazar from "./AllBazar/AllBazar";
 import Link from "next/link";
+import Image from "next/image";
 
 const DashboardComponent = () => {
   const totalBazar = useAppSelector((state) => state.meal.totalBazarAmount);
@@ -44,6 +45,27 @@ const DashboardComponent = () => {
   console.log(singleUser);
   const [name, setName] = useState("");
   const handleRemove = () => {};
+  const allUsersMonth = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const [userMonth, setUserMonth] = useState("");
+  let filteredUsers = allUser?.users;
+  if (userMonth !== "") {
+    filteredUsers = filteredUsers?.filter(
+      (user: any) => userMonth === user.month
+    );
+  }
   let content;
   if (isLoading && !isError) {
     content = (
@@ -57,52 +79,80 @@ const DashboardComponent = () => {
     content = <P>Bazar Not Found</P>;
   } else if (!isLoading && !isError && allUser?.users?.length > 0) {
     content = (
-      <div className="overflow-x-auto">
-        <table className="table">
-          <thead>
-            <tr className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 px-4 py-2 font-semibold rounded-lg">
-              <th></th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Action</th>
-              <th>Report Card</th>
-            </tr>
-          </thead>
-          <tbody>
-            {allUser?.users?.map((data: any, index: any) => {
-              return (
-                <tr key={index}>
-                  <th>{index + 1}</th>
-                  <td>{data?.name}</td>
-                  <td>{data?.email}</td>
-                  <td className="flex gap-5">
-                    {singleUser?.user?.role === "Admin" ? (
-                      <>
-                        {" "}
-                        <button>
-                          <BiEdit className="text-xl"></BiEdit>
-                        </button>
-                        <button>
-                          <AiOutlineDelete className="text-xl"></AiOutlineDelete>
-                        </button>
-                      </>
-                    ) : (
-                      <>
-                        <P>Only Admin Can Take Action</P>
-                      </>
-                    )}
-                  </td>
-                  <td>
-                    <Link href={`/dashboard/report-card/${data?.email}`}>
-                      <button> Make Report Card</button>
-                    </Link>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+      <>
+        {filteredUsers && filteredUsers?.length > 0 ? (
+          <>
+            <div className="overflow-x-auto">
+              <table className="table">
+                <thead>
+                  <tr className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 px-4 py-2 font-semibold rounded-lg">
+                    <th></th>
+                    <th>Image</th>
+                    <th>Name</th>
+
+                    <th>Email</th>
+                    <th>Action</th>
+                    <th>Report Card</th>
+                    <th>Profile</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredUsers?.map((data: any, index: any) => {
+                    return (
+                      <tr key={index}>
+                        <th>{index + 1}</th>
+                        <td>
+                          <Image
+                            src={data?.selectedImage}
+                            alt=""
+                            width={30}
+                            height={30}
+                            className="rounded-full"
+                          ></Image>
+                        </td>
+                        <td>{data?.name}</td>
+
+                        <td>{data?.email}</td>
+                        <td className="flex gap-5">
+                          {singleUser?.user?.role === "Admin" ? (
+                            <>
+                              {" "}
+                              <button>
+                                <BiEdit className="text-xl"></BiEdit>
+                              </button>
+                              <button>
+                                <AiOutlineDelete className="text-xl"></AiOutlineDelete>
+                              </button>
+                            </>
+                          ) : (
+                            <>
+                              <P>For Admin </P>
+                            </>
+                          )}
+                        </td>
+                        <td>
+                          <Link href={`/dashboard/report-card/${data?.email}`}>
+                            <button> Make Report Card</button>
+                          </Link>
+                        </td>
+                        <td>
+                          <Link href={`dashboard/users-profile/${data?.email}`}>
+                            Profile
+                          </Link>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </>
+        ) : (
+          <>
+            <P>No User Found For This month </P>
+          </>
+        )}
+      </>
     );
   }
 
@@ -345,7 +395,25 @@ const DashboardComponent = () => {
 
       <div>
         <div className=" border-2 border-white rounded-lg px-6 py-3">
-          <Subtitle className="my-5">All Users</Subtitle>
+          <div className="flex justify-between my-5">
+            <Subtitle className="">All Users</Subtitle>
+            <div>
+              <select
+                name="userMonth"
+                required
+                value={userMonth}
+                onChange={(e) => setUserMonth(e.target.value)}
+                className="border-2 border-white select select-bordered w-full"
+              >
+                <option value="">Filter by Month</option>
+                {allUsersMonth?.map((month) => (
+                  <option key={month} value={month}>
+                    {month}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
           {content}
         </div>
       </div>

@@ -36,6 +36,11 @@ const SelectHomerentAndBills: React.FC = () => {
   const handleSubmit = () => {
     // You can implement your backend data submission logic here
     console.log("Submitting data:", inputSets);
+
+    const rentAndBillsInfo = {
+      ...inputSets,
+    };
+    console.log(rentAndBillsInfo);
   };
 
   return (

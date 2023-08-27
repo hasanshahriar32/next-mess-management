@@ -16,7 +16,7 @@ const MyBazar = () => {
   const { data: session } = useSession();
   const [RemoveBazar, { isError, isLoading, isSuccess, error }] =
     useRemoveBazarMutation();
-
+  console.log(bazarData);
   // Calculate the total amount of your bazar entries
   const myBazarEntries = bazarData?.bazars?.filter(
     (entry: any) => entry.email === session?.user?.email
@@ -52,11 +52,11 @@ const MyBazar = () => {
     0
   );
   return (
-    <div className="mt-16">
+    <div className="mt-16 border-2 border-white p-6  rounded-lg">
       <div className="flex justify-between  mb-5">
         <div>
           {" "}
-          <Title className="mb-5">My Bazar</Title>
+          <Title className="mb-5">Bazar</Title>
         </div>
         <div>
           <select
@@ -90,6 +90,7 @@ const MyBazar = () => {
                     <th>Month</th>
                     <th>Amount</th>
                     <th>Action</th>
+                    <th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -111,6 +112,15 @@ const MyBazar = () => {
                           <button onClick={() => handleRemove(entry?._id)}>
                             <AiOutlineDelete className="text-xl cursor-pointer"></AiOutlineDelete>
                           </button>
+                        </td>
+                        <td>
+                          {entry?.bazarStatus === true ? (
+                            <>
+                              <P>Approved</P>
+                            </>
+                          ) : (
+                            <>UnApproved</>
+                          )}
                         </td>
                       </tr>
                     ))}

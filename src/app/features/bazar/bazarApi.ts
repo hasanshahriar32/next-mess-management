@@ -48,6 +48,9 @@ type HomeRentAndBillsRequest = {
   email: string;
   month: string;
   homeRentAndBills: boolean;
+  homeRentDate: String;
+  dayOfMonth: Number;
+  year: Number;
 };
 
 type ApproveHomeRentAndBillsRequest = {
@@ -72,9 +75,26 @@ interface Data {
   bills: number;
 }
 
+type billsInterface = {
+  netBill: number;
+  gasBill: number;
+  electricityBill: number;
+};
+
+type homeRentAndBillsSubSchema = {
+  homeRent: number;
+  bills: billsInterface[];
+  user: string;
+  date: string;
+  dayOfMonth: number;
+  email: string;
+  month: string;
+  year: number;
+};
+
 export const addBazarApi = createApi({
   reducerPath: "bazarAddApi",
-  tagTypes: ["bazars", "homeRent", "users", "reportCard"],
+  tagTypes: ["bazars", "homeRent", "users", "reportCard", "homeRentAndBills"],
 
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:3000",
@@ -209,6 +229,26 @@ export const addBazarApi = createApi({
       query: () => `/api/report-card`,
       providesTags: ["reportCard"],
     }),
+
+    AddSelectHomeRentAndBills: builder.mutation<
+      { success: boolean },
+      homeRentAndBillsSubSchema
+    >({
+      query: (homeRentAndBills) => ({
+        url: "/api/select-homerent-bills", // Adjust the URL to your API route
+        method: "POST",
+        body: homeRentAndBills,
+      }),
+      invalidatesTags: ["homeRentAndBills"],
+    }),
+    getSelectHomeRentAndBills: builder.query<any, void>({
+      query: () => `/api/select-homerent-bills`,
+      providesTags: ["homeRentAndBills"],
+    }),
+    getSingleSelectHomeRentAndBills: builder.query<any, void>({
+      query: (email) => `/api/select-homerent-bills/${email}`,
+      providesTags: ["homeRentAndBills"], // Adjust the URL to your API route
+    }),
   }),
 });
 
@@ -230,4 +270,7 @@ export const {
   useGetSingleHomeRentAndBillsQuery,
   useAddReportCardMutation,
   useGetReportCardQuery,
+  useAddSelectHomeRentAndBillsMutation,
+  useGetSelectHomeRentAndBillsQuery,
+  useGetSingleSelectHomeRentAndBillsQuery,
 } = addBazarApi;

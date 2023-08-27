@@ -1,17 +1,20 @@
 "use client";
 
-import { P, Title } from "@/Components/ui/Heading/Heading";
-import { useGetSingleUserQuery } from "@/app/features/bazar/bazarApi";
-import Image from "next/image";
 import React from "react";
 import MyBazar from "../MyBazar/MyBazar";
 import MyHomeRentAndBills from "../MyHomeRentAndBills/MyHomeRentAndBills";
+import { useGetSingleUserQuery } from "@/app/features/bazar/bazarApi";
+import { useSession } from "next-auth/react";
+import { P, Title } from "@/Components/ui/Heading/Heading";
+import Image from "next/image";
 
-const UsersProfile = ({ email }: any) => {
-  const { data: singleUser } = useGetSingleUserQuery(email);
+const MyProfile = () => {
+  const { data: session } = useSession();
+  const sessionEmail: any = session?.user?.email;
+  const { data: singleUser } = useGetSingleUserQuery(sessionEmail);
   console.log("single user", singleUser);
   return (
-    <div className="my-16  ">
+    <div className="my-16">
       <div className="flex gap-10 items-center">
         <div>
           <Image
@@ -33,12 +36,10 @@ const UsersProfile = ({ email }: any) => {
           <P>National Id Card Number : {singleUser?.user?.religious}</P>
         </div>
       </div>
-      <div className="">
-        <MyBazar></MyBazar>
-        <MyHomeRentAndBills></MyHomeRentAndBills>
-      </div>
+      <MyBazar></MyBazar>
+      <MyHomeRentAndBills></MyHomeRentAndBills>
     </div>
   );
 };
 
-export default UsersProfile;
+export default MyProfile;
