@@ -17,7 +17,7 @@ export default function Page() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/admin/manage-manager/${sessionEmail}`
+          `https://inn.vercel.app/api/admin/manage-manager/${sessionEmail}`
         );
         setManagerData(response?.data?.manager);
       } catch (error) {
@@ -54,10 +54,8 @@ export default function Page() {
                   <DatePicker
                     value={dates}
                     onChange={setDates}
-                    minDate={new Date().setDate(
-                      managerData?.validity?.startDate
-                    )}
-                    maxDate={new Date().setDate(managerData?.validity?.endDate)}
+                    minDate={new Date(managerData?.validity?.startDate)}
+                    maxDate={new Date(managerData?.validity?.endDate)}
                     format="MMMM DD YYYY"
                     sort
                     plugins={[
@@ -107,7 +105,7 @@ export default function Page() {
                 className="btn btn-success my-3 btn-outline"
                 type="submit"
               >
-                Confirm
+                Set Poll
               </button>
             </form>
           </div>
