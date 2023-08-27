@@ -105,11 +105,6 @@ const MyHomeRentAndBills = () => {
                   <td>{entry?.homeRent}</td>
                   <td>{entry?.bills}</td>
                   <td className="flex gap-5 items-center">
-                    <Link href={`/dashboard/edit-my-bazar/${entry?._id}`}>
-                      <button>
-                        <BiEdit className="text-xl cursor-pointer"></BiEdit>
-                      </button>
-                    </Link>
                     <button onClick={() => handleRemove(entry?._id)}>
                       <AiOutlineDelete className="text-xl cursor-pointer"></AiOutlineDelete>
                     </button>
