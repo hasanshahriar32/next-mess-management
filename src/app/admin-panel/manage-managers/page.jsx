@@ -50,7 +50,7 @@ export default function StickyHeadTable() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/admin/manage-manager`
+          `https://inn.vercel.app/api/admin/manage-manager`
         );
         console.log(response);
         setManagerData(response?.data?.admin);

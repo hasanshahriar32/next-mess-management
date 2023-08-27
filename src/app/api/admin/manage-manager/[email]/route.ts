@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { NextApiRequest } from "next";
-import { connectMongoDB } from "../../../../../db/mongoDB";
-import Manager from "../../../../../Models/managerSchema/managerSchema";
-import User from "../../../../../Models/userSchema/userSchema";
+import { connectMongoDB } from "../../../../../../db/mongoDB";
+import Manager from "../../../../../../Models/managerSchema/managerSchema";
+import User from "../../../../../../Models/userSchema/userSchema";
 
 interface paramsInterface {
   params: {
@@ -35,13 +35,9 @@ export async function GET(req: any, { params }: paramsInterface) {
       );
     }
     return NextResponse.json({ manager });
-    //close connection to mongodb
-     
-
-
   } catch (error) {
     return NextResponse.json(
-      { message: "Error finding user", error },
+      { message: "Error finding manager", error },
       { status: 500 }
     );
   }
