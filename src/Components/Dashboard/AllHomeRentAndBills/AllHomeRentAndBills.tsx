@@ -141,7 +141,7 @@ const AllHomeRentAndBills = () => {
                   <td>{data?.homeRent}</td>
                   <td>{data?.bills} BDT</td>
                   <td className="flex gap-5">
-                    {singleUser?.user?.role === "admin" ? (
+                    {singleUser?.user?.role === "superAdmin" ? (
                       <>
                         {" "}
                         <button>
@@ -158,7 +158,7 @@ const AllHomeRentAndBills = () => {
                     )}
                   </td>
                   <td>
-                    {singleUser?.user?.role === "admin" ? (
+                    {singleUser?.user?.role === "superAdmin" ? (
                       <>
                         {" "}
                         {data?.homeRentAndBills === true ? (

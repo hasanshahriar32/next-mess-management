@@ -48,6 +48,9 @@ type HomeRentAndBillsRequest = {
   email: string;
   month: string;
   homeRentAndBills: boolean;
+  homeRentDate: String;
+  dayOfMonth: Number;
+  year: Number;
 };
 
 type ApproveHomeRentAndBillsRequest = {

@@ -26,6 +26,18 @@ const bazarSchema = new Schema(
       type: Boolean,
       required: true,
     },
+    homeRentDate: {
+      type: String,
+      required: true,
+    },
+    dayOfMonth: {
+      type: Number,
+      required: true,
+    },
+    year: {
+      type: Number,
+      required: true,
+    },
   },
   {
     timestamps: true,

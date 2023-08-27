@@ -93,8 +93,8 @@ const Sidebar = () => {
     },
     {
       id: 13,
-      path: "/dashboard/users-profile",
-      title: "Users Profile",
+      path: "/dashboard/my-profile",
+      title: "My Profile",
       icon: <FaUser />,
     },
     {

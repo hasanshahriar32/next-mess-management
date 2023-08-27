@@ -71,6 +71,9 @@ const SelectRentAndBills = () => {
       try {
         const res = await AddSelectHomeRentAndBills(RentAndBillsData);
         console.log(res);
+        if ("data" in res) {
+          alert("Home Rent And Bills Updated");
+        }
       } catch (error) {
         console.log(error);
       }
