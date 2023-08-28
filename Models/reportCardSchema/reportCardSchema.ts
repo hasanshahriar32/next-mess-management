@@ -16,6 +16,7 @@ const averageSchema = new Schema(
     month: String,
     homeRent: Number,
     bills: Number,
+    image: String,
   },
   {
     timestamps: true,

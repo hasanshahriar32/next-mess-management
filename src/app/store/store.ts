@@ -10,8 +10,13 @@ export const store = configureStore({
     meal: mealSlice,
     [addBazarApi.reducerPath]: addBazarApi.reducer,
   },
+
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(addBazarApi.middleware),
+});
+store.subscribe(() => {
+  const state = store.getState();
+  localStorage.setItem("reduxState", JSON.stringify(state));
 });
 setupListeners(store.dispatch);
 // Infer the `RootState` and `AppDispatch` types from the store itself

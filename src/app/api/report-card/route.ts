@@ -13,6 +13,7 @@ export async function POST(request: any) {
       month,
       homeRent,
       bills,
+      image,
     } = await request.json();
 
     // Convert the dynamicData array into an array of dynamicDataSchema objects
@@ -37,6 +38,7 @@ export async function POST(request: any) {
       userEmail,
       homeRent,
       bills,
+      image,
     });
 
     console.log(
@@ -48,7 +50,8 @@ export async function POST(request: any) {
       userEmail,
       month,
       homeRent,
-      bills
+      bills,
+      image
     );
 
     return NextResponse.json({ message: "Report Card Added" }, { status: 201 });

@@ -1,10 +1,15 @@
 "use client";
 
-import { useAllUserQuery } from "@/app/features/bazar/bazarApi";
+import {
+  useAddMealCountMutation,
+  useAllUserQuery,
+} from "@/app/features/bazar/bazarApi";
 import React, { useEffect, useState } from "react";
 
 const MealInputComponent = () => {
   const { data: allUsers } = useAllUserQuery();
+
+  const [AddMealCount] = useAddMealCountMutation();
 
   const [selectedUser, setSelectedUser] = useState("");
   const [mealDate, setMealDate] = useState("");
@@ -22,6 +27,12 @@ const MealInputComponent = () => {
     setMealNumber(event.target.value);
   };
 
+  const resetForm = () => {
+    setSelectedUser("");
+    setMealDate("");
+    setMealNumber("");
+  };
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const selectedUserData = await allUsers?.users?.find(
@@ -33,9 +44,7 @@ const MealInputComponent = () => {
     const monthName = dateObject.toLocaleString("default", { month: "long" });
     const year = dateObject.getFullYear();
     const dayOfMonth = dateObject.getDate();
-    // console.log("Month Name:", monthName);
-    // console.log("Year:", year);
-    // console.log("Day of Month:", dayOfMonth);
+
     if (selectedUserData) {
       const mealData = {
         user: selectedUserData?.name,
@@ -46,7 +55,15 @@ const MealInputComponent = () => {
         year,
         dayOfMonth,
       };
-      console.log(mealData);
+      try {
+        const res = await AddMealCount(mealData);
+        console.log(res);
+
+        if ("data" in res) {
+          alert("Meal Added");
+          resetForm();
+        }
+      } catch (error) {}
     }
   };
 
