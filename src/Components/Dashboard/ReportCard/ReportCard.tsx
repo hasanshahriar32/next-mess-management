@@ -22,9 +22,11 @@ const ReportCard = ({ email: userEmail }: any) => {
     useGetSingleHomeRentAndBillsQuery(userEmail);
   console.log(SingleHomeRentAndBills?.expenses);
   // const { name, email } = singleUser?.user;
-  const totalBazar = useAppSelector((state) => state.meal.totalBazarAmount);
-  const totalMill = useAppSelector((state) => state.meal.grandTotal);
-  const personTotal = useAppSelector((state) => state.meal.personTotals);
+  const totalBazar = useAppSelector(
+    (state: any) => state.meal.totalBazarAmount
+  );
+  const totalMill = useAppSelector((state: any) => state.meal.grandTotal);
+  const personTotal = useAppSelector((state: any) => state.meal.personTotals);
   console.log(personTotal);
   console.log(totalMill);
   console.log(totalBazar);
