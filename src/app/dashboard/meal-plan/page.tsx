@@ -48,7 +48,7 @@ const App: React.FC = () => {
       // Save the initialized data to localStorage
       localStorage.setItem("userData", JSON.stringify(data));
     }
-  }, [initialUsers]);
+  }, []);
 
   const handleInputChange = (userId: string, day: number, newValue: string) => {
     setUserData((prevData) => {

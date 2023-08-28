@@ -1,15 +1,32 @@
 "use client";
-import { useState } from "react";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import DatePanel from "react-multi-date-picker/plugins/date_panel";
 import DatePickerHeader from "react-multi-date-picker/plugins/date_picker_header";
 import "react-multi-date-picker/styles/backgrounds/bg-dark.css";
 import weekends from "react-multi-date-picker/plugins/highlight_weekends";
-
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 export default function Page() {
   const [dates, setDates] = useState([]);
+  const [managerData, setManagerData] = useState([]);
   const [datePickerOpen, setDatePickerOpen] = useState(true); // State to control open/close
+  const { data } = useSession();
+  const sessionEmail = data?.user?.email;
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `https://inn.vercel.app/api/admin/manage-manager/${sessionEmail}`
+        );
+        setManagerData(response?.data?.manager);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
+    fetchData();
+  }, [sessionEmail]);
   return (
     <div className="text-xl lg:text-4xl py-6 text-center">
       <h1>Set dates for bazar picking</h1>
@@ -37,8 +54,8 @@ export default function Page() {
                   <DatePicker
                     value={dates}
                     onChange={setDates}
-                    minDate={new Date().setDate(5)}
-                    maxDate={new Date().setDate(15)}
+                    minDate={new Date(managerData?.validity?.startDate)}
+                    maxDate={new Date(managerData?.validity?.endDate)}
                     format="MMMM DD YYYY"
                     sort
                     plugins={[
@@ -66,6 +83,31 @@ export default function Page() {
                 </div>
               </div>
             </div>
+            <form>
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text text-secondary">
+                    Managing Slot Name
+                  </span>
+                </label>
+                <input
+                  type="text"
+                  name="slot"
+                  placeholder="Hasan's July management"
+                  defaultValue={managerData?.administrationTitle}
+                  className="input input-ghost input-bordered"
+                  required={true}
+                />
+              </div>
+              {/* //add selectedValues to the form responsse  */}
+
+              <button
+                className="btn btn-success my-3 btn-outline"
+                type="submit"
+              >
+                Set Poll
+              </button>
+            </form>
           </div>
 
           <div className="text-lg">
@@ -91,30 +133,6 @@ export default function Page() {
                   <div key={date}>{new Date(date).toLocaleDateString()}</div>
                 ))}
               </div>
-              <form>
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text text-secondary">
-                      Managing Slot Name
-                    </span>
-                  </label>
-                  <input
-                    type="text"
-                    name="slot"
-                    placeholder="Hasan's July management"
-                    className="input input-ghost input-bordered"
-                    required={true}
-                  />
-                </div>
-                {/* //add selectedValues to the form responsse  */}
-
-                <button
-                  className="btn btn-success my-3 btn-outline"
-                  type="submit"
-                >
-                  Confirm
-                </button>
-              </form>
             </div>
           </div>
         </div>

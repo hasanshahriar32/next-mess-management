@@ -7,6 +7,7 @@ import {
   useGetSingleUserQuery,
 } from "@/app/features/bazar/bazarApi";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import React, { useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { BiEdit } from "react-icons/bi";
@@ -44,7 +45,11 @@ const AllUser = () => {
     "November",
     "December",
   ];
-  const [month, setMonth] = useState(months[new Date().getMonth()]);
+  const [month, setMonth] = useState("");
+  let filteredUsers = allUser?.users;
+  if (month !== "") {
+    filteredUsers = filteredUsers?.filter((user: any) => user.month === month);
+  }
 
   let content;
   if (isLoading && !isError) {
@@ -67,10 +72,11 @@ const AllUser = () => {
               <th>Name</th>
               <th>Email</th>
               <th>Action</th>
+              <th>Profile</th>
             </tr>
           </thead>
           <tbody>
-            {allUser?.users?.map((data: any, index: any) => {
+            {filteredUsers?.map((data: any, index: any) => {
               return (
                 <tr key={index}>
                   <th>{index + 1}</th>
@@ -93,6 +99,11 @@ const AllUser = () => {
                       </>
                     )}
                   </td>
+                  <td>
+                    <Link href={`users-profile/${data?.email}`}>
+                      User's Prodile
+                    </Link>
+                  </td>
                 </tr>
               );
             })}
@@ -110,7 +121,7 @@ const AllUser = () => {
         <div className="flex gap-5 items-center">
           <P>Filter By Month</P>
           <div>
-            <select
+            {/* <select
               name="month"
               value={month}
               onChange={(e) => setMonth(e.target.value)}
@@ -118,6 +129,21 @@ const AllUser = () => {
             >
               {months.map((month) => (
                 <option key={month}>{month}</option>
+              ))}
+            </select> */}
+
+            <select
+              name="month"
+              required
+              value={month}
+              onChange={(e) => setMonth(e.target.value)}
+              className="border-2 border-white select select-bordered w-full"
+            >
+              <option value="">Filter by Month</option>
+              {months.map((month) => (
+                <option key={month} value={month}>
+                  {month}
+                </option>
               ))}
             </select>
           </div>

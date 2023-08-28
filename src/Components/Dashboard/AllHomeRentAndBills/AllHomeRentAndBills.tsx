@@ -133,8 +133,6 @@ const AllHomeRentAndBills = () => {
           </thead>
           <tbody>
             {filteredExpenses?.map((data: any, index: any) => {
-              totalHomeRent += parseFloat(data.homeRent); // Add the amount to the total
-              totalBills += parseFloat(data.bills); // Add the amount to the total
               return (
                 <tr key={index}>
                   <th>{index + 1}</th>
@@ -143,7 +141,7 @@ const AllHomeRentAndBills = () => {
                   <td>{data?.homeRent}</td>
                   <td>{data?.bills} BDT</td>
                   <td className="flex gap-5">
-                    {singleUser?.user?.role === "admin" ? (
+                    {singleUser?.user?.role === "superAdmin" ? (
                       <>
                         {" "}
                         <button>
@@ -160,7 +158,7 @@ const AllHomeRentAndBills = () => {
                     )}
                   </td>
                   <td>
-                    {singleUser?.user?.role === "admin" ? (
+                    {singleUser?.user?.role === "superAdmin" ? (
                       <>
                         {" "}
                         {data?.homeRentAndBills === true ? (
@@ -170,7 +168,7 @@ const AllHomeRentAndBills = () => {
                               onClick={() => handleUnPaid(data?._id)}
                               className="font-bold text-[#06B6D4]"
                             >
-                              Paid
+                              Approved
                             </button>
                           </>
                         ) : (
@@ -180,7 +178,7 @@ const AllHomeRentAndBills = () => {
                               onClick={() => handlePaid(data?._id)}
                               className="font-bold text-[#06B6D4]"
                             >
-                              UnPaid
+                              UnApproved
                             </button>
                           </>
                         )}
@@ -238,15 +236,12 @@ const AllHomeRentAndBills = () => {
       </div>
 
       {content}
-      {!isLoading &&
-        !isError &&
-        allExpenses?.expenses?.length > 0 &&
-        pathname === "/dashboard/all-homerent-bills" && (
-          <P className="text-end my-5">
-            Total Home Remt Amount: {totalHomeRent.toFixed(2)} BDT And Bills :{" "}
-            {totalBills} BDT
-          </P>
-        )}
+      {!isLoading && !isError && allExpenses?.expenses?.length > 0 && (
+        <P className="text-end my-5">
+          Total Home Remt Amount: {totalHomeRent.toFixed(2)} BDT And Bills :{" "}
+          {totalBills} BDT
+        </P>
+      )}
     </div>
   );
 };

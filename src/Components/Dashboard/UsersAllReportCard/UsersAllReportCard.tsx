@@ -7,7 +7,7 @@ import {
   // ... (other imports)
 } from "@/app/features/bazar/bazarApi";
 import { useSession } from "next-auth/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // ... (other imports)
 
 const UsersAllReportCard = () => {
@@ -43,7 +43,19 @@ const UsersAllReportCard = () => {
   const [month, setMonth] = useState(defaultMonth);
   // console.log(allReportCard?.reportCard);
   const [selectedData, setSelectedData] = useState<any | null>(null); // State to hold the data for the selected row
+  const [filteredReportCard, setFilteredReportCard] = useState<any[] | null>(
+    null
+  ); // State to hold the filtered report card data
 
+  useEffect(() => {
+    // Filter the report card data based on the selected month
+    if (allReportCard?.reportCard) {
+      const filteredData = allReportCard.reportCard.filter(
+        (data: any) => data?.month === month
+      );
+      setFilteredReportCard(filteredData);
+    }
+  }, [allReportCard, month]);
   const handleDetails = (data: any) => {
     setSelectedData(data);
   };
@@ -86,11 +98,12 @@ const UsersAllReportCard = () => {
                       <th>Serial No</th>
                       <th>Name</th>
                       <th>Email</th>
+
                       <th>Details</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {allReportCard?.reportCard?.map((data: any, index: any) => (
+                    {filteredReportCard?.map((data: any, index: any) => (
                       <React.Fragment key={data?._id}>
                         {data?.dynamicData.map((d: any) => (
                           <tr key={d?._id}>

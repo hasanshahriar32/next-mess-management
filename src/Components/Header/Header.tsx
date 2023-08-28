@@ -4,13 +4,15 @@ import Link from "next/link";
 import React from "react";
 import Container from "../ui/Container/container";
 import { P } from "../ui/Heading/Heading";
+import { useGetSingleUserQuery } from "@/app/features/bazar/bazarApi";
+import Image from "next/image";
 
 // Define types for session and status
-interface UserSession {
-  user: {
-    image: string | null;
-  };
-}
+// interface UserSession {
+//   user: {
+//     image: string | null;
+//   };
+// }
 
 type SessionStatus = "authenticated" | "loading" | "unauthenticated";
 
@@ -19,8 +21,10 @@ interface HeaderProps {}
 
 const Header: React.FC<HeaderProps> = () => {
   const { status, data: session } = useSession();
+  const sessionEmail: any = session?.user?.email;
+  const { data: singleUser } = useGetSingleUserQuery(sessionEmail);
   console.log(session);
-  console.log(status);
+  console.log(singleUser);
 
   const handleSignOut = async () => {
     await signOut({
@@ -34,7 +38,15 @@ const Header: React.FC<HeaderProps> = () => {
         <Container className="">
           <div className="navbar">
             <div className="flex-1">
-              <a className="btn btn-ghost normal-case text-xl">Logo</a>
+              <a className="btn btn-ghost normal-case text-xl">
+                <Image
+                  src="https://i.ibb.co/PGNP90L/Green-Yellow-White-Modern-Farm-House-Logo-4.png"
+                  height={50}
+                  width={50}
+                  alt="logo"
+                />
+                <p className="hidden md:flex">Mess Management</p>
+              </a>
             </div>
             <div className="flex-none gap-2">
               <div className="flex gap-5 items-center">
@@ -42,7 +54,7 @@ const Header: React.FC<HeaderProps> = () => {
                   <Link href={"/"}>Home</Link>
                   <Link href={"/about"}>About</Link>
                   <Link href={"/contact"}>Contact</Link>
-                  {!session?.user?.image && <Link href={"/login"}>Login</Link>}
+                  {!session?.user?.email && <Link href={"/login"}>Login</Link>}
                 </>
               </div>
               <div className="dropdown dropdown-end">
@@ -52,14 +64,13 @@ const Header: React.FC<HeaderProps> = () => {
                     className="btn btn-ghost btn-circle avatar"
                   >
                     <div className="w-10 rounded-full">
-                      {/* <Image
-                        src={session?.user.image}
+                      <Image
+                        src={singleUser?.user?.selectedImage}
                         alt=""
                         width={50}
                         height={50}
                         className="rounded-full"
-                      /> */}
-                      <P>{session?.user?.name}</P>
+                      />
                     </div>
                   </label>
                 )}

@@ -2,31 +2,53 @@ import { NextResponse } from "next/server";
 import { connectMongoDB } from "../../../../db/mongoDB";
 import HomeRentAndBillsModel from "../../../../Models/SelectHomeRentAndBillsSchema/SelectHomeRentAndBillsSchema";
 
-export async function POST(req: any) {
+export async function POST(request: any) {
   try {
-    const arrayOfObjects = [
-      {
-        homeRent: 1500,
-        bills: 500,
-        userName: "hasan",
-      },
-      {
-        homeRent: 1500,
-        bills: 500,
-        userName: "pervez",
-      },
-    ];
+    const { bills, date, dayOfMonth, email, homeRent, year, user, month } =
+      await request.json();
+
+    // Convert the bills array into an array of dynamicDataSchema objects
+    const billsDataArray = bills?.map((item: any) => ({
+      netBill: item?.netBill,
+      gasBill: item?.gasBill,
+      electricityBill: item?.electricityBill,
+    }));
+
+    // Connect to MongoDB
     await connectMongoDB();
-    const arra = arrayOfObjects?.map(async (input: any) => {
-      return await HomeRentAndBillsModel.create(input);
+
+    // Create a new report card document
+    await HomeRentAndBillsModel.create({
+      month,
+      bills: billsDataArray,
+      date,
+      dayOfMonth,
+      email,
+      homeRent,
+      year,
+      user,
     });
 
-    console.log("Data response:", arra);
-    return NextResponse.json({ message: "Users Created" }, { status: 201 });
-  } catch (error) {
-    console.log("Error:", error);
+    console.log(
+      "Report card added:",
+      month,
+      billsDataArray,
+      date,
+      dayOfMonth,
+      email,
+      homeRent,
+      year,
+      user
+    );
+
     return NextResponse.json(
-      { message: "Error occurred", error },
+      { message: "Home Rent And Bills Added" },
+      { status: 201 }
+    );
+  } catch (error) {
+    console.error("Error adding Home Rent And Bills :", error);
+    return NextResponse.json(
+      { message: "Error Home Rent And Bills" },
       { status: 500 }
     );
   }
@@ -38,7 +60,7 @@ export async function GET() {
     return NextResponse.json({ users });
   } catch (error) {
     return NextResponse.json(
-      { message: "Error fetching users", error },
+      { message: "Error fetching Home Rent And Bills", error },
       { status: 500 }
     );
   }
