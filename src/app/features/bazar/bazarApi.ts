@@ -97,7 +97,7 @@ export const addBazarApi = createApi({
   tagTypes: ["bazars", "homeRent", "users", "reportCard", "homeRentAndBills"],
 
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3000",
+    baseUrl: "https://inn.vercel.app",
   }),
   endpoints: (builder) => ({
     getBazar: builder.query<any, void>({

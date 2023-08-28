@@ -71,7 +71,7 @@ function SelectedDatesDisplay({ selectedDates }) {
     console.log(dataToPost);
     try {
       const response = await axios.post(
-        `http://localhost:3000/api/admin/manage-manager`,
+        `https://inn.vercel.app/api/admin/manage-manager`,
         dataToPost
       );
       console.log(response);

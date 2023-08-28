@@ -16,7 +16,7 @@ export default function BazarDate() {
     if (window.confirm("Are you sure you want to delete this event?")) {
       try {
         const response = await axios.delete(
-          `http://localhost:3000/api/scheduler?id=${eventIdToDelete}`
+          `https://inn.vercel.app/api/scheduler?id=${eventIdToDelete}`
         );
 
         if (response.status === 200) {
@@ -30,7 +30,7 @@ export default function BazarDate() {
 
   const fetchEvents = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/api/scheduler");
+      const response = await axios.get("https://inn.vercel.app/api/scheduler");
       const schedules = response.data.schedules;
 
       const formattedEvents = schedules.map((schedule) => ({
@@ -65,7 +65,7 @@ export default function BazarDate() {
       if (title && description) {
         try {
           const response = await axios.post(
-            "http://localhost:3000/api/scheduler",
+            "https://inn.vercel.app/api/scheduler",
             {
               name: data?.user?.name,
               email: data?.user?.email,
