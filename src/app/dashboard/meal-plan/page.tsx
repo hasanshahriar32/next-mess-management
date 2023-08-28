@@ -1,183 +1,210 @@
 "use client";
 import { useAllUserQuery } from "@/app/features/bazar/bazarApi";
-import { setGrandTotal, setPersonTotals } from "@/app/features/meal/mealSlice";
-import { useAppDispatch } from "@/app/hooks";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useState } from "react";
 
-interface PersonMeals {
-  name: any;
-  email: string;
-  meals: number[];
-}
+const App: React.FC = () => {
+  const { data, isLoading } = useAllUserQuery();
+  console.log(data?.users);
 
-// const personNames: string[] = [
-//   "Pervez Hossain",
-//   "Mr. Hasan",
-//   "Raihan",
-//   "Nasir",
-// ];
+  const initialUsers = ["user1", "user2", "user3", "user4"];
+  const numDays = 30; // Total number of days
+  const daysToShowInitially = 15; // Number of days to show initially
+  const daysToShowAfterToggle = 16; // Number of days to show after toggle
 
-const HostelMealTracker = () => {
-  const dispatch = useAppDispatch();
-  const { data: allUsers, isLoading } = useAllUserQuery();
-  console.log("Fetched User Data:", allUsers?.users);
-
-  // Use useRef for storing the initial data
-  const initialDataRef = useRef<PersonMeals[]>([]);
-
-  // Initialize mealData based on the fetched user data
-  const initialMealData: PersonMeals[] =
-    allUsers?.users?.map((user: any) => ({
-      name: user?.name,
-      email: user?.email,
-      meals: Array(31).fill(0),
-    })) || [];
-
-  // Set initialMealData to mealData only once
-  const [mealData, setMealData] = useState<PersonMeals[]>(initialMealData);
+  const [users, setUsers] = useState<string[]>(initialUsers);
+  const [userData, setUserData] = useState<
+    Record<string, string[]> | undefined
+  >(undefined);
 
   useEffect(() => {
-    // Update the initialDataRef when mealData changes
-    initialDataRef.current = mealData;
-  }, [mealData, allUsers?.users]);
+    const storedData = localStorage.getItem("userData");
 
-  console.log("Data to Save:", mealData);
-  //localStorage.setItem("mealData", JSON.stringify(mealData));
-  useEffect(() => {
-    const savedData = localStorage.getItem("mealData");
-    if (savedData) {
-      try {
-        const parsedData = JSON.parse(savedData);
-        if (Array.isArray(parsedData)) {
-          setMealData(parsedData);
-          initialDataRef.current = parsedData;
+    const storedUsers = Object.keys(JSON.parse(storedData || "{}"));
+    if (storedUsers.length !== initialUsers.length) {
+      const newData: Record<string, string[]> = {
+        ...JSON.parse(storedData || "{}"),
+      };
+      initialUsers.forEach((userId) => {
+        if (!storedUsers.includes(userId)) {
+          const userDataArray: string[] = Array(numDays).fill("0");
+          newData[userId] = userDataArray;
         }
-      } catch (error) {
-        console.error("Error parsing saved meal data:", error);
-      }
+      });
+      setUserData(newData);
+      // Save the initialized data to localStorage
+      localStorage.setItem("userData", JSON.stringify(newData));
     }
-  }, []);
 
-  useEffect(() => {
-    localStorage.setItem("mealData", JSON.stringify(mealData));
-  }, [mealData]);
-
-  const handleMealChange = (
-    personIndex: number,
-    dayIndex: number,
-    newValue: number
-  ) => {
-    const updatedData = [...mealData];
-    updatedData[personIndex].meals[dayIndex] = newValue;
-    setMealData(updatedData);
-
-    // Get the current user's email and update the corresponding object in initialData
-    const email = updatedData[personIndex].email;
-    const userDataIndex = initialDataRef.current.findIndex(
-      (user: any) => user.email === email
-    );
-    if (userDataIndex !== -1) {
-      const initialDataCopy = [...initialDataRef.current];
-      initialDataCopy[userDataIndex].meals[dayIndex] = newValue;
-      initialDataRef.current = initialDataCopy;
+    if (storedData) {
+      setUserData(JSON.parse(storedData));
+    } else {
+      // Initialize data with all values set to "0"
+      const data: Record<string, string[]> = {};
+      initialUsers.forEach((userId) => {
+        const userDataArray: string[] = Array(numDays).fill("0");
+        data[userId] = userDataArray;
+      });
+      setUserData(data);
+      // Save the initialized data to localStorage
+      localStorage.setItem("userData", JSON.stringify(data));
     }
-  };
+  }, [initialUsers]);
 
-  const calculatePersonTotal = (personIndex: number): number => {
-    return mealData[personIndex].meals.reduce(
-      (total, count) => total + count,
-      0
-    );
-  };
+  const handleInputChange = (userId: string, day: number, newValue: string) => {
+    setUserData((prevData) => {
+      const newData = { ...prevData };
+      newData[userId] = [...(newData[userId] || [])]; // Ensure user data array exists
+      newData[userId][day] = newValue;
 
-  const calculateDayTotal = (dayIndex: number): number => {
-    return mealData?.reduce(
-      (total, person) => total + person.meals[dayIndex],
-      0
-    );
-  };
+      // Save the updated data to localStorage
+      localStorage.setItem("userData", JSON.stringify(newData));
 
-  const calculateGrandTotal = (): number => {
-    return mealData?.reduce(
-      (total, person) => total + calculatePersonTotal(mealData.indexOf(person)),
-      0
-    );
-  };
-
-  const calculatePersonTotals = () => {
-    const calculatedPersonTotals = mealData?.map((person) => {
-      const total = person.meals.reduce((total, count) => total + count, 0);
-      console.log(total);
-      return { name: person?.name, total, email: person?.email };
+      return newData;
     });
-    console.log(calculatedPersonTotals);
-    dispatch(setPersonTotals(calculatedPersonTotals)); // Dispatch person totals to Redux
   };
 
-  const calculateGrandTotals = () => {
-    const calculatedGrandTotal = mealData?.reduce(
-      (total, person, personIndex) => total + calculatePersonTotal(personIndex),
-      0
-    );
+  const [showAdditionalDays, setShowAdditionalDays] = useState<
+    Record<string, boolean>
+  >({});
 
-    dispatch(setGrandTotal(calculatedGrandTotal)); // Dispatch grand total to Redux
+  const toggleAdditionalDays = (userId: string) => {
+    setShowAdditionalDays((prev) => ({
+      ...prev,
+      [userId]: !prev[userId],
+    }));
   };
 
-  useEffect(() => {
-    calculatePersonTotals();
-    calculateGrandTotals();
-  }, [mealData]);
+  const handleAddUser = (newUser: string) => {
+    // Initialize the data for the new user with default values
+    const newData: Record<string, string[]> = { ...userData };
+    newData[newUser] = Array(numDays).fill("0");
+
+    // Update users and userData state
+    setUsers([...users, newUser]);
+    setUserData(newData);
+
+    // Save the updated data to localStorage, replacing old data
+    localStorage.setItem("userData", JSON.stringify(newData));
+  };
+
+  if (!userData) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <div className="p-4">
-      <h2 className="text-lg font-semibold mb-2">Mess Meal Tracker</h2>
-      <div className="overflow-x-auto">
-        <table className="w-full border-collapse">
+    <div className="container mx-auto mt-8">
+      <h1 className="text-2xl font-bold mb-4">User-Specific Date Data</h1>
+      <table className="table-auto">
+        <thead>
+          <tr>
+            <th className="px-2 py-2 text-sm"></th>
+            {Array.from({ length: numDays }, (_, day) => (
+              <th key={`day_${day + 1}`} className="px-4 py-2">
+                Day {day + 1}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {users.map((userId) => (
+            <tr key={`user_${userId}`}>
+              <td className="px-2 py-2">User {userId}</td>
+              {userData[userId]?.map((value, day) => (
+                <td key={`user_${userId}_day_${day + 1}`} className="px-2 py-2">
+                  <input
+                    min={0}
+                    max={9}
+                    className="w-10 bg-inherit border pl-2"
+                    type="number"
+                    value={value}
+                    onChange={(e) => {
+                      handleInputChange(userId, day, e.target.value);
+                    }}
+                  />
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <div className="mb-8">
+        <h2 className="text-xl font-semibold">Grand Total</h2>
+        <table className="table-auto w-full mb-4">
           <thead>
             <tr>
-              <th className="px-2 py-1 border">Name</th>
-              {Array.from({ length: 31 }, (_, index) => (
-                <th key={index} className="px-2 py-1 border">
-                  {index + 1}
+              <th className="px-4 py-2">User</th>
+              {userData[users[0]].slice(0, numDays).map((_, day) => (
+                <th key={`grand_total_day_${day + 1}`} className="px-4 py-2">
+                  {day + 1}
                 </th>
               ))}
-              <th className="px-2 py-1 border">Total</th>
+              {showAdditionalDays[users[0]] &&
+                userData[users[0]]
+                  .slice(numDays, numDays + daysToShowAfterToggle)
+                  .map((_, day) => (
+                    <th
+                      key={`grand_total_day_${day + numDays + 1}`}
+                      className="px-4 py-2"
+                    >
+                      {day + numDays + 1}
+                    </th>
+                  ))}
             </tr>
           </thead>
           <tbody>
-            {mealData?.map((person, personIndex) => (
-              <tr key={personIndex}>
-                <td className="px-2 py-1 border">{person.name}</td>
-                {person.meals.map((count, dayIndex) => (
-                  <td key={dayIndex} className="px-2 py-1 border">
-                    <input
-                      type="number"
-                      value={count}
-                      onChange={(e) =>
-                        handleMealChange(
-                          personIndex,
-                          dayIndex,
-                          parseInt(e.target.value)
-                        )
-                      }
-                      className="w-6 text-center"
-                    />
+            {users.map((userId) => (
+              <tr key={`grand_total_user_${userId}`}>
+                <td className="px-4 py-2"> {userId}</td>
+                {userData[userId]?.slice(0, numDays).map((value, day) => (
+                  <td
+                    key={`grand_total_user_${userId}_day_${day + 1}`}
+                    className="px-4 py-2"
+                  >
+                    {value}
                   </td>
                 ))}
-                <td className="px-2 py-1 border">
-                  {calculatePersonTotal(personIndex)}
-                </td>
+                {showAdditionalDays[userId] &&
+                  userData[userId]
+                    .slice(numDays, numDays + daysToShowAfterToggle)
+                    .map((value, day) => (
+                      <td
+                        key={`grand_total_user_${userId}_day_${
+                          day + numDays + 1
+                        }`}
+                        className="px-6 py-2"
+                      >
+                        {value}
+                      </td>
+                    ))}
               </tr>
             ))}
             <tr>
-              <td className="px-2 py-1 font-semibold border">Total</td>
-              {Array.from({ length: 31 }, (_, dayIndex) => (
-                <td key={dayIndex} className="px-2 py-1 border">
-                  {calculateDayTotal(dayIndex)}
-                </td>
-              ))}
-              <td className="px-2 py-1 font-semibold border">
-                {calculateGrandTotal()}
+              <td className="px-4 py-2">Total</td>
+              {userData[users[0]]
+                .slice(0, numDays + daysToShowAfterToggle)
+                .map((_, day) => (
+                  <td
+                    key={`grand_total_all_day_${day + 1}`}
+                    className="px-4 py-2"
+                  >
+                    {users
+                      .map((userId) =>
+                        userData[userId][day]
+                          ? parseInt(userData[userId][day], 10)
+                          : 0
+                      )
+                      .reduce((acc, val) => acc + val, 0)}
+                  </td>
+                ))}
+              <td className="px-6 py-2">
+                {users
+                  .map((userId) =>
+                    userData[userId]
+                      .slice(0, numDays + daysToShowAfterToggle)
+                      .reduce((acc, val) => acc + parseInt(val, 10), 0)
+                  )
+                  .reduce((acc, val) => acc + val, 0)}
               </td>
             </tr>
           </tbody>
@@ -187,4 +214,4 @@ const HostelMealTracker = () => {
   );
 };
 
-export default HostelMealTracker;
+export default App;
