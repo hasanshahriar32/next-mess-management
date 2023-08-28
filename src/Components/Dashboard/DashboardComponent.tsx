@@ -32,8 +32,10 @@ import Link from "next/link";
 import Image from "next/image";
 
 const DashboardComponent = () => {
-  const totalBazar = useAppSelector((state) => state.meal.totalBazarAmount);
-  const totalMill = useAppSelector((state) => state.meal.grandTotal);
+  const totalBazar = useAppSelector(
+    (state: any) => state.meal.totalBazarAmount
+  );
+  const totalMill = useAppSelector((state: any) => state.meal.grandTotal);
   console.log(totalMill);
   console.log(totalBazar);
   const average = (totalBazar / totalMill).toFixed(2);

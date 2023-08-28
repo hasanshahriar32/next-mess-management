@@ -106,7 +106,7 @@ const Sidebar = () => {
     {
       id: 15,
       path: "/dashboard/get-all-meal-count",
-      title: "Meal Count",
+      title: "Get Meal Count",
       icon: <FaUser />,
     },
     {
