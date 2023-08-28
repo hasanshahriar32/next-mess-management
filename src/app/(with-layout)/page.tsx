@@ -11,14 +11,14 @@ export default function Home() {
     <>
       <div className="flex flex-col max-w-[100vw] gap-5">
         <HeroSection />
+          <StreamlinedExperience />
         <Services />
         <Gallery />
         <div className="max-w-full">
-          {/* <StreamlinedExperience /> */}
         </div>
         <Review />
         {/* <Pipe /> */}
-        <Cat />
+        {/* <Cat /> */}
       </div>
     </>
   );

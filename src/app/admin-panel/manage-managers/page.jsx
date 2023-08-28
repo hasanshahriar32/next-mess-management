@@ -75,7 +75,7 @@ export default function StickyHeadTable() {
     if (confirmDelete) {
       try {
         const response = await axios.delete(
-          `http://localhost:3000/api/admin/manage-manager/?id=${managerId}`
+          `https://inn.vercel.app/api/admin/manage-manager/?id=${managerId}`
         );
 
         // Assuming the response indicates success (e.g., status code 200)

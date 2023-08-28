@@ -153,11 +153,11 @@ const Signup = () => {
         <div>
           <div className="text-center mb-8">
             <h2 className="mb-2 text-4xl font-semibold">Let's Get Started</h2>
-            <p>Create An Account</p>
+            {/* <p>Create An Account</p>
             <div className="flex justify-center gap-5 mt-5">
               <FaGoogle className="text-xl  "></FaGoogle>
               <FiGithub className="text-xl  "></FiGithub>
-            </div>
+            </div> */}
           </div>
           <form onSubmit={handleSubmit}>
             <div className="grid md:grid-cols-2 gap-5">

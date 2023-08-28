@@ -65,7 +65,7 @@ const Login = () => {
     <div className="h-screen flex justify-center items-center ">
       <div className=" w-5/6 grid grid-cols-2 gap-32 justify-between items-center ">
         <div>
-          <div className="text-center mb-8">
+          {/* <div className="text-center mb-8">
             <h2 className="mb-2 text-4xl font-semibold">Let's Get Started</h2>
             <p>Signin With Social Media</p>
             <div className="flex justify-center gap-5 mt-5">
@@ -77,7 +77,7 @@ const Login = () => {
                 <FiGithub className="text-xl  "></FiGithub>
               </button>
             </div>
-          </div>
+          </div> */}
           <form onSubmit={handleSubmit}>
             <input
               type="email"
