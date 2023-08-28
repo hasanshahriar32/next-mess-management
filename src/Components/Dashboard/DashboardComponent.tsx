@@ -131,9 +131,17 @@ const DashboardComponent = () => {
                           )}
                         </td>
                         <td>
-                          <Link href={`/dashboard/report-card/${data?.email}`}>
-                            <button> Make Report Card</button>
-                          </Link>
+                          {data?.reportCardStatus === false ? (
+                            <>
+                              <Link
+                                href={`/dashboard/report-card/${data?.email}`}
+                              >
+                                <button> Make Report Card</button>
+                              </Link>
+                            </>
+                          ) : (
+                            <>Report Card Done</>
+                          )}
                         </td>
                         <td>
                           <Link href={`dashboard/users-profile/${data?.email}`}>

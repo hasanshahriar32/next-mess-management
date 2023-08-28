@@ -5,6 +5,7 @@ import {
   useGetBazarQuery,
   useGetSingleHomeRentAndBillsQuery,
   useGetSingleUserQuery,
+  useUpdateUserMutation,
 } from "@/app/features/bazar/bazarApi";
 import { useAppSelector } from "@/app/hooks";
 import { useSession } from "next-auth/react";
@@ -16,6 +17,7 @@ const ReportCard = ({ email: userEmail }: any) => {
   console.log(singleUser?.user);
   const router = useRouter();
   const [AddReportCard] = useAddReportCardMutation();
+  const [updateUser] = useUpdateUserMutation();
   const { data: SingleHomeRentAndBills } =
     useGetSingleHomeRentAndBillsQuery(userEmail);
   console.log(SingleHomeRentAndBills?.expenses);
@@ -77,22 +79,27 @@ const ReportCard = ({ email: userEmail }: any) => {
   const defaultMonth = months[new Date().getMonth()];
   const [month, setMonth] = useState(defaultMonth);
   const handleButtonClick = async () => {
+    const personData = personTotal.find((person: any) => {
+      return person.email === singleUser?.user?.email;
+    });
+
+    if (!personData) {
+      console.log("Person data not found");
+      return;
+    }
     // Create an array of objects with the dynamic data for each person
-    const dynamicDataArray =
-      personTotal
-        ?.filter((e: any) => e?.email === singleUser?.user?.email)
-        ?.map(({ name, total }: any) => {
-          const personAmount: any = personTotalAmounts[name] || 0;
-          return {
-            name,
-            total,
-            personAmount,
-            expenseForMeal: parseFloat((average * total).toFixed(2)),
-            paymentDifference: parseFloat(
-              (personAmount - average * total).toFixed(2)
-            ),
-          };
-        }) || [];
+    const dynamicDataArray = personData.meals.map(({ name, total }: any) => {
+      const personAmount: any = personTotalAmounts[name] || 0;
+      return {
+        name,
+        total,
+        personAmount,
+        expenseForMeal: parseFloat((average * total).toFixed(2)),
+        paymentDifference: parseFloat(
+          (personAmount - average * total).toFixed(2)
+        ),
+      };
+    });
 
     // Create the dataToSave object including the dynamicDataArray
     const dataToSave = {
@@ -113,7 +120,12 @@ const ReportCard = ({ email: userEmail }: any) => {
       console.log(res);
 
       if ("data" in res) {
-        router.push("/dashboard/users-report-card");
+        // const result = await updateUser({
+        //   id: singleUser?.user?._id,
+        //   updatedUser: { newReportCardStatus: true }, // Change the property you want to update
+        // });
+        // console.log(result);
+        //router.push("/dashboard/users-report-card");
       }
     } catch (error) {
       console.log("Report Creating Failed");

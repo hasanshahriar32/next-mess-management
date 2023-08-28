@@ -7,6 +7,7 @@ import {
   // ... (other imports)
 } from "@/app/features/bazar/bazarApi";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
 // ... (other imports)
 
@@ -98,7 +99,6 @@ const UsersAllReportCard = () => {
                       <th>Serial No</th>
                       <th>Name</th>
                       <th>Email</th>
-
                       <th>Details</th>
                     </tr>
                   </thead>
@@ -132,6 +132,12 @@ const UsersAllReportCard = () => {
                   <h2 className="text-xl font-semibold">
                     Report Card of {selectedData?.data?.month}
                   </h2>
+                  <Image
+                    src={selectedData?.data?.image}
+                    alt=""
+                    width={250}
+                    height={250}
+                  ></Image>
                   <h2 className="text-xl font-semibold ">
                     {" "}
                     Name : {selectedData?.d?.name}

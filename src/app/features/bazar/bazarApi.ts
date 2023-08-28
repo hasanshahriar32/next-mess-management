@@ -94,7 +94,14 @@ type homeRentAndBillsSubSchema = {
 
 export const addBazarApi = createApi({
   reducerPath: "bazarAddApi",
-  tagTypes: ["bazars", "homeRent", "users", "reportCard", "homeRentAndBills"],
+  tagTypes: [
+    "bazars",
+    "homeRent",
+    "users",
+    "reportCard",
+    "homeRentAndBills",
+    "mealCount",
+  ],
 
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:3000",
@@ -246,6 +253,19 @@ export const addBazarApi = createApi({
       query: (email) => `/api/select-homerent-bills/${email}`,
       providesTags: ["homeRentAndBills"], // Adjust the URL to your API route
     }),
+
+    AddMealCount: builder.mutation<{ success: boolean }, any>({
+      query: (mealCount) => ({
+        url: "/api/meal-count", // Adjust the URL to your API route
+        method: "POST",
+        body: mealCount,
+      }),
+      invalidatesTags: ["mealCount"],
+    }),
+    getMealCount: builder.query<any, void>({
+      query: () => `/api/meal-count`,
+      providesTags: ["mealCount"],
+    }),
   }),
 });
 
@@ -270,4 +290,6 @@ export const {
   useAddSelectHomeRentAndBillsMutation,
   useGetSelectHomeRentAndBillsQuery,
   useGetSingleSelectHomeRentAndBillsQuery,
+  useAddMealCountMutation,
+  useGetMealCountQuery,
 } = addBazarApi;

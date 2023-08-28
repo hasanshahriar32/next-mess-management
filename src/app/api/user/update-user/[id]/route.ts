@@ -16,8 +16,7 @@ interface userInterface {
 
 export async function PATCH(req: any, { params }: paramsInterface) {
   const { id } = params;
-  const { newRole }: userInterface = await req.json();
-
+  const { newReportCardStatus } = await req.json();
   if (!id) {
     return NextResponse.json(
       { message: "id Parameter Not Found" },
@@ -29,7 +28,7 @@ export async function PATCH(req: any, { params }: paramsInterface) {
     const userUpdate = await User.findByIdAndUpdate(
       id,
       {
-        role: newRole,
+        reportCardStatus: newReportCardStatus,
       },
       { new: true }
     );

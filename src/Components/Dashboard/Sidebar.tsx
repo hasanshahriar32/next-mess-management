@@ -105,6 +105,19 @@ const Sidebar = () => {
     },
     {
       id: 15,
+      path: "/dashboard/get-all-meal-count",
+      title: "Meal Count",
+      icon: <FaUser />,
+    },
+    {
+      id: 16,
+      path: "/dashboard/all-meal-count",
+      title: "All Meal Count",
+      icon: <FaUser />,
+    },
+
+    {
+      id: 15,
       path: "/",
       title: "Home",
       icon: <FaUser />,
