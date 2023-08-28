@@ -52,7 +52,7 @@ const Header: React.FC<HeaderProps> = () => {
               <div className="flex gap-5 items-center">
                 <>
                   <Link href={"/"}>Home</Link>
-                  <Link href={"/about"}>About</Link>
+                  <Link href={"/about"}>Meal List</Link>
                   <Link href={"/contact"}>Contact</Link>
                   {!session?.user?.email && <Link href={"/login"}>Login</Link>}
                 </>
@@ -82,10 +82,8 @@ const Header: React.FC<HeaderProps> = () => {
                   className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-black rounded-box w-52"
                 >
                   <li>
-                    <a className="justify-between">
-                      Profile
-                      <span className="badge">New</span>
-                    </a>
+                    <Link href={"/profile"}>Profile</Link>
+        
                   </li>
                   <li>
                     <Link href={"/dashboard"}>Dashboard</Link>
