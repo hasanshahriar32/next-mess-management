@@ -1,5 +1,5 @@
 "use client";
-import HostelMealTracker from "@/app/dashboard/meal-plan/page";
+import HostelMealTracker from "@/app/manager-panel/meal-plan/page";
 import React, { useEffect } from "react";
 import Container from "../ui/Container/container";
 import { useGetBazarQuery } from "@/app/features/bazar/bazarApi";

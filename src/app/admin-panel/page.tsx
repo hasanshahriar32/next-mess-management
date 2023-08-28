@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import React from "react";
+import DashboardComponent from "@/Components/Dashboard/DashboardComponent";
 
 const Dashboard = () => {
   const { status, data: session } = useSession();
@@ -17,7 +18,7 @@ const Dashboard = () => {
   if (status === "authenticated") {
     return (
       <div>
-        <h2>ADMIN PANEL</h2>
+         <DashboardComponent></DashboardComponent>
       </div>
     );
   }
