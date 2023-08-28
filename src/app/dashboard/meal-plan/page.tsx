@@ -63,6 +63,14 @@ const App: React.FC = () => {
     });
   };
 
+  const calculateIndividualTotal = (userId: string) => {
+    if (!userData?.[userId]) return 0;
+
+    return userData?.[userId]
+      .slice(0, numDays + daysToShowAfterToggle)
+      .reduce((acc, val) => acc + parseInt(val, 10), 0);
+  };
+
   const [showAdditionalDays, setShowAdditionalDays] = useState<
     Record<string, boolean>
   >({});
@@ -103,13 +111,14 @@ const App: React.FC = () => {
                 Day {day + 1}
               </th>
             ))}
+            <th className="px-4 py-2">Total</th> {/* Add this column */}
           </tr>
         </thead>
         <tbody>
           {users.map((userId) => (
             <tr key={`user_${userId}`}>
               <td className="px-2 py-2">User {userId}</td>
-              {userData[userId]?.map((value, day) => (
+              {userData[userId]?.slice(0, numDays).map((value, day) => (
                 <td key={`user_${userId}_day_${day + 1}`} className="px-2 py-2">
                   <input
                     min={0}
@@ -123,11 +132,12 @@ const App: React.FC = () => {
                   />
                 </td>
               ))}
+              <td className="px-6 py-2">{calculateIndividualTotal(userId)}</td>{" "}
+              {/* Display individual total */}
             </tr>
           ))}
         </tbody>
       </table>
-
       <div className="mb-8">
         <h2 className="text-xl font-semibold">Grand Total</h2>
         <table className="table-auto w-full mb-4">
