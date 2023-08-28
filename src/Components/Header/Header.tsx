@@ -38,7 +38,7 @@ const Header: React.FC<HeaderProps> = () => {
         <Container className="">
           <div className="navbar">
             <div className="flex-1">
-              <a className="btn btn-ghost normal-case text-xl">
+              <Link href={"/"} className="btn btn-ghost normal-case text-xl">
                 <Image
                   src="https://i.ibb.co/PGNP90L/Green-Yellow-White-Modern-Farm-House-Logo-4.png"
                   height={50}
@@ -46,7 +46,7 @@ const Header: React.FC<HeaderProps> = () => {
                   alt="logo"
                 />
                 <p className="hidden md:flex">Mess Management</p>
-              </a>
+              </Link>
             </div>
             <div className="flex-none gap-2">
               <div className="flex gap-5 items-center">
