@@ -23,6 +23,15 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/api/auth/[...nextauth].js", "src/Components/Streamlined/pipe.jsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "src/app/api/auth/[...nextauth].js",
+    "src/Components/Streamlined/pipe.jsx",
+    "src/app/admin-panel/layout.jsx",
+    "src/app/admin-panel/layout.jsx"
+  ],
   "exclude": ["node_modules"]
 }
