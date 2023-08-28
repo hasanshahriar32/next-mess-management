@@ -65,7 +65,10 @@ const Header: React.FC<HeaderProps> = () => {
                   >
                     <div className="w-10 rounded-full">
                       <Image
-                        src={singleUser?.user?.selectedImage}
+                        src={
+                          singleUser?.user?.selectedImage ||
+                          `https://www.pngkey.com/png/full/115-1150152_default-profile-picture-avatar-png-green.png`
+                        }
                         alt=""
                         width={50}
                         height={50}

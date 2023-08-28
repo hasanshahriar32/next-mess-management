@@ -18,8 +18,20 @@ const AdminSidebar = () => {
   const navLinks = [
     {
       id: 1,
-      path: "/dashboard/add-user",
+      path: "/admin-panel",
+      title: "Dashboard",
+      icon: <FaUser />,
+    },
+    {
+      id: 10,
+      path: "/admin-panel/add-user",
       title: "Add User",
+      icon: <FaUser />,
+    },
+    {
+      id: 4,
+      path: "/admin-panel/all-user",
+      title: "Manage Users",
       icon: <FaUser />,
     },
     {
@@ -34,16 +46,23 @@ const AdminSidebar = () => {
       title: "Manage Managers",
       icon: <FaUser />,
     },
-    {
-      id: 4,
-      path: "/dashboard/all-user",
-      title: "Manage Users",
-      icon: <FaUser />,
-    },
+
     {
       id: 5,
       path: "/admin-panel/manage-admins",
       title: "Manage Admins",
+      icon: <FaUser />,
+    },
+    {
+      id: 6,
+      path: "/admin-panel/all-homerent-bills",
+      title: "Homerent Bills",
+      icon: <FaUser />,
+    },
+    {
+      id: 7,
+      path: "/admin-panel/select-rent-and-bills",
+      title: "Select Bills",
       icon: <FaUser />,
     },
     {

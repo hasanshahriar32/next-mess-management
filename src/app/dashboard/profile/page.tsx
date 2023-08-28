@@ -1,10 +1,10 @@
-import AllUsersBazar from "@/Components/AllUsersBazar/AllUsersBazar";
+import MyProfile from "@/Components/Dashboard/MyProfile/MyProfile";
 import React from "react";
 
 const page = () => {
   return (
     <div>
-      <AllUsersBazar></AllUsersBazar>
+      <MyProfile></MyProfile>
     </div>
   );
 };

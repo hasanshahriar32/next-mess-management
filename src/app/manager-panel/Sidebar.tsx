@@ -23,6 +23,30 @@ const AdminSidebar = () => {
       icon: <FaUser />,
     },
     {
+      id: 2,
+      path: "/manager-panel/all-users-bazar",
+      title: "All User's Bazar",
+      icon: <FaUser />,
+    },
+    {
+      id: 3,
+      path: "/manager-panel/approve-bazar",
+      title: "Approve Bazar",
+      icon: <FaUser />,
+    },
+    {
+      id: 4,
+      path: "/manager-panel/get-all-bazar",
+      title: "Get All Bazar",
+      icon: <FaUser />,
+    },
+    {
+      id: 5,
+      path: "/manager-panel/meal-plan",
+      title: "Meal Plan",
+      icon: <FaUser />,
+    },
+    {
       id: 30,
       path: "/",
       title: "Home",

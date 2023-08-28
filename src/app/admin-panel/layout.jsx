@@ -7,7 +7,7 @@ import { useGetSingleUserQuery } from "../features/bazar/bazarApi";
 
 const Layout = ({ children }) => {
   const { status, data } = useSession();
-  
+
   const userEmail = data?.user?.email;
   const [loading, setLoading] = useState(true);
 
@@ -29,7 +29,9 @@ const Layout = ({ children }) => {
   return (
     <div>
       {loading ? (
-        <span className="loading loading-bars loading-lg"></span>
+        <div className="flex items-center justify-center w-full h-screen text-info">
+          <span className="loading loading-bars loading-lg"></span>
+        </div>
       ) : (
         <div>
           {status === "authenticated" && isAdmin ? (
