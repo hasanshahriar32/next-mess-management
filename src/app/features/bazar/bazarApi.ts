@@ -104,7 +104,7 @@ export const addBazarApi = createApi({
   ],
 
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://inn.vercel.app",
+    baseUrl: "http://localhost:3000",
   }),
   endpoints: (builder) => ({
     getBazar: builder.query<any, void>({

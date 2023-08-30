@@ -4,30 +4,32 @@ import MealCount from "../../../../Models/mealCountSchema/mealCountSchema";
 
 export async function POST(request: any) {
   try {
-    const { date, dayOfMonth, email, mealNumber, month, user, year } =
+    const { date, dayOfMonth, email, mealNumber, month, user, mealYear } =
       await request.json();
+    console.log(
+      "before added:",
+      date,
+      dayOfMonth,
+      email,
+      mealNumber,
+      month,
+      user,
+      mealYear
+    );
+
     // Connect to MongoDB
     await connectMongoDB();
-    await MealCount.create({
+    const meal = await MealCount.create({
       date,
       dayOfMonth,
       email,
       mealNumber,
       month,
       user,
-      year,
+      mealYear,
     });
 
-    console.log(
-      "Report card added:",
-      date,
-      dayOfMonth,
-      email,
-      mealNumber,
-      month,
-      user,
-      year
-    );
+    console.log("Meal Count Add added:", meal);
 
     return NextResponse.json({ message: "Meal Added" }, { status: 201 });
   } catch (error) {

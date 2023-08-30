@@ -4,6 +4,7 @@ const mealCounSchema = new Schema(
   {
     user: {
       type: String,
+      required: true,
     },
     email: {
       type: String,
@@ -22,6 +23,10 @@ const mealCounSchema = new Schema(
     },
     month: {
       type: String,
+      required: true,
+    },
+    mealYear: {
+      type: Number,
       required: true,
     },
   },
