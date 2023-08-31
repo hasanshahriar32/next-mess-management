@@ -50,32 +50,68 @@ const DashboardComponent = () => {
     "November",
     "December",
   ];
-  const [userMonth, setUserMonth] = useState("");
+  const [userMonth, setUserMonth] = useState(
+    allUsersMonth[new Date().getMonth()]
+  );
   const bazarFilterData = allBazar?.bazars?.filter(
     (bazar: any) => bazar?.bazarStatus === true
   );
   const filteredBazarData = bazarFilterData?.filter((bazar: any) =>
     bazar?.month.includes(userMonth)
   );
+  console.log(filteredBazarData);
   let totalBazarAmount: any = 0;
-  let personToTotalAmount: any = {};
 
   if (filteredBazarData && filteredBazarData.length > 0) {
     totalBazarAmount = filteredBazarData.reduce(
       (sum: any, bazar: any) => sum + bazar.amount,
       0
     );
-    filteredBazarData.forEach((bazar: any) => {
-      const person = bazar?.name;
-      const amount = bazar?.amount;
-      if (!personToTotalAmount[person]) {
-        personToTotalAmount[person] = 0;
-      }
-      personToTotalAmount[person] += amount;
-    });
   } else {
     console.log("No filtered data available.");
   }
+
+  const groupedData: { [key: string]: any } = {};
+  allMealCount?.mealCount?.forEach((data: any) => {
+    const key = `${data.month}-${data.mealYear}`;
+    console.log(key);
+    if (!groupedData[key]) {
+      groupedData[key] = {
+        totalMeal: data.mealNumber,
+        month: data.month,
+        year: data.mealYear,
+      };
+    } else {
+      groupedData[key].totalMeal += data.mealNumber;
+    }
+  });
+  const mealInfo = Object?.values(groupedData);
+  console.log(mealInfo);
+  // const personMealInfo: { [key: string]: any } = {};
+  // filteredBazarData?.forEach((data: any) => {
+  //   if (!personMealInfo[data.user]) {
+  //     personMealInfo[data.user] = {
+  //       userName: data.user, // Add the username
+  //       totalMeal: data.mealNumber,
+  //       month: data.month,
+  //       year: data.mealYear,
+  //     };
+  //   } else {
+  //     personMealInfo[data.user].totalMeal += data.mealNumber;
+  //   }
+  // });
+  const usersMealInfo = Object?.values(mealInfo);
+  const totalMealOfMonth = usersMealInfo
+    .filter((data: any) => data?.month === userMonth)
+    .reduce((totalMeal: number, info: any) => totalMeal + info.totalMeal, 0);
+  console.log(totalMealOfMonth);
+
+  let averageBazarPerMeal = 0;
+  if (totalBazarAmount !== 0) {
+    averageBazarPerMeal = totalBazarAmount / totalMealOfMonth; // Replace totalMealCount with the actual count
+  }
+  console.log(averageBazarPerMeal);
+
   const average = {};
   const { data: allUser, isLoading, isError, error } = useAllUserQuery();
   console.log(allUser?.users?.length);
@@ -293,7 +329,7 @@ const DashboardComponent = () => {
     "November",
     "December",
   ];
-  const [month, setMonth] = useState(months[new Date().getMonth()]);
+
   const UserName = ["Pervez Hossain", "Sakib Vai Pro", "Raihan", "Hasan"];
 
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
@@ -364,7 +400,7 @@ const DashboardComponent = () => {
           <div className="flex flex-col justify-between">
             {" "}
             <P className="text-white">Total Mill</P>
-            <P className="text-white">{}</P>
+            <P className="text-white">{totalMealOfMonth}</P>
             <P className="text-white">View All</P>
           </div>
           <div>
@@ -394,7 +430,7 @@ const DashboardComponent = () => {
           <div className="flex flex-col justify-between">
             {" "}
             <P className="text-white">Mill Rate</P>
-            <P className="text-white">{} BDT</P>
+            <P className="text-white">{averageBazarPerMeal.toFixed(2)} BDT</P>
             <P className="text-white">View All</P>
           </div>
           <div>

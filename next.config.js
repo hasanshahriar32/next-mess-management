@@ -11,6 +11,7 @@ const nextConfig = {
       "images.unsplash.com",
     ],
   },
+
   async headers() {
     return [
       {

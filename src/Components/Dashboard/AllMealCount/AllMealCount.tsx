@@ -7,7 +7,6 @@ import {
 import React, { useEffect, useState } from "react";
 import { BiEdit } from "react-icons/bi";
 import { AiOutlineDelete } from "react-icons/ai";
-import MealCount from "../../../../Models/mealCountSchema/mealCountSchema";
 
 interface MealData {
   user: string;
@@ -22,7 +21,6 @@ const AllMealCount = () => {
   const bazarFilterData = allBazar?.bazars?.filter(
     (bazar: any) => bazar?.bazarStatus === true
   );
-
   const [selectedYear, setSelectedYear] = useState(
     new Date().getFullYear().toString()
   );
@@ -85,7 +83,6 @@ const AllMealCount = () => {
     }
   });
   const mealInfo = Object?.values(groupedData);
-
   const personMealInfo: { [key: string]: any } = {};
   filteredData?.forEach((data: MealData) => {
     if (!personMealInfo[data.user]) {
