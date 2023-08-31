@@ -13,6 +13,8 @@ import {
 } from "@/app/features/bazar/bazarApi";
 
 const Login = () => {
+  const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+  console.log("Google Client ID (Client-side):", googleClientId);
   const data = useAppSelector((state) => state.user);
   console.log(data);
   const { status, data: session } = useSession();

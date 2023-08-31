@@ -3,6 +3,8 @@ import { P, Subtitle, Title } from "../ui/Heading/Heading";
 import { useAppSelector } from "@/app/hooks";
 import {
   useAllUserQuery,
+  useGetBazarQuery,
+  useGetMealCountQuery,
   useGetSingleUserQuery,
 } from "@/app/features/bazar/bazarApi";
 import { BiEdit } from "react-icons/bi";
@@ -32,21 +34,8 @@ import Link from "next/link";
 import Image from "next/image";
 
 const DashboardComponent = () => {
-  const totalBazar = useAppSelector(
-    (state: any) => state.meal.totalBazarAmount
-  );
-  const totalMill = useAppSelector((state: any) => state.meal.grandTotal);
-  console.log(totalMill);
-  console.log(totalBazar);
-  const average = (totalBazar / totalMill).toFixed(2);
-  const { data: allUser, isLoading, isError, error } = useAllUserQuery();
-  console.log(allUser?.users?.length);
-  const { data: session } = useSession();
-  const sessionEmail: any = session?.user?.email;
-  const { data: singleUser } = useGetSingleUserQuery(sessionEmail);
-  console.log(singleUser);
-  const [name, setName] = useState("");
-  const handleRemove = () => {};
+  const { data: allMealCount } = useGetMealCountQuery();
+  const { data: allBazar } = useGetBazarQuery();
   const allUsersMonth = [
     "January",
     "February",
@@ -61,7 +50,79 @@ const DashboardComponent = () => {
     "November",
     "December",
   ];
-  const [userMonth, setUserMonth] = useState("");
+  const [userMonth, setUserMonth] = useState(
+    allUsersMonth[new Date().getMonth()]
+  );
+  const bazarFilterData = allBazar?.bazars?.filter(
+    (bazar: any) => bazar?.bazarStatus === true
+  );
+  const filteredBazarData = bazarFilterData?.filter((bazar: any) =>
+    bazar?.month.includes(userMonth)
+  );
+  console.log(filteredBazarData);
+  let totalBazarAmount: any = 0;
+
+  if (filteredBazarData && filteredBazarData.length > 0) {
+    totalBazarAmount = filteredBazarData.reduce(
+      (sum: any, bazar: any) => sum + bazar.amount,
+      0
+    );
+  } else {
+    console.log("No filtered data available.");
+  }
+
+  const groupedData: { [key: string]: any } = {};
+  allMealCount?.mealCount?.forEach((data: any) => {
+    const key = `${data.month}-${data.mealYear}`;
+    console.log(key);
+    if (!groupedData[key]) {
+      groupedData[key] = {
+        totalMeal: data.mealNumber,
+        month: data.month,
+        year: data.mealYear,
+      };
+    } else {
+      groupedData[key].totalMeal += data.mealNumber;
+    }
+  });
+  const mealInfo = Object?.values(groupedData);
+  console.log(mealInfo);
+  // const personMealInfo: { [key: string]: any } = {};
+  // filteredBazarData?.forEach((data: any) => {
+  //   if (!personMealInfo[data.user]) {
+  //     personMealInfo[data.user] = {
+  //       userName: data.user, // Add the username
+  //       totalMeal: data.mealNumber,
+  //       month: data.month,
+  //       year: data.mealYear,
+  //     };
+  //   } else {
+  //     personMealInfo[data.user].totalMeal += data.mealNumber;
+  //   }
+  // });
+  const usersMealInfo = Object?.values(mealInfo);
+  const totalMealOfMonth = usersMealInfo
+    .filter((data: any) => data?.month === userMonth)
+    .reduce((totalMeal: number, info: any) => totalMeal + info.totalMeal, 0);
+  console.log(totalMealOfMonth);
+
+  let averageBazarPerMeal = 0;
+  if (totalBazarAmount !== 0) {
+    averageBazarPerMeal = totalBazarAmount / totalMealOfMonth; // Replace totalMealCount with the actual count
+  }
+  console.log(averageBazarPerMeal);
+
+  const average = {};
+  const { data: allUser, isLoading, isError, error } = useAllUserQuery();
+  console.log(allUser?.users?.length);
+  const { data: session } = useSession();
+  const sessionEmail: any = session?.user?.email;
+  const { data: singleUser } = useGetSingleUserQuery(sessionEmail);
+  console.log(singleUser);
+  const [name, setName] = useState("");
+
+  const handleRemove = () => {};
+
   let filteredUsers = allUser?.users;
   if (userMonth !== "") {
     filteredUsers = filteredUsers?.filter(
@@ -268,7 +329,7 @@ const DashboardComponent = () => {
     "November",
     "December",
   ];
-  const [month, setMonth] = useState(months[new Date().getMonth()]);
+
   const UserName = ["Pervez Hossain", "Sakib Vai Pro", "Raihan", "Hasan"];
 
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
@@ -309,7 +370,7 @@ const DashboardComponent = () => {
         <div className="grid grid-cols-2  text-white p-5 font-semibold rounded-lg cursor-pointer border-2 border-white">
           <div className="flex flex-col justify-between">
             <P className="text-white">Total Bazar</P>
-            <P className="text-white">{totalBazar} BDT</P>
+            <P className="text-white">{totalBazarAmount} BDT</P>
             <P className="text-white">View All</P>
           </div>
           <div>
@@ -339,7 +400,7 @@ const DashboardComponent = () => {
           <div className="flex flex-col justify-between">
             {" "}
             <P className="text-white">Total Mill</P>
-            <P className="text-white">{totalMill}</P>
+            <P className="text-white">{totalMealOfMonth}</P>
             <P className="text-white">View All</P>
           </div>
           <div>
@@ -369,7 +430,7 @@ const DashboardComponent = () => {
           <div className="flex flex-col justify-between">
             {" "}
             <P className="text-white">Mill Rate</P>
-            <P className="text-white">{average} BDT</P>
+            <P className="text-white">{averageBazarPerMeal.toFixed(2)} BDT</P>
             <P className="text-white">View All</P>
           </div>
           <div>

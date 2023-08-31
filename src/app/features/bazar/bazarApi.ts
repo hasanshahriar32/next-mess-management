@@ -104,7 +104,7 @@ export const addBazarApi = createApi({
   ],
 
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://inn.vercel.app",
+    baseUrl: "http://localhost:3000",
   }),
   endpoints: (builder) => ({
     getBazar: builder.query<any, void>({
@@ -266,6 +266,13 @@ export const addBazarApi = createApi({
       query: () => `/api/meal-count`,
       providesTags: ["mealCount"],
     }),
+    RemoveMealCount: builder.mutation<{ success: boolean }, any>({
+      query: (id) => ({
+        url: `/api/meal-count?id=${id}`, // Adjust the URL to your API route
+        method: "DELETE",
+      }),
+      invalidatesTags: ["mealCount"],
+    }),
   }),
 });
 
@@ -292,4 +299,5 @@ export const {
   useGetSingleSelectHomeRentAndBillsQuery,
   useAddMealCountMutation,
   useGetMealCountQuery,
+  useRemoveMealCountMutation,
 } = addBazarApi;

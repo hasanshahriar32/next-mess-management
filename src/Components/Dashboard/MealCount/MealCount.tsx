@@ -42,7 +42,6 @@ const MealInputComponent = () => {
 
     const dateObject = new Date(mealDate);
     const monthName = dateObject.toLocaleString("default", { month: "long" });
-    const year = dateObject.getFullYear();
     const dayOfMonth = dateObject.getDate();
 
     if (selectedUserData) {
@@ -52,17 +51,26 @@ const MealInputComponent = () => {
         date: mealDate,
         mealNumber,
         month: monthName,
-        year,
+        mealYear: dateObject.getFullYear(),
         dayOfMonth,
       };
-      try {
-        const res = await AddMealCount(mealData);
-        console.log(res);
 
-        if ("data" in res) {
-          alert("Meal Added");
-          resetForm();
-        }
+      try {
+        // const res = await AddMealCount(mealData);
+        // console.log(res);
+        // if ("data" in res) {
+        //   alert("Meal Added");
+        //   resetForm();
+        // }
+
+        const res = await fetch("http://localhost:3000/api/meal-count", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(mealData),
+        });
+        console.log(res);
       } catch (error) {}
     }
   };
