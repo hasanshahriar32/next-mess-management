@@ -3,10 +3,13 @@ import { P, Subtitle, Title } from "@/Components/ui/Heading/Heading";
 import {
   useGetBazarQuery,
   useGetMealCountQuery,
+  useGetSingleUserQuery,
+  useRemoveMealCountMutation,
 } from "@/app/features/bazar/bazarApi";
 import React, { useEffect, useState } from "react";
 import { BiEdit } from "react-icons/bi";
 import { AiOutlineDelete } from "react-icons/ai";
+import { useSession } from "next-auth/react";
 
 interface MealData {
   user: string;
@@ -14,10 +17,17 @@ interface MealData {
   month: string;
   mealNumber: number;
   mealYear: number;
+  _id: string;
 }
 const AllMealCount = () => {
   const { data: allMealCount, isLoading, isError } = useGetMealCountQuery();
   const { data: allBazar } = useGetBazarQuery();
+  const [RemoveMealCount] = useRemoveMealCountMutation();
+
+  const { data: session } = useSession();
+  const sessionEmail: any = session?.user?.email;
+  const { data: singleUser } = useGetSingleUserQuery(sessionEmail);
+  console.log(singleUser);
   const bazarFilterData = allBazar?.bazars?.filter(
     (bazar: any) => bazar?.bazarStatus === true
   );
@@ -107,6 +117,14 @@ const AllMealCount = () => {
     averageBazarPerMeal = totalBazarAmount / totalMealOfMonth; // Replace totalMealCount with the actual count
   }
   console.log(averageBazarPerMeal);
+  const handleRemove = (id: any) => {
+    console.log("clicked", id);
+
+    const agree = window.confirm("are you Sure ? You Want To Delete");
+    if (id && agree) {
+      RemoveMealCount(id);
+    }
+  };
   return (
     <div className="my-16">
       <div>
@@ -152,7 +170,7 @@ const AllMealCount = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredData?.map((data: MealData, index: number) => (
+                    {filteredData?.map((data: any, index: number) => (
                       <tr key={index}>
                         <td>{index + 1}</td>
                         <td>{data.user}</td>
@@ -160,12 +178,17 @@ const AllMealCount = () => {
                         <td>{data.month}</td>
                         <td>{data.mealNumber}</td>
                         <td className="flex gap-5">
-                          <button>
-                            <BiEdit className="text-xl" />
-                          </button>
-                          <button>
-                            <AiOutlineDelete className="text-xl" />
-                          </button>
+                          {singleUser?.user?.role === "superAdmin" ? (
+                            <>
+                              <button onClick={() => handleRemove(data?._id)}>
+                                <AiOutlineDelete className="text-xl" />
+                              </button>
+                            </>
+                          ) : (
+                            <>
+                              <P>For Admin</P>
+                            </>
+                          )}
                         </td>
                       </tr>
                     ))}

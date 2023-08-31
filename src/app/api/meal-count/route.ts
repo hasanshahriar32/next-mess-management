@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { connectMongoDB } from "../../../../db/mongoDB";
 import MealCount from "../../../../Models/mealCountSchema/mealCountSchema";
 
@@ -45,6 +45,29 @@ export async function GET() {
   } catch (error) {
     return NextResponse.json(
       { message: "Error fetching Meals", error },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  const id = request.nextUrl.searchParams.get("id");
+  if (!id) {
+    return NextResponse.json(
+      { message: "ID parameter missing" },
+      { status: 400 }
+    );
+  }
+  try {
+    await connectMongoDB();
+    const deletedBazar = await MealCount.findByIdAndDelete(id);
+    if (!deletedBazar) {
+      return NextResponse.json({ message: "Bazar not found" }, { status: 404 });
+    }
+    return NextResponse.json({ message: "Bazar deleted" }, { status: 200 });
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Error deleting bazar", error },
       { status: 500 }
     );
   }
