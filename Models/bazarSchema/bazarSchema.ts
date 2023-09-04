@@ -22,6 +22,10 @@ const bazarSchema = new Schema(
       type: String,
       required: true,
     },
+    bazarStatus: {
+      type: Boolean,
+      required: true,
+    },
   },
   {
     timestamps: true,

@@ -1,24 +1,30 @@
 "use client";
 import HostelMealTracker from "@/app/dashboard/meal-plan/page";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Container from "../ui/Container/container";
 import { useGetBazarQuery } from "@/app/features/bazar/bazarApi";
 import { useAppSelector } from "@/app/hooks";
 import { P, Subtitle } from "../ui/Heading/Heading";
 import { useSession } from "next-auth/react";
 import { useDispatch } from "react-redux";
-import { setTotalBazarAmount } from "@/app/features/meal/mealSlice";
+import AllMealCount from "../Dashboard/AllMealCount/AllMealCount";
 
 const About = () => {
-  const data1 = useAppSelector((state) => state.meal.personTotals);
-  const data2 = useAppSelector((state) => state.meal.grandTotal);
-  console.log(data1);
-  console.log(data2);
-
   const { data: session } = useSession();
   console.log(session);
   const dispatch = useDispatch();
+  const [totalAmountByMonth, setTotalAmountByMonth] = useState({});
+  const [totalMealByUser, setTotalMealByUser] = useState({});
+  console.log(totalAmountByMonth, totalMealByUser);
+  useEffect(() => {
+    const storedState = localStorage.getItem("reduxState");
+    const initialState = storedState ? JSON.parse(storedState) : {};
 
+    setTotalAmountByMonth(initialState.meal?.totalAmountByMonth || {});
+    setTotalMealByUser(initialState.meal?.totalMealByUser || {});
+  }, []);
+  // const totalMeal = useAppSelector((state) => state.meal.totalAmountByMonth);
+  // console.log(totalMeal);
   const { data: allBazar, isLoading, isError } = useGetBazarQuery();
   console.log(allBazar?.bazars);
 
@@ -46,63 +52,15 @@ const About = () => {
         personTotalAmounts[x.name] += price;
       }
     }
-    localStorage.setItem("totalAmount", JSON.stringify(totalAmount));
-    dispatch(setTotalBazarAmount(totalAmount));
-    console.log(totalAmount);
   }
   console.log(totalAmount);
 
-  const average: any = (totalAmount / data2).toFixed(2);
-  console.log(average);
-  return (
-    <div>
-      <Container>
-        <HostelMealTracker></HostelMealTracker>
-        <div className="mt-10 grid lg:grid-cols-4 gap-10">
-          <div className="text-white px-6 py-6 font-semibold rounded-lg cursor-pointer transition duration-500 transform hover:scale-105 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-blue-500 hover:to-cyan-500">
-            <div>
-              <Subtitle>Total Bazar</Subtitle>
-              <P className="text-white"> {totalAmount} DBT</P>
-            </div>
-            <div></div>
-          </div>
+  const average: any = totalAmount.toFixed(2);
 
-          <div className="text-white px-6 py-6 font-semibold rounded-lg cursor-pointer transition duration-500 transform hover:scale-105 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-blue-500 hover:to-cyan-500">
-            <Subtitle>Total Bazar</Subtitle>
-            <P className="text-white"> {totalAmount} DBT</P>
-          </div>
-          <div className="text-white px-6 py-6 font-semibold rounded-lg cursor-pointer transition duration-500 transform hover:scale-105 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-blue-500 hover:to-cyan-500">
-            <Subtitle>Total Mill</Subtitle>
-            <P className="text-white">{data2} DBT</P>
-          </div>
-          <div className="text-white px-6 py-6 font-semibold rounded-lg cursor-pointer transition duration-500 transform hover:scale-105 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-blue-500 hover:to-cyan-500">
-            <Subtitle>Mill Rate</Subtitle>
-            <P className="text-white"> {average} DBT</P>
-          </div>
-        </div>
-        <div className="my-10 grid lg:grid-cols-3 gap-10 ">
-          {data1?.map(({ name, total }: any) => {
-            const personAmount = personTotalAmounts[name] || 0;
-            console.log(personAmount);
-            return (
-              <>
-                <div className="border-2 border-white rounded-lg p-5 ">
-                  <Subtitle>{name}</Subtitle>
-                  <P>Total Meal: {`${total}`}</P>
-                  <P>Payment For Meal : {`${personAmount}`} BDT</P>
-                  <P>Meal Rate: {`${average}`} BDT</P>
-                  <P>
-                    Expense For Meal : {`${(average * total).toFixed(2)}`} BDT
-                  </P>
-                  <P>
-                    Payment Difference:{" "}
-                    {`${(personAmount - average * total).toFixed(2)}`} BDT
-                  </P>
-                </div>
-              </>
-            );
-          })}
-        </div>
+  return (
+    <div className="my-16">
+      <Container>
+        <AllMealCount></AllMealCount>
       </Container>
     </div>
   );

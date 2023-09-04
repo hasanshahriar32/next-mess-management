@@ -1,12 +1,13 @@
 "use client";
 
-import { P } from "@/Components/ui/Heading/Heading";
+import { P, Title } from "@/Components/ui/Heading/Heading";
 import {
   useAllUserQuery,
   useDeleteUserMutation,
   useGetSingleUserQuery,
 } from "@/app/features/bazar/bazarApi";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import React, { useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { BiEdit } from "react-icons/bi";
@@ -44,7 +45,11 @@ const AllUser = () => {
     "November",
     "December",
   ];
-  const [month, setMonth] = useState(months[new Date().getMonth()]);
+  const [month, setMonth] = useState("");
+  let filteredUsers = allUser?.users;
+  if (month !== "") {
+    filteredUsers = filteredUsers?.filter((user: any) => user.month === month);
+  }
 
   let content;
   if (isLoading && !isError) {
@@ -62,16 +67,16 @@ const AllUser = () => {
       <div className="overflow-x-auto">
         <table className="table">
           <thead>
-            <tr className="bg-base-200">
+            <tr className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 px-4 py-2 font-semibold rounded-lg">
               <th></th>
               <th>Name</th>
               <th>Email</th>
-
               <th>Action</th>
+              <th>Profile</th>
             </tr>
           </thead>
           <tbody>
-            {allUser?.users?.map((data: any, index: any) => {
+            {filteredUsers?.map((data: any, index: any) => {
               return (
                 <tr key={index}>
                   <th>{index + 1}</th>
@@ -94,6 +99,11 @@ const AllUser = () => {
                       </>
                     )}
                   </td>
+                  <td>
+                    <Link href={`users-profile/${data?.email}`}>
+                      User's Prodile
+                    </Link>
+                  </td>
                 </tr>
               );
             })}
@@ -102,8 +112,46 @@ const AllUser = () => {
       </div>
     );
   }
+  return (
+    <div className="mt-16">
+      <div className="flex justify-between my-5">
+        <div>
+          <Title>All Users</Title>
+        </div>
+        <div className="flex gap-5 items-center">
+          <P>Filter By Month</P>
+          <div>
+            {/* <select
+              name="month"
+              value={month}
+              onChange={(e) => setMonth(e.target.value)}
+              className="bg-transparent border-2 border-white select select-bordered w-full"
+            >
+              {months.map((month) => (
+                <option key={month}>{month}</option>
+              ))}
+            </select> */}
 
-  return <div className="mt-16">{content}</div>;
+            <select
+              name="month"
+              required
+              value={month}
+              onChange={(e) => setMonth(e.target.value)}
+              className="border-2 border-white select select-bordered w-full"
+            >
+              <option value="">Filter by Month</option>
+              {months.map((month) => (
+                <option key={month} value={month}>
+                  {month}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </div>
+      {content}
+    </div>
+  );
 };
 
 export default AllUser;

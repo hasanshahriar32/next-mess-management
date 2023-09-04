@@ -7,6 +7,7 @@ type BazarAddRequest = {
   name: string;
   email: string;
   month: string;
+  bazarStatus: boolean;
 };
 type UpdateBazarAddRequest = {
   newBazar: string;
@@ -14,6 +15,11 @@ type UpdateBazarAddRequest = {
   newName: string;
   newEmail: string;
   newMonth: string;
+  newBazarStatus: boolean;
+};
+
+type ApproveBazarAddRequest = {
+  newBazarStatus: boolean;
 };
 
 type signupInfoType = {
@@ -21,6 +27,15 @@ type signupInfoType = {
   email: string;
   role: string;
   password: string;
+  bloodGroup: string;
+  idCard: number;
+  messMemberStatus: boolean;
+  month: string;
+  parentNumber: number;
+  personalNumber: number;
+  religious: string;
+  selectedImage: string;
+  reportCardStatus: boolean;
 };
 type userInfoType = {
   email: string;
@@ -32,14 +47,64 @@ type HomeRentAndBillsRequest = {
   name: string;
   email: string;
   month: string;
+  homeRentAndBills: boolean;
+  homeRentDate: String;
+  dayOfMonth: Number;
+  year: Number;
+};
+
+type ApproveHomeRentAndBillsRequest = {
+  newHomeRentAndBills: boolean;
+};
+interface DynamicDataItem {
+  name: string;
+  total: number;
+  personAmount: number;
+  expenseForMeal: number;
+  paymentDifference: number;
+}
+
+interface Data {
+  average: number;
+  dynamicData: DynamicDataItem[];
+  month: string;
+  totalBazar: number;
+  totalMeal: number;
+  userEmail: string;
+  homeRent: number;
+  bills: number;
+}
+
+type billsInterface = {
+  netBill: number;
+  gasBill: number;
+  electricityBill: number;
+};
+
+type homeRentAndBillsSubSchema = {
+  homeRent: number;
+  bills: billsInterface[];
+  user: string;
+  date: string;
+  dayOfMonth: number;
+  email: string;
+  month: string;
+  year: number;
 };
 
 export const addBazarApi = createApi({
   reducerPath: "bazarAddApi",
-  tagTypes: ["bazars", "homeRent", "users"],
+  tagTypes: [
+    "bazars",
+    "homeRent",
+    "users",
+    "reportCard",
+    "homeRentAndBills",
+    "mealCount",
+  ],
 
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3000",
+    baseUrl: "https://inn.vercel.app",
   }),
   endpoints: (builder) => ({
     getBazar: builder.query<any, void>({
@@ -55,6 +120,17 @@ export const addBazarApi = createApi({
         url: "/api/add-bazar", // Adjust the URL to your API route
         method: "POST",
         body: bazarInfo,
+      }),
+      invalidatesTags: ["bazars"],
+    }),
+    approveBazar: builder.mutation<
+      void,
+      { id: string; updatedBazarData: ApproveBazarAddRequest }
+    >({
+      query: ({ id, updatedBazarData }) => ({
+        url: `/api/add-bazar/${id}`, // Adjust the URL pattern according to your API
+        method: "PATCH",
+        body: updatedBazarData,
       }),
       invalidatesTags: ["bazars"],
     }),
@@ -87,9 +163,24 @@ export const addBazarApi = createApi({
       }),
       invalidatesTags: ["homeRent"],
     }),
+    ApproveHomeRentAndBills: builder.mutation<
+      void,
+      { id: string; expenses: ApproveHomeRentAndBillsRequest }
+    >({
+      query: ({ id, expenses }) => ({
+        url: `/api/add-homerent-bills/${id}`, // Adjust the URL to your API route
+        method: "PATCH",
+        body: expenses,
+      }),
+      invalidatesTags: ["homeRent"],
+    }),
     GetHomeAndBills: builder.query<any, void>({
       query: () => "/api/add-homerent-bills",
       providesTags: ["homeRent"],
+    }),
+    getSingleHomeRentAndBills: builder.query<any, void>({
+      query: (email) => `/api/add-homerent-bills/get-homerent-bills/${email}`,
+      providesTags: ["homeRent"], // Adjust the URL to your API route
     }),
     RemoveHomeRentAndBills: builder.mutation<
       { success: boolean },
@@ -133,6 +224,55 @@ export const addBazarApi = createApi({
       }),
       invalidatesTags: ["users"],
     }),
+    AddReportCard: builder.mutation<{ success: boolean }, Data>({
+      query: (reportCard) => ({
+        url: "/api/report-card", // Adjust the URL to your API route
+        method: "POST",
+        body: reportCard,
+      }),
+      invalidatesTags: ["reportCard"],
+    }),
+    getReportCard: builder.query<any, void>({
+      query: () => `/api/report-card`,
+      providesTags: ["reportCard"],
+    }),
+
+    AddSelectHomeRentAndBills: builder.mutation<{ success: boolean }, any>({
+      query: (homeRentAndBills) => ({
+        url: "/api/select-homerent-bills", // Adjust the URL to your API route
+        method: "POST",
+        body: homeRentAndBills,
+      }),
+      invalidatesTags: ["homeRentAndBills"],
+    }),
+    getSelectHomeRentAndBills: builder.query<any, void>({
+      query: () => `/api/select-homerent-bills`,
+      providesTags: ["homeRentAndBills"],
+    }),
+    getSingleSelectHomeRentAndBills: builder.query<any, void>({
+      query: (email) => `/api/select-homerent-bills/${email}`,
+      providesTags: ["homeRentAndBills"], // Adjust the URL to your API route
+    }),
+
+    AddMealCount: builder.mutation<{ success: boolean }, any>({
+      query: (mealCount) => ({
+        url: "/api/meal-count", // Adjust the URL to your API route
+        method: "POST",
+        body: mealCount,
+      }),
+      invalidatesTags: ["mealCount"],
+    }),
+    getMealCount: builder.query<any, void>({
+      query: () => `/api/meal-count`,
+      providesTags: ["mealCount"],
+    }),
+    RemoveMealCount: builder.mutation<{ success: boolean }, any>({
+      query: (id) => ({
+        url: `/api/meal-count?id=${id}`, // Adjust the URL to your API route
+        method: "DELETE",
+      }),
+      invalidatesTags: ["mealCount"],
+    }),
   }),
 });
 
@@ -150,4 +290,14 @@ export const {
   useUpdateUserMutation,
   useAllUserQuery,
   useDeleteUserMutation,
+  useApproveHomeRentAndBillsMutation,
+  useGetSingleHomeRentAndBillsQuery,
+  useAddReportCardMutation,
+  useGetReportCardQuery,
+  useAddSelectHomeRentAndBillsMutation,
+  useGetSelectHomeRentAndBillsQuery,
+  useGetSingleSelectHomeRentAndBillsQuery,
+  useAddMealCountMutation,
+  useGetMealCountQuery,
+  useRemoveMealCountMutation,
 } = addBazarApi;

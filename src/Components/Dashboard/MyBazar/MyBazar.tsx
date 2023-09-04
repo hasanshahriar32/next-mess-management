@@ -9,13 +9,14 @@ import React, { useState } from "react";
 import { BiEdit } from "react-icons/bi";
 import { AiOutlineDelete } from "react-icons/ai";
 import Link from "next/link";
+import AddBazar from "../AddBazar/AddBazar";
 
 const MyBazar = () => {
   const { data: bazarData } = useGetBazarQuery();
   const { data: session } = useSession();
   const [RemoveBazar, { isError, isLoading, isSuccess, error }] =
     useRemoveBazarMutation();
-
+  console.log(bazarData);
   // Calculate the total amount of your bazar entries
   const myBazarEntries = bazarData?.bazars?.filter(
     (entry: any) => entry.email === session?.user?.email
@@ -51,11 +52,11 @@ const MyBazar = () => {
     0
   );
   return (
-    <div className="mt-16">
+    <div className="mt-16 border-2 border-white p-6  rounded-lg">
       <div className="flex justify-between  mb-5">
         <div>
           {" "}
-          <Title className="mb-5">My Bazar</Title>
+          <Title className="mb-5">Bazar</Title>
         </div>
         <div>
           <select
@@ -82,13 +83,14 @@ const MyBazar = () => {
             <div className="overflow-x-auto">
               <table className="table">
                 <thead>
-                  <tr className="bg-base-200">
+                  <tr className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 px-4 py-2 font-semibold rounded-lg">
                     <th>Serial No</th>
                     <th>Bazar</th>
                     <th>Date</th>
                     <th>Month</th>
                     <th>Amount</th>
                     <th>Action</th>
+                    <th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -110,6 +112,15 @@ const MyBazar = () => {
                           <button onClick={() => handleRemove(entry?._id)}>
                             <AiOutlineDelete className="text-xl cursor-pointer"></AiOutlineDelete>
                           </button>
+                        </td>
+                        <td>
+                          {entry?.bazarStatus === true ? (
+                            <>
+                              <P>Approved</P>
+                            </>
+                          ) : (
+                            <>UnApproved</>
+                          )}
                         </td>
                       </tr>
                     ))}
