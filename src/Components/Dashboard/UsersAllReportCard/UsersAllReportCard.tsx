@@ -1,5 +1,4 @@
 "use client";
-
 import { P, Title } from "@/Components/ui/Heading/Heading";
 import {
   useGetReportCardQuery,
