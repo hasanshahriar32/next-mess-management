@@ -54,6 +54,7 @@ const Header: React.FC<HeaderProps> = () => {
                   <Link href={"/"}>Home</Link>
                   <Link href={"/about"}>Meal List</Link>
                   <Link href={"/contact"}>Contact</Link>
+                  <Link href={"/contact"}>Projects</Link>
                   {!session?.user?.email && <Link href={"/login"}>Login</Link>}
                 </>
               </div>
@@ -83,7 +84,6 @@ const Header: React.FC<HeaderProps> = () => {
                 >
                   <li>
                     <Link href={"/profile"}>Profile</Link>
-        
                   </li>
                   <li>
                     <Link href={"/dashboard"}>Dashboard</Link>
