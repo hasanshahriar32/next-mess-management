@@ -63,7 +63,7 @@ const MealInputComponent = () => {
         //   resetForm();
         // }
 
-        const res = await fetch("http://localhost:3000/api/meal-count", {
+        const res = await fetch("https://inn.vercel.app/api/meal-count", {
           method: "POST",
           headers: {
             "content-type": "application/json",
